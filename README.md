@@ -4,6 +4,8 @@ An offline Minesweeper game, interactive learning guide, and mathematical explor
 
 The project combines the classic Minesweeper appearance with customizable controls, detailed statistics, experimental game modes, and reproducible research.
 
+**[Play online](https://weiyu-ustc.github.io/Minesweeper/)** · **[Interactive tutorial](https://weiyu-ustc.github.io/Minesweeper/Minesweeper%20Tutorial.html)**
+
 ![Minesweeper Field Notes game preview](docs/images/preview.png)
 
 ## Features
@@ -41,13 +43,17 @@ No-guess certification concerns a sequence of safe deductions; the entire mine l
 
 ## Getting Started
 
+Play the [online game](https://weiyu-ustc.github.io/Minesweeper/) or open the [tutorial](https://weiyu-ustc.github.io/Minesweeper/Minesweeper%20Tutorial.html) directly in your browser. No installation or account is required.
+
+To play offline:
+
 1. Download or clone this repository, and extract it if downloaded as a ZIP.
 2. Open `Minesweeper.html` in a modern browser.
 3. Open `Minesweeper Tutorial.html` for the learning guide, or follow the tutorial link in the game.
 
-The HTML files must be opened from the downloaded project; GitHub's file view displays their source. Keep the folders together so the paper and documentation links work. On macOS, `Start Minesweeper.command` also opens the game.
+For offline play, open the HTML files from the downloaded project; GitHub's repository file view displays their source. Keep the folders together so the paper and documentation links work. On macOS, `Start Minesweeper.command` also opens the game.
 
-Progress and game history are saved in browser storage. The [user guide](docs/USER_GUIDE.md) covers controls, modes, metric definitions, exports, and storage behavior.
+Progress and game history are saved in browser storage. Online and local-file versions have separate storage; records do not automatically sync between them or between devices. The [user guide](docs/USER_GUIDE.md) covers controls, modes, metric definitions, exports, and storage behavior.
 
 ![Interactive tutorial preview](docs/images/tutorial-preview.png)
 
@@ -85,6 +91,12 @@ npm run check       # Run tests, verify bundles, and check local file links
 The same checks can run directly with `node scripts/check.cjs` when npm is unavailable.
 
 Edit the source HTML, JavaScript, and CSS files, then rebuild. Commit the source and both generated standalone HTML files together. GitHub Actions runs the same checks on pushes and pull requests.
+
+### GitHub Pages
+
+The site is a static website with `index.html` as its entry point. In repository **Settings → Pages**, use **Deploy from a branch**, select **main** and **/ (root)**, and save. GitHub publishes updates when changes are pushed to `main`. The root `.nojekyll` file disables Jekyll processing, preserving the existing file paths. No custom domain, package installation, or separate deployment build is needed.
+
+The game, tutorial, and research PDFs use relative links and work under the `/Minesweeper/` project path. Keep the source assets and standalone HTML files together when deploying elsewhere.
 
 Research regeneration is optional and overwrites the corresponding saved results:
 

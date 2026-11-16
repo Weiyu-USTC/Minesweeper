@@ -1,0 +1,517 @@
+{
+  "study": "Initial reveal by starting position and protection rule",
+  "date": "2026-10-26",
+  "replicatesPerCondition": 5000,
+  "totalBoards": 90000,
+  "seedScheme": "uint32(0x7C190000 + level*2000000 + modeIndex*500000 + positionIndex*100000 + replicate)",
+  "generator": "Mulberry32 uint32, rejection-sampled bounded integers, Fisher-Yates shuffle. Rejection avoids bounded-integer modulo bias under ideal uniform uint32 draws; finite deterministic PRNG limitations remain.",
+  "positions": "corner=(0,0); edge=(floor(width/2),0); center=(floor(width/2),floor(height/2)); coordinates zero-based (x,y)",
+  "models": "Uniform mines on all cells except clicked cell (safe-only), or clicked cell plus its neighbors (zero-safe). These are different conditional layout distributions.",
+  "intervals": "Zero probability: Wilson 95% (z=1.96) for safe-only; zero-safe [1,1] is an exact design property. Mean revealed count: mean +/-1.96 sample SE. Intervals reflect Monte Carlo variation under the model, not human outcome uncertainty.",
+  "results": [
+    {
+      "difficulty": "Beginner",
+      "width": 9,
+      "height": 9,
+      "mines": 10,
+      "mode": "safe-only",
+      "position": "corner",
+      "start": 0,
+      "degree": 3,
+      "replicates": 5000,
+      "seedBase": 2082013184,
+      "zeroCount": 3354,
+      "zeroEstimate": 0.6708,
+      "zeroTheory": 0.6662609542356378,
+      "zeroCI95": [
+        0.6576476192908538,
+        0.6836901240941486
+      ],
+      "revealed": {
+        "mean": 19.0698,
+        "sd": 19.374953050811477,
+        "se": 0.27400321374799563,
+        "ci95": [
+          18.53275370105393,
+          19.60684629894607
+        ]
+      }
+    },
+    {
+      "difficulty": "Beginner",
+      "width": 9,
+      "height": 9,
+      "mines": 10,
+      "mode": "safe-only",
+      "position": "edge",
+      "start": 4,
+      "degree": 5,
+      "replicates": 5000,
+      "seedBase": 2082113184,
+      "zeroCount": 2524,
+      "zeroEstimate": 0.5048,
+      "zeroTheory": 0.5034528263209143,
+      "zeroCI95": [
+        0.49094298101959694,
+        0.5186496487710823
+      ],
+      "revealed": {
+        "mean": 18.415,
+        "sd": 20.640561561069592,
+        "se": 0.29190162094661404,
+        "ci95": [
+          17.842872822944635,
+          18.987127177055363
+        ]
+      }
+    },
+    {
+      "difficulty": "Beginner",
+      "width": 9,
+      "height": 9,
+      "mines": 10,
+      "mode": "safe-only",
+      "position": "center",
+      "start": 40,
+      "degree": 8,
+      "replicates": 5000,
+      "seedBase": 2082213184,
+      "zeroCount": 1595,
+      "zeroEstimate": 0.319,
+      "zeroTheory": 0.32566929957345486,
+      "zeroCI95": [
+        0.3062238425466549,
+        0.3320540757631494
+      ],
+      "revealed": {
+        "mean": 15.362,
+        "sd": 22.009039860182988,
+        "se": 0.3112548266508083,
+        "ci95": [
+          14.751940539764416,
+          15.972059460235585
+        ]
+      }
+    },
+    {
+      "difficulty": "Beginner",
+      "width": 9,
+      "height": 9,
+      "mines": 10,
+      "mode": "zero-safe",
+      "position": "corner",
+      "start": 0,
+      "degree": 3,
+      "replicates": 5000,
+      "seedBase": 2082513184,
+      "zeroCount": 5000,
+      "zeroEstimate": 1,
+      "zeroTheory": 1,
+      "zeroCI95": [
+        1,
+        1
+      ],
+      "revealed": {
+        "mean": 28.5088,
+        "sd": 18.18386243707926,
+        "se": 0.2571586487484417,
+        "ci95": [
+          28.004769048453056,
+          29.012830951546945
+        ]
+      }
+    },
+    {
+      "difficulty": "Beginner",
+      "width": 9,
+      "height": 9,
+      "mines": 10,
+      "mode": "zero-safe",
+      "position": "edge",
+      "start": 4,
+      "degree": 5,
+      "replicates": 5000,
+      "seedBase": 2082613184,
+      "zeroCount": 5000,
+      "zeroEstimate": 1,
+      "zeroTheory": 1,
+      "zeroCI95": [
+        1,
+        1
+      ],
+      "revealed": {
+        "mean": 35.4726,
+        "sd": 15.916265728585616,
+        "se": 0.2250899885569987,
+        "ci95": [
+          35.031423622428285,
+          35.913776377571715
+        ]
+      }
+    },
+    {
+      "difficulty": "Beginner",
+      "width": 9,
+      "height": 9,
+      "mines": 10,
+      "mode": "zero-safe",
+      "position": "center",
+      "start": 40,
+      "degree": 8,
+      "replicates": 5000,
+      "seedBase": 2082713184,
+      "zeroCount": 5000,
+      "zeroEstimate": 1,
+      "zeroTheory": 1,
+      "zeroCI95": [
+        1,
+        1
+      ],
+      "revealed": {
+        "mean": 45.8208,
+        "sd": 11.587249036248654,
+        "se": 0.1638684473765742,
+        "ci95": [
+          45.49961784314191,
+          46.141982156858084
+        ]
+      }
+    },
+    {
+      "difficulty": "Intermediate",
+      "width": 16,
+      "height": 16,
+      "mines": 40,
+      "mode": "safe-only",
+      "position": "corner",
+      "start": 0,
+      "degree": 3,
+      "replicates": 5000,
+      "seedBase": 2084013184,
+      "zeroCount": 2967,
+      "zeroEstimate": 0.5934,
+      "zeroTheory": 0.598049895007021,
+      "zeroCI95": [
+        0.5797179914285767,
+        0.6069385965817232
+      ],
+      "revealed": {
+        "mean": 16.588,
+        "sd": 23.77522467321051,
+        "se": 0.3362324518132174,
+        "ci95": [
+          15.928984394446095,
+          17.24701560555391
+        ]
+      }
+    },
+    {
+      "difficulty": "Intermediate",
+      "width": 16,
+      "height": 16,
+      "mines": 40,
+      "mode": "safe-only",
+      "position": "edge",
+      "start": 8,
+      "degree": 5,
+      "replicates": 5000,
+      "seedBase": 2084113184,
+      "zeroCount": 2145,
+      "zeroEstimate": 0.429,
+      "zeroTheory": 0.42294264060352343,
+      "zeroCI95": [
+        0.4153408157563847,
+        0.4427682019231518
+      ],
+      "revealed": {
+        "mean": 18.6364,
+        "sd": 28.345293898233823,
+        "se": 0.4008629906033361,
+        "ci95": [
+          17.85070853841746,
+          19.422091461582536
+        ]
+      }
+    },
+    {
+      "difficulty": "Intermediate",
+      "width": 16,
+      "height": 16,
+      "mines": 40,
+      "mode": "safe-only",
+      "position": "center",
+      "start": 136,
+      "degree": 8,
+      "replicates": 5000,
+      "seedBase": 2084213184,
+      "zeroCount": 1249,
+      "zeroEstimate": 0.2498,
+      "zeroTheory": 0.2501032594368725,
+      "zeroCI95": [
+        0.23799585775083057,
+        0.2619883144100148
+      ],
+      "revealed": {
+        "mean": 16.9752,
+        "sd": 32.2054595260599,
+        "se": 0.45545397644211694,
+        "ci95": [
+          16.082510206173453,
+          17.86788979382655
+        ]
+      }
+    },
+    {
+      "difficulty": "Intermediate",
+      "width": 16,
+      "height": 16,
+      "mines": 40,
+      "mode": "zero-safe",
+      "position": "corner",
+      "start": 0,
+      "degree": 3,
+      "replicates": 5000,
+      "seedBase": 2084513184,
+      "zeroCount": 5000,
+      "zeroEstimate": 1,
+      "zeroTheory": 1,
+      "zeroCI95": [
+        1,
+        1
+      ],
+      "revealed": {
+        "mean": 26.903,
+        "sd": 26.55180202242647,
+        "se": 0.3754991852556089,
+        "ci95": [
+          26.167021596899005,
+          27.638978403100992
+        ]
+      }
+    },
+    {
+      "difficulty": "Intermediate",
+      "width": 16,
+      "height": 16,
+      "mines": 40,
+      "mode": "zero-safe",
+      "position": "edge",
+      "start": 8,
+      "degree": 5,
+      "replicates": 5000,
+      "seedBase": 2084613184,
+      "zeroCount": 5000,
+      "zeroEstimate": 1,
+      "zeroTheory": 1,
+      "zeroCI95": [
+        1,
+        1
+      ],
+      "revealed": {
+        "mean": 41.7786,
+        "sd": 30.50573228067815,
+        "se": 0.4314162032145777,
+        "ci95": [
+          40.93302424169943,
+          42.62417575830057
+        ]
+      }
+    },
+    {
+      "difficulty": "Intermediate",
+      "width": 16,
+      "height": 16,
+      "mines": 40,
+      "mode": "zero-safe",
+      "position": "center",
+      "start": 136,
+      "degree": 8,
+      "replicates": 5000,
+      "seedBase": 2084713184,
+      "zeroCount": 5000,
+      "zeroEstimate": 1,
+      "zeroTheory": 1,
+      "zeroCI95": [
+        1,
+        1
+      ],
+      "revealed": {
+        "mean": 64.453,
+        "sd": 32.49941281572134,
+        "se": 0.45961110373155095,
+        "ci95": [
+          63.552162236686165,
+          65.35383776331385
+        ]
+      }
+    },
+    {
+      "difficulty": "Expert",
+      "width": 30,
+      "height": 16,
+      "mines": 99,
+      "mode": "safe-only",
+      "position": "corner",
+      "start": 0,
+      "degree": 3,
+      "replicates": 5000,
+      "seedBase": 2086013184,
+      "zeroCount": 2483,
+      "zeroEstimate": 0.4966,
+      "zeroTheory": 0.4984628742052113,
+      "zeroCI95": [
+        0.4827489585527484,
+        0.5104562620121872
+      ],
+      "revealed": {
+        "mean": 8.4862,
+        "sd": 12.918683680530897,
+        "se": 0.1826977766901477,
+        "ci95": [
+          8.12811235768731,
+          8.84428764231269
+        ]
+      }
+    },
+    {
+      "difficulty": "Expert",
+      "width": 30,
+      "height": 16,
+      "mines": 99,
+      "mode": "safe-only",
+      "position": "edge",
+      "start": 15,
+      "degree": 5,
+      "replicates": 5000,
+      "seedBase": 2086113184,
+      "zeroCount": 1570,
+      "zeroEstimate": 0.314,
+      "zeroTheory": 0.31250822354859403,
+      "zeroCI95": [
+        0.30128229494727565,
+        0.3270033006639045
+      ],
+      "revealed": {
+        "mean": 8.5208,
+        "sd": 15.150414990186746,
+        "se": 0.2142592235470274,
+        "ci95": [
+          8.100851921847825,
+          8.940748078152174
+        ]
+      }
+    },
+    {
+      "difficulty": "Expert",
+      "width": 30,
+      "height": 16,
+      "mines": 99,
+      "mode": "safe-only",
+      "position": "center",
+      "start": 255,
+      "degree": 8,
+      "replicates": 5000,
+      "seedBase": 2086213184,
+      "zeroCount": 793,
+      "zeroEstimate": 0.1586,
+      "zeroTheory": 0.15448690437861692,
+      "zeroCI95": [
+        0.14873692432153243,
+        0.16898728181640768
+      ],
+      "revealed": {
+        "mean": 7.1482,
+        "sd": 17.13153042278856,
+        "se": 0.24227642668114863,
+        "ci95": [
+          6.673338203704949,
+          7.623061796295051
+        ]
+      }
+    },
+    {
+      "difficulty": "Expert",
+      "width": 30,
+      "height": 16,
+      "mines": 99,
+      "mode": "zero-safe",
+      "position": "corner",
+      "start": 0,
+      "degree": 3,
+      "replicates": 5000,
+      "seedBase": 2086513184,
+      "zeroCount": 5000,
+      "zeroEstimate": 1,
+      "zeroTheory": 1,
+      "zeroCI95": [
+        1,
+        1
+      ],
+      "revealed": {
+        "mean": 15.7024,
+        "sd": 14.208371117125381,
+        "se": 0.20093671133068877,
+        "ci95": [
+          15.30856404579185,
+          16.09623595420815
+        ]
+      }
+    },
+    {
+      "difficulty": "Expert",
+      "width": 30,
+      "height": 16,
+      "mines": 99,
+      "mode": "zero-safe",
+      "position": "edge",
+      "start": 15,
+      "degree": 5,
+      "replicates": 5000,
+      "seedBase": 2086613184,
+      "zeroCount": 5000,
+      "zeroEstimate": 1,
+      "zeroTheory": 1,
+      "zeroCI95": [
+        1,
+        1
+      ],
+      "revealed": {
+        "mean": 25.6416,
+        "sd": 19.533516352470127,
+        "se": 0.27624563746499886,
+        "ci95": [
+          25.1001585505686,
+          26.1830414494314
+        ]
+      }
+    },
+    {
+      "difficulty": "Expert",
+      "width": 30,
+      "height": 16,
+      "mines": 99,
+      "mode": "zero-safe",
+      "position": "center",
+      "start": 255,
+      "degree": 8,
+      "replicates": 5000,
+      "seedBase": 2086713184,
+      "zeroCount": 5000,
+      "zeroEstimate": 1,
+      "zeroTheory": 1,
+      "zeroCI95": [
+        1,
+        1
+      ],
+      "revealed": {
+        "mean": 41.1626,
+        "sd": 25.584547583551245,
+        "se": 0.3618201417983797,
+        "ci95": [
+          40.453432522075175,
+          41.87176747792482
+        ]
+      }
+    }
+  ]
+}

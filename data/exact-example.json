@@ -1,0 +1,62 @@
+{
+  "description": "Small exact oracle counterexample to the conservative greedy heuristic",
+  "width": 4,
+  "height": 4,
+  "mines": 3,
+  "seed": 1,
+  "mineIndices": [
+    6,
+    8,
+    14
+  ],
+  "bbbv": 10,
+  "greedyClicks": 10,
+  "exactClicks": 7,
+  "exactEfficiency": 142.85714285714286,
+  "trace": [
+    {
+      "type": "reveal",
+      "index": 0,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "type": "reveal",
+      "index": 7,
+      "x": 3,
+      "y": 1
+    },
+    {
+      "type": "reveal",
+      "index": 12,
+      "x": 0,
+      "y": 3
+    },
+    {
+      "type": "flag",
+      "index": 6,
+      "x": 2,
+      "y": 1
+    },
+    {
+      "type": "chord",
+      "index": 7,
+      "x": 3,
+      "y": 1
+    },
+    {
+      "type": "flag",
+      "index": 14,
+      "x": 2,
+      "y": 3
+    },
+    {
+      "type": "chord",
+      "index": 10,
+      "x": 2,
+      "y": 2
+    }
+  ],
+  "visitedStates": 2698,
+  "model": "Initial reveal at index 0 fixed; known mines; one action per individual reveal, correct flag placement, or chord. Exhaustive BFS finds minimum total actions for this board and model."
+}

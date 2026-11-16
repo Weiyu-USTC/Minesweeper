@@ -1,0 +1,19 @@
+{
+  "name": "minesweeper-field-notes",
+  "private": true,
+  "description": "Offline Minesweeper, an adaptive tutorial, and reproducible research on efficiency and no-guess generation.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "node build-standalone.cjs",
+    "test": "node --test tests/engine.test.cjs tests/budget.test.cjs tests/tutorial.test.cjs",
+    "check": "node scripts/check.cjs",
+    "check:bundles": "node build-standalone.cjs --check",
+    "check:links": "node scripts/check-links.cjs",
+    "research:efficiency": "node research/experiment.cjs 500",
+    "research:exact": "node research/exact-small.cjs",
+    "research:openings": "node papers/efficiency/initial-position-study.cjs 5000",
+    "research:no-guess": "node papers/no-guess/enumerate.cjs"
+  }
+}

@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A local Minesweeper workbench: classic play, click economy, and new neighborhoods.">
+  <title>Minesweeper · Field Notes</title>
+  <style>
+@charset "UTF-8";
+:root{--ink:#242b28;--muted:#727970;--paper:#f6f6f0;--line:#dedfd5;--green:#215c47;--lime:#e0ecc7;--card:#fdfdf8;--cell:24px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);font-synthesis:none}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button,a,input,select,summary{-webkit-tap-highlight-color:transparent}button,summary{cursor:pointer}a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #7ea65a;outline-offset:3px}button{color:inherit}button:disabled{opacity:.5;cursor:wait}button{border:0}button,input,select{border-radius:4px}[hidden]{display:none!important}.masthead{height:78px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 4vw}.brand{color:var(--ink);font-size:13px;font-weight:700;letter-spacing:1.5px;display:flex;gap:16px;align-items:center}.brand>span:last-child{font-weight:400;letter-spacing:0}.brand-icon{font-size:34px;color:var(--green)}.brand-divider{color:#a8afa3}.local{font-size:10px;letter-spacing:1.5px;color:#68745f}.local i{display:inline-block;background:#759860;width:6px;height:6px;border-radius:50%;margin-right:8px}main{max-width:1560px;margin:auto;padding:42px 4vw 0}.intro{display:flex;justify-content:space-between;align-items:center;margin-bottom:35px}.eyebrow,.section-label{font-size:10px;letter-spacing:1.7px;font-weight:650;color:var(--muted)}.eyebrow{margin:0 0 14px}h1{font:500 clamp(38px,4.2vw,58px)/1.08 Georgia,"Times New Roman",serif;letter-spacing:-1.8px;margin:0 0 13px}h2{font:500 38px/1.15 Georgia,serif;letter-spacing:-1px;margin:0 0 14px}h3{font-size:19px;letter-spacing:-.4px;margin:18px 0 10px}.subtitle,.section-intro>p,.section-intro>div>p{font-size:14px;color:var(--muted);margin-bottom:0}.edition{text-align:right;line-height:2.2;font-size:10px;letter-spacing:1.5px;color:var(--muted)}.edition strong{font-size:12px;letter-spacing:0;font-weight:400;color:var(--ink)}.tabs{display:flex;gap:32px;border-bottom:1px solid var(--line);margin-bottom:28px}.tabs button{background:none;font-size:10px;color:#939b8d;padding:16px 0;border-bottom:2px solid transparent;border-radius:0;margin-bottom:-1px;white-space:nowrap}.tabs span{margin-left:9px;color:var(--muted);font-size:13px}.tabs button.active{border-color:var(--green);color:var(--green)}.tabs button.active span{color:var(--green);font-weight:600}.play-layout{display:grid;grid-template-columns:228px minmax(0,1fr) 232px;gap:24px;align-items:start}.card{background:var(--card);border:1px solid var(--line);border-radius:7px;padding:24px}.settings{padding:22px 18px}.settings .section-label{margin-bottom:24px}label{display:block;font-size:12px;margin:18px 0 8px;font-weight:500}input:not([type=checkbox],[type=range]),select{width:100%;height:38px;border:1px solid var(--line);background:#fffef9;color:var(--ink);padding:0 9px;font-size:12px}select{padding-right:20px}.optional{font-weight:400;color:var(--muted);float:right;font-size:10px}.primary{background:var(--green);color:#fff;padding:12px 15px;display:inline-flex;align-items:center;justify-content:space-between;font-size:12px;gap:25px}.primary:hover{background:#164532}#new-game{width:100%;margin-top:20px}.preferences{border-top:1px solid var(--line);margin-top:22px;padding-top:18px;font-size:11px}.preferences summary{font-weight:500}.preferences label{font-size:11px}.check{display:flex;gap:7px;align-items:center;line-height:1.5}.check input{accent-color:var(--green)}input[type=range]{width:100%;accent-color:var(--green)}output{float:right;font-variant-numeric:tabular-nums;color:var(--green)}.setup-note{font-size:10px;line-height:1.7;color:var(--muted);border-top:1px solid var(--line);margin-top:20px;padding-top:17px}.custom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.custom-grid input{padding:4px}.field-heading{display:flex;justify-content:space-between;align-items:center;margin:0 0 14px;font-size:12px;min-height:22px;gap:12px}.field-heading>div{display:flex;gap:13px;flex-wrap:wrap}.muted{color:var(--muted);font-size:10px}.badge{font-size:8px;letter-spacing:1px;background:#e6ecdf;color:#5c7450;padding:6px 8px;border-radius:3px;white-space:nowrap}.field-stage{background:#e9ece3;border:1px solid #dce1d5;border-radius:6px;min-height:478px;display:flex;align-items:flex-start;justify-content:flex-start;padding:34px 24px;overflow:auto;box-shadow:inset 0 0 40px #dbe0d518}.game-window{background:#c0c0c0;box-shadow:0 7px 12px #29312124;border:2px solid;border-color:#fff #6d6d6d #6d6d6d #fff;flex-shrink:0;margin:auto}.game-titlebar{background:#000080;color:white;font:bold 11px/21px Arial,sans-serif;height:23px;padding:0 6px;display:flex;justify-content:space-between;gap:28px}.window-dots{font-size:13px;letter-spacing:5px;color:#ddd}.game-interior{padding:9px}.game-counterbar{border:2px solid;border-color:#808080 #fff #fff #808080;padding:5px 6px;display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;gap:18px}.digital{font:32px/.97 "Courier New",monospace;letter-spacing:-1px;font-weight:bold;color:#fa0908;background:#190000;min-width:61px;text-align:right;padding:1px 2px 0;border:1px solid;border-color:#777 #eee #eee #777;font-variant-numeric:tabular-nums}.smile{font-size:23px;padding:0;width:34px;height:33px;line-height:29px;background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;border-radius:0}.smile:active{border-color:#808080 #fff #fff #808080}#board{display:grid;border:3px solid;border-color:#808080 #fff #fff #808080;width:max-content;user-select:none;touch-action:manipulation;-webkit-user-select:none}.cell{width:var(--cell);height:var(--cell);padding:0;background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;border-radius:0;font:bold calc(var(--cell) * .72)/1 "Courier New",monospace;display:flex;align-items:center;justify-content:center;cursor:default;position:relative}.cell.revealed{border:0;border-left:1px solid #808080;border-top:1px solid #808080}.cell.pressed{border:1px solid #808080}.cell.neighbor:after{content:"";position:absolute;inset:0;background:#e9ec5480;pointer-events:none}.cell.hinted{box-shadow:inset 0 0 0 3px #719a2b}.cell.exploded{background:#ff3636}.cell.wrong{color:#c60000}.cell.flagged{font-size:calc(var(--cell) * .65);color:#e90000}.cell[data-number="1"]{color:#0000ff}.cell[data-number="2"]{color:#008000}.cell[data-number="3"]{color:#ff0000}.cell[data-number="4"]{color:#000080}.cell[data-number="5"]{color:#800000}.cell[data-number="6"]{color:#008080}.cell[data-number="7"]{color:#000}.cell[data-number="8"]{color:#808080}.cell:focus-visible{outline:2px solid #1d653c;outline-offset:-3px;z-index:2}.cell.start:before{content:"";width:6px;height:6px;background:#246746;border-radius:50%}.field-status{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:15px 0;font-size:11px;min-height:28px}.text-button{background:none;color:var(--green);padding:4px 0;font-size:11px;white-space:nowrap}.action-row{display:flex;flex-wrap:wrap;gap:8px}.quiet-button{border:1px solid var(--line);background:#fbfcf6;padding:9px 12px;font-size:11px}.quiet-button:hover{background:#eaf0e1}.control-guide{font-size:9px;color:var(--muted);line-height:2.5;display:flex;gap:8px 15px;flex-wrap:wrap;margin-top:18px}kbd{font-family:inherit;border:1px solid #d5dbcc;border-radius:3px;padding:2px 4px;color:#5b6754;font-size:9px;background:#fafbf5}.telemetry{padding:22px 20px}.telemetry .section-label{display:flex;justify-content:space-between;gap:5px;font-size:9px;letter-spacing:1.2px}#run-indicator{font-size:8px;letter-spacing:.6px;color:var(--green)}.hero-stat{margin-top:29px}.hero-stat>span,.eff-stat>span:first-child{font-size:11px;color:var(--muted)}.hero-stat>div{display:flex;align-items:baseline;gap:5px;margin-top:6px}.hero-stat strong{font-size:38px;font-weight:450;font-variant-numeric:tabular-nums;letter-spacing:-1.5px}.hero-stat small{font-size:13px;color:var(--muted)}.eff-stat{border-bottom:1px solid var(--line);padding:22px 0 18px;display:flex;flex-direction:column;gap:4px}.eff-stat strong{font-size:28px;font-weight:500;color:var(--green);font-variant-numeric:tabular-nums}.tiny{font-size:10px;color:var(--muted);line-height:1.7}.info{cursor:help}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 10px;padding:22px 0;border-bottom:1px solid var(--line)}.stat-grid>div{display:flex;flex-direction:column;gap:7px}.stat-grid span{font-size:9px;color:var(--muted);white-space:nowrap}.stat-grid small{font-size:8px}.stat-grid strong{font-size:20px;font-weight:500;font-variant-numeric:tabular-nums}.click-breakdown{padding-top:18px;font-size:10px}.click-breakdown>div{display:flex;justify-content:space-between;margin-bottom:11px;color:var(--muted)}.click-breakdown strong{color:var(--ink);font-weight:500}.field-note{border-top:1px solid var(--line);margin-top:23px;padding-top:18px}.field-note>span{font-size:8px;letter-spacing:1.5px;color:#6d835d}.field-note p{font:16px/1.45 Georgia,serif;margin:12px 0}.field-note button{font-size:9px}.notice{background:#e8efde;border:1px solid #cbd8ba;padding:13px 15px;border-radius:4px;font-size:12px;line-height:1.6;margin-top:14px}.section-intro{margin:44px 0 30px;max-width:800px}.split{max-width:none;display:flex;justify-content:space-between;align-items:center;gap:20px}.lab-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:24px}.lab-grid .card{padding:30px}.lab-grid p,.variant p,.budget p,.experiment-card p{font-size:13px;line-height:1.8;color:#67705f}.formula{font:26px/1.7 Georgia,serif;margin:25px 0 20px}.formula span{background:#e8efdd;padding:5px 8px;color:var(--green);white-space:nowrap}.formula-card a{font-size:11px}.lab-result{background:var(--green);color:#eff6e3;padding:15px;font-size:20px;margin:22px 0 10px;border-radius:4px}.lab-grid .tiny{font-size:10px}.principles{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin:38px 0}.principles article>span{font:28px Georgia,serif;color:#9caa8c}.principles h3{font-size:15px}.principles p{font-size:12px;color:var(--muted);line-height:1.8}.experiment-card{padding:30px}.experiment-card h3{font:27px Georgia,serif}.experiment-card table{margin:20px 0}.research-links{display:flex;gap:25px;font-size:12px;margin:24px 0;flex-wrap:wrap}.history-filters{display:flex;gap:20px;align-items:end;margin-bottom:20px}.history-filters label{margin:0;display:flex;gap:14px;align-items:center;white-space:nowrap}.history-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:25px 0}.history-summary>div{border:1px solid var(--line);border-radius:5px;padding:22px;background:var(--card)}.history-summary span{font-size:11px;color:var(--muted)}.history-summary strong{display:block;font-size:28px;font-weight:500;margin-top:12px}.history-table{padding:12px 22px;overflow:auto}table{width:100%;border-collapse:collapse;text-align:left;font-size:11px}th{font-size:9px;text-transform:uppercase;letter-spacing:.8px;font-weight:500;color:var(--muted);padding:14px 9px;white-space:nowrap}td{border-top:1px solid var(--line);padding:14px 9px;white-space:nowrap;font-variant-numeric:tabular-nums}td small{color:var(--muted)}.empty{text-align:center;padding:60px 10px}.empty>span{font-size:34px;color:#819974}.empty h3{font:28px Georgia,serif}.empty p{font-size:13px;color:var(--muted);margin-bottom:24px}.variant-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.variant{padding:30px}.neighborhood{height:155px;display:flex;flex-direction:column;align-items:center;justify-content:center;white-space:pre;text-align:center;font:25px/1.5 monospace;color:#9ca989;background:#edf0e5;border-radius:4px;margin-bottom:25px;display:block;padding:20px}.neighborhood b{color:var(--green)}.knight-diagram{font-size:16px;line-height:1.45;padding:20px}.variant .section-label{font-size:8px}.variant h3{font:30px Georgia,serif}.variant p{min-height:90px}.budget{margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:35px}.budget p{max-width:800px}.budget button{white-space:nowrap}footer{margin-top:55px;border-top:1px solid var(--line);padding:24px 0;display:flex;justify-content:space-between;gap:20px;color:#87917e;font-size:9px;letter-spacing:.3px}footer>span:first-child{font-size:8px;letter-spacing:1.4px}#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);padding:14px 22px;background:#273c2f;color:#fff;border-radius:6px;box-shadow:0 4px 20px #0002;font-size:12px;z-index:100;max-width:90vw}body.focus .masthead,body.focus .intro,body.focus .tabs,body.focus footer,body.focus .settings{display:none}body.focus main{padding-top:24px}body.focus .play-layout{grid-template-columns:minmax(0,1fr) 232px}body.focus .field-stage{min-height:70vh}body.focus #focus-mode{display:block}.bar-chart{height:9px;min-width:20px;max-width:260px;background:#d6e4c6;border-radius:2px}.bar-chart span{display:block;height:100%;background:#567b43;border-radius:2px}.result-positive{color:var(--green)}@media(min-width:1500px){.play-layout{grid-template-columns:240px minmax(0,1fr) 250px}.field-stage{min-height:500px}}@media(max-width:1150px){main{padding:30px 25px 0}.masthead{padding:0 25px}.play-layout{grid-template-columns:195px minmax(0,1fr);gap:20px}.telemetry{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr;gap:20px;align-items:start}.telemetry>.section-label{grid-column:1/-1}.hero-stat{margin:0}.eff-stat{padding:0;border:0}.stat-grid{padding:0;border:0;gap:15px}.click-breakdown{padding:0}.field-note{display:none}.field-stage{min-height:468px}.hero-stat strong{font-size:34px}.tabs{gap:25px}}@media(max-width:760px){.masthead{height:60px;padding:0 18px}.local{display:none}.brand{font-size:11px;gap:10px}.brand-icon{font-size:29px}main{padding:30px 16px 0}.edition{display:none}.intro{margin-bottom:23px}h1{font-size:42px}.tabs{gap:22px;overflow:auto;margin-bottom:22px}.tabs span{font-size:11px;margin-left:5px}.play-layout{display:flex;flex-direction:column;gap:22px}.settings{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:9px 14px;padding:18px}.settings>.section-label{grid-column:1/-1;margin-bottom:7px}.settings>label{margin:4px 0 -3px;grid-column:auto}.settings>label[for=difficulty]{grid-column:1;grid-row:2}.settings>#difficulty{grid-column:1;grid-row:3}.settings>label[for=mode]{grid-column:2;grid-row:2}.settings>#mode{grid-column:2;grid-row:3}.custom-grid{grid-column:1/-1;grid-row:4}.settings>label[for=first-click]{grid-column:1;grid-row:5}.settings>#first-click{grid-column:1;grid-row:6}.settings>label[for=seed]{grid-column:2;grid-row:5}.settings>#seed{grid-column:2;grid-row:6}#new-game{margin-top:4px;grid-column:1/-1}.preferences{grid-column:1/-1;margin-top:7px;padding-top:13px}.setup-note{display:none}.field-column{width:100%}.field-stage{min-height:0;padding:24px 12px}.telemetry{width:100%;display:grid;grid-template-columns:1fr 1fr;padding:20px}.stat-grid{grid-column:1}.click-breakdown{grid-column:2}.control-guide{font-size:9px}.lab-grid,.variant-grid{grid-template-columns:1fr}.lab-grid .card,.variant{padding:23px}.principles{grid-template-columns:1fr 1fr}.section-intro{margin-top:32px}h2{font-size:32px}.formula{font-size:22px}.split,.budget{align-items:flex-start;flex-direction:column}.history-summary{grid-template-columns:1fr 1fr;gap:12px}.history-summary>div{padding:16px}.history-filters{flex-wrap:wrap}.history-filters label{font-size:11px}.variant p{min-height:0}footer{flex-wrap:wrap;font-size:8px;gap:14px}.field-status{font-size:10px}.experiment-card{padding:20px;overflow:auto}body.focus .telemetry{display:none}body.focus .field-stage{min-height:70vh}}
+
+.tabs .tutorial-link{display:block;padding:16px 0;font-size:10px;white-space:nowrap;color:var(--green);border-bottom:2px solid transparent}.tabs .tutorial-link span{color:var(--green)}#budget-settings{grid-column:1/-1}#budget-meter{margin:0 0 12px}#budget-settings .tiny{margin:8px 0 0}.tabs{flex-wrap:wrap;gap:12px 28px}
+
+</style>
+</head>
+<body>
+  <header class="masthead"><a class="brand" href="#play"><span class="brand-icon">✳</span> FIELD NOTES <span class="brand-divider">/</span> <span>Minesweeper</span></a><span class="local"><i></i> LOCAL · OFFLINE READY</span></header>
+  <main>
+    <div class="intro"><div><p class="eyebrow">A SMALL STUDY IN BETTER MOVES</p><h1>Every click counts.</h1><p class="subtitle">The familiar field. A closer look at how you clear it.</p></div><div class="edition">EXPLORATION 01<br><strong>Play. Observe. Improve.</strong></div></div>
+    <nav class="tabs" aria-label="Sections"><button data-tab="play" class="active">01 <span>The field</span></button><button data-tab="learn">02 <span>Efficiency lab</span></button><button data-tab="history">03 <span>Your record</span></button><button data-tab="variants">04 <span>Other neighborhoods</span></button><a class="tutorial-link" href="Minesweeper%20Tutorial.html">05 <span>Tutorial ↗</span></a></nav>
+
+    <section id="tab-play" class="tab-panel">
+      <div class="play-layout">
+        <aside class="settings card"><div class="section-label">SET UP YOUR FIELD</div>
+          <label for="difficulty">Difficulty</label><select id="difficulty"><option value="beginner">Beginner · 9 × 9 · 10 mines</option><option value="intermediate" selected>Intermediate · 16 × 16 · 40 mines</option><option value="expert">Expert · 30 × 16 · 99 mines</option><option value="custom">Custom field</option></select>
+          <div id="custom-fields" class="custom-grid" hidden><label>Width<input id="width" type="number" min="5" max="60" value="16"></label><label>Height<input id="height" type="number" min="5" max="40" value="16"></label><label>Mines<input id="mines" type="number" min="1" value="40"></label></div>
+          <label for="mode">Rules</label><select id="mode"><option value="classic">Classic</option><option value="ng">No guess · certified logic</option><option value="nf">No flags</option><option value="budget">Click budget</option><option value="cross">Crossfield · 4 neighbors</option><option value="knight">Knightfield · chess jumps</option></select>
+          <label for="first-click">First reveal</label><select id="first-click"><option value="safe" selected>Safe cell only · may be a number</option><option value="zero">Opening guaranteed</option></select>
+          <div id="budget-settings" hidden><label for="action-budget">Action budget</label><input id="action-budget" type="number" min="1" max="100000" value="100"><p class="tiny">Every reveal, flag action, and chord costs one. Clear the field before the budget runs out.</p></div>
+          <label for="seed">Board seed <span class="optional">optional</span></label><input id="seed" type="text" placeholder="Random each game" maxlength="100" autocomplete="off">
+          <button id="new-game" class="primary">New field <span>↗</span></button>
+          <details class="preferences"><summary>Controls & appearance</summary><label for="cell-size">Cell size <output id="size-label">24px</output></label><input id="cell-size" type="range" min="18" max="36" value="24"><label class="check"><input id="single-chord" type="checkbox" checked> Click a number to chord</label><label class="check"><input id="press-mode" type="checkbox"> Reveal on mouse press</label><label class="check"><input id="show-neighbors" type="checkbox"> Highlight neighborhood</label><label class="check"><input id="sound" type="checkbox"> Subtle game sounds</label><button id="focus-mode" class="text-button">Enter focus view</button></details>
+          <div class="setup-note">Local by design. Settings and the latest 1,000 results stay in this browser. Export to keep a permanent copy.</div>
+        </aside>
+
+        <div class="field-column"><div class="field-heading"><div><span id="field-title">Intermediate</span><span id="field-spec" class="muted">16 × 16 / 40 mines</span></div><span id="mode-badge" class="badge">CLASSIC</span></div>
+          <div class="field-stage"><div id="game-window" class="game-window"><div class="game-titlebar"><span>✳ Minesweeper</span><span class="window-dots">▁ □ ×</span></div><div class="game-interior"><div class="game-counterbar"><div id="mine-counter" class="digital" aria-label="Mines remaining">040</div><button id="smile" class="smile" aria-label="Start a new game">🙂</button><div id="classic-timer" class="digital" aria-label="Timer">000</div></div><div id="board" role="grid" aria-label="Minesweeper field"></div></div></div></div>
+          <div class="field-status"><span id="status" role="status">Your first move is safe. Pick a square.</span><button id="touch-flag" class="text-button" aria-pressed="false">⚑ Flag mode: off</button></div>
+          <div class="action-row"><button id="hint" class="quiet-button">◇ Logic hint</button><button id="retry" class="quiet-button">↻ Retry seed</button><button id="save-replay" class="quiet-button">↓ Save replay</button><button id="load-replay" class="quiet-button">↑ Open replay</button><input id="replay-file" type="file" accept=".json,application/json" hidden></div>
+          <div id="budget-meter" class="notice" hidden aria-live="polite"></div>
+          <div id="hint-message" class="notice" hidden></div>
+          <div id="replay-controls" class="notice" hidden><strong>Replay viewer</strong><input id="replay-slider" type="range" min="0" value="0"><span id="replay-position"></span><button id="exit-replay" class="quiet-button">Return to play</button></div>
+          <div class="control-guide"><span><kbd>Left</kbd> Reveal</span><span><kbd>Right</kbd> Flag</span><span><kbd>Both / Middle</kbd> Chord</span><span><kbd>F2</kbd> New</span><span><kbd>Arrows</kbd> Move · <kbd>F</kbd> Flag · <kbd>Enter</kbd> Reveal</span></div>
+        </div>
+
+        <aside class="telemetry card"><div class="section-label">THIS RUN <span id="run-indicator">○ READY</span></div><div class="hero-stat"><span>Elapsed time</span><div><strong id="stat-time">0.000</strong><small>s</small></div></div><div class="eff-stat"><span>Efficiency <span class="info" title="On completion: 100 × board 3BV ÷ total actions. 3BV and efficiency are hidden during play to avoid revealing information about concealed openings.">ⓘ</span></span><strong id="stat-eff">—</strong><span id="eff-caption" class="tiny">Final score after a win</span></div><div class="stat-grid"><div><span>Total actions</span><strong id="stat-actions">0</strong></div><div><span>3BV <small id="bv-caption">solved</small></span><strong id="stat-bv">0</strong></div><div><span>Solved 3BV / s</span><strong id="stat-bvs">—</strong></div><div><span>Actions / second</span><strong id="stat-aps">—</strong></div></div><div class="click-breakdown"><div><span>Reveals</span><strong id="stat-left">0</strong></div><div><span>Flag actions</span><strong id="stat-right">0</strong></div><div><span>Chords</span><strong id="stat-chord">0</strong></div><div><span>No-change actions</span><strong id="stat-wasted">0</strong></div><div><span>Safe cells cleared</span><strong id="stat-cleared">0 / 216</strong></div><div><span>Pointer travel</span><strong id="stat-distance">0 px</strong></div></div><div class="field-note"><span>FIELD NOTE 01</span><p>Flags are an investment. Place them where a chord will pay them back.</p><button class="text-button" data-goto="learn">Explore the arithmetic ↗</button></div></aside>
+      </div>
+    </section>
+
+    <section id="tab-learn" class="tab-panel" hidden>
+      <div class="section-intro"><p class="eyebrow">EFFICIENCY, WITHOUT THE MYSTERY</p><h2>Fewer actions. More field.</h2><p>Speed measures time. Efficiency measures how economically you solve a particular board.</p></div>
+      <div class="lab-grid"><article class="card formula-card"><span class="section-label">THE MINESWEEPER ONLINE DEFINITION</span><div class="formula">Efficiency = <span>3BV ÷ actions</span> × 100%</div><p><strong>3BV</strong> counts one action for each connected zero opening, plus one for each safe numbered cell outside all openings. It is the perfect no-flag benchmark for a known board.</p><p>A 50-3BV board solved in 40 actions scores <strong>125%</strong>. Flags and chords can beat the no-flag benchmark.</p><a href="https://minesweeper.online/help/efficiency" target="_blank" rel="noopener">Read the official definition ↗</a></article>
+        <article class="card"><span class="section-label">THE CHORD DECISION</span><h3>Will this flag pay for itself?</h3><p>Compare the independent reveals you save with the new flags and one chord you spend. Several cells in the same opening count as just one reveal.</p><label for="lab-units">Independent reveals saved <output id="lab-units-out">4</output></label><input id="lab-units" type="range" min="1" max="8" value="4"><label for="lab-flags">New flags required <output id="lab-flags-out">1</output></label><input id="lab-flags" type="range" min="0" max="7" value="1"><div id="lab-result" class="lab-result">Save 2 actions</div><p class="tiny">Local comparison, assuming the number is already revealed and these reveals are otherwise needed. Reusing a flag can improve later chords.</p></article></div>
+      <div class="principles"><article><span>01</span><h3>Find the opening</h3><p>Avoid individually revealing number cells that a safe zero opening will clear. Prefer a proven safe opening when you can identify one.</p></article><article><span>02</span><h3>Chord selectively</h3><p>One new flag plus one chord should replace at least three independent reveals. An existing flag makes nearby chords cheaper.</p></article><article><span>03</span><h3>Look one move ahead</h3><p>A neutral chord can expose a better number. Compare overlapping groups and shared flags before committing.</p></article><article><span>04</span><h3>Keep goals separate</h3><p>A higher score can cost thinking time or win probability. Track efficiency, time, and wins together on the same board family.</p></article></div>
+      <article class="card experiment-card"><div><span class="section-label">REPRODUCIBLE EXPERIMENT</span><h3>Same boards. Three ways to clear them.</h3><p>These policies know the mine layout. This experiment isolates the cost of actions; it does not measure human skill or predict win rates.</p></div><div id="experiment-results"><p>See the saved research report for the complete experiment.</p></div><p class="tiny">Zero-safe corner start. Seeded standard boards. All policies pay for the first reveal. No-flag opening-first is exactly 100%; greedy chording is a heuristic, not a proven global optimum.</p></article>
+      <article class="card budget"><div><span class="section-label">AN EXACT SMALL-BOARD RESULT</span><h3>Can seven actions beat ten?</h3><p>On one 4 × 4 field, exhaustive search proves a seven-action solution, while our greedy policy takes ten. Step through the optimal sequence to see setup reveals and shared flags at work.</p></div><button id="exact-demo" class="quiet-button">Explore the 7-action solution ↗</button></article>
+      <div class="research-links"><a href="Minesweeper%20Tutorial.html">Interactive tutorial & skill quiz ↗</a><a href="papers/efficiency/efficiency.pdf">Efficiency paper (PDF) ↗</a><a href="papers/no-guess/no-guess.pdf">No-guess sampling paper (PDF) ↗</a><a href="research/efficiency.md" target="_blank">Full analysis & sources ↗</a><a href="research/experiments.md" target="_blank">Experiment methods & results ↗</a><a href="research/variants.md" target="_blank">New game designs ↗</a></div>
+    </section>
+
+    <section id="tab-history" class="tab-panel" hidden><div class="section-intro split"><div><p class="eyebrow">A RECORD OF YOUR EXPLORATION</p><h2>Make progress visible.</h2><p>Completed games and abandoned attempts, saved in this browser.</p></div><button id="export-history" class="quiet-button">↓ Export statistics CSV</button></div><div class="history-filters"><label>Compare runs<select id="history-filter"><option value="all">All games</option><option value="classic">Classic</option><option value="ng">No guess</option><option value="nf">No flags</option><option value="budget">Click budget</option><option value="cross">Crossfield</option><option value="knight">Knightfield</option></select></label><label>Difficulty<select id="history-difficulty"><option value="all">All sizes</option><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="expert">Expert</option><option value="custom">Custom</option></select></label></div><div id="history-summary" class="history-summary"></div><div class="card history-table"><table><thead><tr><th>When</th><th>Field</th><th>Outcome</th><th>Time</th><th>3BV</th><th>Actions</th><th>Efficiency</th><th></th></tr></thead><tbody id="history-body"></tbody></table><div id="history-empty" class="empty"><span>⚑</span><h3>A clean slate.</h3><p>Your first result will appear here. Every finished field has something to teach.</p><button class="primary" data-goto="play">Play your first field ↗</button></div></div><p class="tiny">Assisted games, retries, and variants are labeled separately. Best time and efficiency use unassisted wins that are not retries. Win rate includes abandoned attempts. A mixed-size average is descriptive, not a ranking.</p></section>
+
+    <section id="tab-variants" class="tab-panel" hidden><div class="section-intro"><p class="eyebrow">SAME QUESTION. DIFFERENT NEIGHBORS.</p><h2>Change the field of view.</h2><p>Experiments in adjacency, a strict click budget, and adaptive pattern practice.</p></div><div class="variant-grid"><article class="card variant"><div class="neighborhood classic-diagram">↖ ↑ ↗<br>← <b>✳</b> →<br>↙ ↓ ↘</div><span class="section-label">THE ORIGINAL · UP TO 8 NEIGHBORS</span><h3>Classic</h3><p>Every touching cell matters. Learn openings, shared flags, and chords in the familiar eight-neighbor field.</p><button class="quiet-button" data-mode="classic">Play Classic ↗</button></article><article class="card variant"><div class="neighborhood">&nbsp; ↑ &nbsp;<br>← <b>✳</b> →<br>&nbsp; ↓ &nbsp;</div><span class="section-label">EXPERIMENT A · UP TO 4 NEIGHBORS</span><h3>Crossfield</h3><p>Only north, south, east, and west count. The same rules produce different openings and smaller chord opportunities.</p><button class="quiet-button" data-mode="cross">Play Crossfield ↗</button></article><article class="card variant"><div class="neighborhood knight-diagram">· ● · ● ·<br>● · · · ●<br>· · <b>♞</b> · ·<br>● · · · ●<br>· ● · ● ·</div><span class="section-label">EXPERIMENT B · CHESS-KNIGHT JUMPS</span><h3>Knightfield</h3><p>A clue counts cells one step along one axis and two along the other. Hover or focus a cell to see its neighborhood.</p><button class="quiet-button" data-mode="knight">Play Knightfield ↗</button></article></div><article class="card budget"><div><span class="section-label">EXPERIMENT C · A PERSONAL CHALLENGE</span><h3>One field. A finite budget.</h3><p>Choose a maximum action count before seeing the board. Flags, chords, and no-change actions all spend the budget. The run ends when you use the last action, unless that action clears the field. Retry a layout to practice spending less.</p></div><button data-mode="budget" class="quiet-button">Play Click budget ↗</button></article><article class="card budget"><div><span class="section-label">PATTERN PRACTICE</span><h3>Recognize the geometry, not just the digits.</h3><p>Practice rotated patterns and use hints matched to your experience in the new tutorial. The placement quiz can suggest a starting path.</p></div><a class="quiet-button" href="Minesweeper%20Tutorial.html">Open the tutorial ↗</a></article><p class="tiny">Variant scores use the same opening-based formula with their own adjacency graphs. They are not directly comparable with classic boards. More designs and tradeoffs are in the saved research notes.</p></section>
+    <footer><span>FIELD NOTES / MINESWEEPER</span><span>Built for curiosity. Played locally.</span><a href="docs/USER_GUIDE.md" target="_blank">Help & metric definitions ↗</a></footer>
+  </main>
+  <div id="toast" role="status" hidden></div>
+  <script>
+/* Minesweeper Lab: dependency-free deterministic game model. */
+(function (root) {
+  'use strict';
+  const now = () => typeof performance !== 'undefined' ? performance.now() : Date.now();
+  function hash(seed) {
+    let h = 2166136261;
+    for (const c of String(seed)) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+    return h >>> 0;
+  }
+  function random(seed) {
+    let a = hash(seed);
+    return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  }
+  function neighborsFor(width, height, topology) {
+    const offsets = topology === 'cross' ? [[1,0],[-1,0],[0,1],[0,-1]] : topology === 'knight' ? [[1,2],[2,1],[-1,2],[-2,1],[1,-2],[2,-1],[-1,-2],[-2,-1]] : [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]];
+    return Array.from({length: width * height}, (_, i) => {
+      const x = i % width, y = Math.floor(i / width);
+      return offsets.map(([dx, dy]) => [x+dx,y+dy]).filter(([a,b]) => a>=0 && b>=0 && a<width && b<height).map(([a,b]) => b*width+a);
+    });
+  }
+  function boardBenchmark(mineMask, numbers, neighbors) {
+    const seen = new Set(), openings = [], border = new Set(), singles = [];
+    for (let i=0; i<mineMask.length; i++) {
+      if (mineMask[i] || numbers[i] !== 0 || seen.has(i)) continue;
+      const cells = [], stack = [i]; seen.add(i);
+      while (stack.length) {
+        const v=stack.pop(); cells.push(v);
+        for (const n of neighbors[v]) {
+          if (mineMask[n]) continue;
+          if (numbers[n] === 0 && !seen.has(n)) { seen.add(n); stack.push(n); }
+          else if (numbers[n] > 0) border.add(n);
+        }
+      }
+      openings.push(cells);
+    }
+    for (let i=0;i<mineMask.length;i++) if (!mineMask[i] && numbers[i] > 0 && !border.has(i)) singles.push(i);
+    const openingAreas=openings.map(cells=>Array.from(new Set(cells.flatMap(i=>[i,...neighbors[i].filter(n=>!mineMask[n])]))));
+    return {bbbv:openings.length+singles.length, openings, openingAreas, singles};
+  }
+  // Only revealed clues and the public total mine count enter this solver.
+  // User flags are deliberately ignored: a mistaken flag cannot make a hint unsafe.
+  function deductions(width, height, totalMines, revealed, visibleNumbers, neighbors) {
+    const safe = new Set(), mines = new Set();
+    const hidden = Array.from({length:width*height},(_,i)=>i).filter(i=>!revealed[i]);
+    let inconsistent = false;
+    for (let pass=0; pass<100; pass++) {
+      let changed=false;
+      const constraints=[], keys=new Set();
+      function add(cells, count) {
+        cells=cells.filter(i=>!safe.has(i));
+        count-=cells.reduce((a,i)=>a+(mines.has(i)?1:0),0);
+        cells=cells.filter(i=>!mines.has(i)).sort((a,b)=>a-b);
+        if (count<0 || count>cells.length) { inconsistent=true; return; }
+        if (!cells.length) return;
+        if (count===0 || count===cells.length) {
+          const set=count===0?safe:mines;
+          for (const i of cells) if (!set.has(i)) {set.add(i);changed=true;}
+        } else {
+          const key=cells.join(',')+':'+count;
+          if (!keys.has(key)) {keys.add(key);constraints.push({cells,count,set:new Set(cells)});}
+        }
+      }
+      for(let i=0;i<revealed.length;i++) if(revealed[i]) add(neighbors[i].filter(n=>!revealed[n]),visibleNumbers[i]);
+      add(hidden,totalMines);
+      if(inconsistent) break;
+      if(changed) continue;
+      // A subset of one clue's unknowns can be subtracted from another clue.
+      // Limit derived constraints, never infer facts when that limit is reached.
+      const initialLength=constraints.length;
+      for(let a=0;a<initialLength && constraints.length<1600;a++) {
+        for(let b=0;b<initialLength && constraints.length<1600;b++) {
+          if(a===b)continue;
+          const A=constraints[a],B=constraints[b];
+          if(A.cells.length>=B.cells.length || !A.cells.every(i=>B.set.has(i)))continue;
+          add(B.cells.filter(i=>!A.set.has(i)), B.count-A.count);
+        }
+      }
+      if(!changed) break;
+    }
+    return {safe:Array.from(safe),mines:Array.from(mines),inconsistent};
+  }
+  class Game {
+    constructor(options={}) {
+      this.width=Number(options.width ?? 9); this.height=Number(options.height ?? 9); this.mines=Number(options.mines ?? 10);
+      if(!Number.isInteger(this.width)||!Number.isInteger(this.height)||this.width<1||this.height<1||this.width>80||this.height>80)throw new Error('Board dimensions must be whole numbers from 1 to 80.');
+      this.size=this.width*this.height;
+      if(!Number.isInteger(this.mines)||this.mines<0||this.mines>=this.size)throw new Error('Mine count must be a whole number below the number of cells.');
+      this.seed=String(options.seed ?? Math.floor(Math.random()*0xFFFFFFFF).toString(36));
+      this.topology=['classic','cross','knight'].includes(options.topology)?options.topology:'classic';
+      this.firstClick=options.firstClick==='safe'?'safe':'zero'; this.noFlags=!!options.noFlags;
+      this.actionLimit=options.actionLimit??null;
+      if(this.actionLimit!==null&&(!Number.isInteger(this.actionLimit)||this.actionLimit<1||this.actionLimit>100000))throw new Error('Action budget must be a whole number from 1 to 100,000.');
+      this.neighbors=neighborsFor(this.width,this.height,this.topology);
+      this.mineMask=Array(this.size).fill(false);this.numbers=Array(this.size).fill(0);
+      this.revealed=Array(this.size).fill(false);this.flags=Array(this.size).fill(false);
+      this.status='ready';this.generated=false;this.clicks={left:0,right:0,chord:0,wasted:0};this.actions=[];
+      this.bbbv=0;this._benchmark={openings:[],openingAreas:[],singles:[]};this._start=null;this._end=null;this._frozenElapsed=null;
+      this.exploded=-1;this.firstIndex=null;this.certified=false;this.requiredStart=null;this.zeroFallback=false;this.preset=options.mineIndices!==undefined;
+      if(options.mineIndices!==undefined)this._setLayout(options.mineIndices);
+    }
+    get elapsedMs(){if(this._frozenElapsed!==null)return this._frozenElapsed;return this._start===null?0:Math.max(0,(this._end??now())-this._start);}
+    get solvedBBBV(){return this._benchmark.openingAreas.filter(cells=>cells.every(i=>this.revealed[i])).length+this._benchmark.singles.filter(i=>this.revealed[i]).length;}
+    get totalClicks(){return this.clicks.left+this.clicks.right+this.clicks.chord;}
+    get flagCount(){return this.flags.filter(Boolean).length;}
+    get revealedCount(){return this.revealed.filter((v,i)=>v&&!this.mineMask[i]).length;}
+    _setLayout(indices){
+      if(!Array.isArray(indices)||indices.length!==this.mines||new Set(indices).size!==indices.length||indices.some(i=>!Number.isInteger(i)||i<0||i>=this.size))throw new Error('Invalid mine layout.');
+      this.mineMask=Array(this.size).fill(false);for(const i of indices)this.mineMask[i]=true;
+      this.numbers=this.neighbors.map(ns=>ns.reduce((n,i)=>n+(this.mineMask[i]?1:0),0));
+      this._benchmark=boardBenchmark(this.mineMask,this.numbers,this.neighbors);this.bbbv=this._benchmark.bbbv;this.generated=true;
+    }
+    _generate(index){
+      let excluded=new Set([index,...(this.firstClick==='zero'?this.neighbors[index]:[])]);
+      if(this.size-excluded.size<this.mines){excluded=new Set([index]);this.zeroFallback=true;}
+      const available=Array.from({length:this.size},(_,i)=>i).filter(i=>!excluded.has(i)),rng=random(this.seed);
+      for(let i=available.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[available[i],available[j]]=[available[j],available[i]];}
+      this._setLayout(available.slice(0,this.mines));
+    }
+    _valid(index){return Number.isInteger(index)&&index>=0&&index<this.size&&['ready','playing'].includes(this.status);}
+    _begin(index){if(this._start===null){this._start=now();this.firstIndex=index;this.status='playing';}}
+    _open(indices){
+      const changed=[],queue=indices.slice();
+      while(queue.length && this.status!=='lost'){
+        const i=queue.pop();if(this.revealed[i]||this.flags[i])continue;
+        this.revealed[i]=true;changed.push(i);
+        if(this.mineMask[i]){this.exploded=i;this.status='lost';this._end=now();break;}
+        if(this.numbers[i]===0)for(const n of this.neighbors[i])if(!this.revealed[n]&&!this.flags[n])queue.push(n);
+      }
+      if(this.status!=='lost'&&this.revealedCount===this.size-this.mines){this.status='won';this._end=now();}
+      return changed;
+    }
+    _record(type,index,changed,before){
+      if(!changed.length)this.clicks.wasted++;
+      if(this.actionLimit!==null&&this.totalClicks>=this.actionLimit&&['ready','playing'].includes(this.status)){this.status='exhausted';this._end=now();}
+      const action={type,index,timeMs:Math.round(this.elapsedMs*1000)/1000,changed:changed.slice(),bbbvGain:this.solvedBBBV-before,status:this.status};
+      this.actions.push(action);return {changed,status:this.status,action,bbbvGain:action.bbbvGain};
+    }
+    reveal(index){
+      if(!this._valid(index))return {changed:[],ignored:true,status:this.status};
+      if(this.requiredStart!==null&&this.status==='ready'&&index!==this.requiredStart)return {changed:[],ignored:true,requiredStart:this.requiredStart,status:this.status};
+      const before=this.solvedBBBV;this.clicks.left++;
+      if(this.flags[index]||this.revealed[index])return this._record('left',index,[],before);
+      if(!this.generated)this._generate(index);this._begin(index);
+      return this._record('left',index,this._open([index]),before);
+    }
+    toggleFlag(index){
+      if(!this._valid(index)||this.noFlags)return {changed:[],ignored:true,status:this.status};
+      const before=this.solvedBBBV;this.clicks.right++;
+      if(this.revealed[index])return this._record('right',index,[],before);
+      this.flags[index]=!this.flags[index];return this._record('right',index,[index],before);
+    }
+    chord(index){
+      if(!this._valid(index))return {changed:[],ignored:true,status:this.status};
+      const before=this.solvedBBBV;this.clicks.chord++;
+      if(!this.revealed[index]||this.numbers[index]===0||this.neighbors[index].filter(i=>this.flags[i]).length!==this.numbers[index])return this._record('chord',index,[],before);
+      return this._record('chord',index,this._open(this.neighbors[index].filter(i=>!this.flags[i]&&!this.revealed[i])),before);
+    }
+    stats(){
+      const seconds=this.elapsedMs/1000,total=this.totalClicks,solved=this.solvedBBBV;
+      return {status:this.status,width:this.width,height:this.height,mines:this.mines,seed:this.seed,topology:this.topology,noFlags:this.noFlags,
+        elapsedMs:this.elapsedMs,seconds,time:seconds,bbbv:this.bbbv,solvedBBBV:solved,
+        efficiency:total?100*solved/total:0,bbbvs:seconds?solved/seconds:0,cps:seconds?total/seconds:0,
+        clicks:total,left:this.clicks.left,right:this.clicks.right,chord:this.clicks.chord,wasted:this.clicks.wasted,effective:total-this.clicks.wasted,
+        ioe:total>this.clicks.wasted?solved/(total-this.clicks.wasted):0,
+        flags:this.flagCount,revealed:this.revealedCount,safeCells:this.size-this.mines,
+        openings:this._benchmark.openings.length,isolated:this._benchmark.singles.length,certified:this.certified,firstIndex:this.firstIndex,
+        actionLimit:this.actionLimit,actionsRemaining:this.actionLimit===null?null:Math.max(0,this.actionLimit-total),firstClick:this.firstClick};
+    }
+    hint(){
+      if(this.status==='ready')return this.preset&&this.requiredStart===null?{type:'none',reason:'This preset has a fixed layout, so first-click protection does not apply.'}:{type:'reveal',index:this.requiredStart??0,reason:'Start here. The first reveal is protected.',initial:true};
+      if(this.status!=='playing')return {type:'none',reason:'This game has finished.'};
+      const d=deductions(this.width,this.height,this.mines,this.revealed,this.numbers.map((n,i)=>this.revealed[i]?n:null),this.neighbors);
+      if(d.inconsistent)return {type:'none',reason:'The visible constraints are inconsistent.'};
+      const safe=d.safe.find(i=>!this.flags[i]);
+      if(safe!==undefined)return {type:'reveal',index:safe,reason:'This cell is safe by visible clue constraints (including subset and total-mine deductions).',assumesFlags:false};
+      const wrong=d.safe.find(i=>this.flags[i]);
+      if(wrong!==undefined)return {type:'unflag',index:wrong,reason:'This flagged cell is provably safe from the visible clues.',assumesFlags:false};
+      const mine=d.mines.find(i=>!this.flags[i]);
+      if(mine!==undefined&&!this.noFlags)return {type:'flag',index:mine,reason:'This cell must contain a mine by the visible clues.',assumesFlags:false};
+      return {type:'none',reason:'No forced move was found by the direct and subset solver. Stronger reasoning or a guess may be needed.',assumesFlags:false};
+    }
+    async generateNoGuess(start=0,{maxAttempts=150,onProgress,signal,isCancelled}={}){
+      if(!Number.isInteger(start)||start<0||start>=this.size)throw new Error('Invalid starting cell.');
+      if(this.totalClicks||this.status!=='ready')throw new Error('Start a fresh game before generating a no-guess board.');
+      if(!Number.isInteger(maxAttempts)||maxAttempts<0||maxAttempts>10000)throw new Error('Search limit must be a whole number from 0 to 10,000.');
+      const baseSeed=this.seed;
+      const cancelled=()=>!!(signal?.aborted||isCancelled?.());
+      for(let attempt=0;attempt<maxAttempts;attempt++){
+        // Yield for paint/input each attempt; a cancelled search never installs its board.
+        await new Promise(resolve=>setTimeout(resolve,0));
+        if(cancelled())return {success:false,cancelled:true,attempts:attempt,start,seed:baseSeed};
+        const candidate=new Game({width:this.width,height:this.height,mines:this.mines,seed:baseSeed+':ng:'+attempt,topology:this.topology,firstClick:this.firstClick,noFlags:true});
+        candidate.reveal(start);
+        let steps=0,lastYield=now();
+        while(candidate.status==='playing'&&steps++<this.size){
+          const d=deductions(candidate.width,candidate.height,candidate.mines,candidate.revealed,candidate.numbers.map((n,i)=>candidate.revealed[i]?n:null),candidate.neighbors);
+          if(!d.safe.length||d.inconsistent)break;
+          for(const i of d.safe)if(candidate.status==='playing')candidate.reveal(i);
+          if(now()-lastYield>8){await new Promise(resolve=>setTimeout(resolve,0));lastYield=now();}
+          if(cancelled())return {success:false,cancelled:true,attempts:attempt+1,start,seed:baseSeed};
+        }
+        if(cancelled())return {success:false,cancelled:true,attempts:attempt+1,start,seed:baseSeed};
+        if(candidate.status==='won'){
+          this.seed=candidate.seed;this._setLayout(candidate.mineMask.flatMap((v,i)=>v?[i]:[]));this.zeroFallback=candidate.zeroFallback;
+          this.certified=true;this.requiredStart=start;
+          return {success:true,attempts:attempt+1,start,seed:this.seed};
+        }
+        if(onProgress)onProgress({attempts:attempt+1,maxAttempts});
+      }
+      return {success:false,attempts:maxAttempts,start,seed:baseSeed};
+    }
+    exportReplay(){return {format:'minesweeper-lab',version:1,config:{width:this.width,height:this.height,mines:this.mines,seed:this.seed,topology:this.topology,firstClick:this.firstClick,noFlags:this.noFlags,actionLimit:this.actionLimit},mineIndices:this.generated?this.mineMask.flatMap((v,i)=>v?[i]:[]):null,certified:this.certified,requiredStart:this.requiredStart,actions:this.actions.map(a=>({type:a.type,index:a.index,timeMs:a.timeMs})),elapsedMs:Math.max(this.elapsedMs,this.actions.at(-1)?.timeMs??0)};}
+    static fromLayout(width,height,mineIndices,options={}){return new Game({...options,width,height,mines:mineIndices.length,mineIndices});}
+    static fromReplay(replay,upto){
+      if(!replay||replay.format!=='minesweeper-lab'||replay.version!==1||!Array.isArray(replay.actions)||replay.actions.length>100000)throw new Error('Unsupported or invalid replay.');
+      const config=replay.config;
+      if(!config||!Number.isInteger(config.width)||!Number.isInteger(config.height)||!Number.isInteger(config.mines)||typeof config.seed!=='string'||!['classic','cross','knight'].includes(config.topology)||!['safe','zero'].includes(config.firstClick)||typeof config.noFlags!=='boolean'||(replay.mineIndices!==null&&!Array.isArray(replay.mineIndices)))throw new Error('Invalid replay configuration.');
+      const game=new Game({...replay.config,...(replay.mineIndices?{mineIndices:replay.mineIndices}:{})});
+      if(replay.requiredStart!==null&&replay.requiredStart!==undefined&&(!Number.isInteger(replay.requiredStart)||replay.requiredStart<0||replay.requiredStart>=game.size))throw new Error('Invalid replay starting cell.');
+      if(!Number.isFinite(replay.elapsedMs)||replay.elapsedMs<0)throw new Error('Invalid replay time.');
+      let previousTime=0;
+      for(const action of replay.actions){
+        if(!action||!['left','right','chord'].includes(action.type)||!Number.isInteger(action.index)||action.index<0||action.index>=game.size||!Number.isFinite(action.timeMs)||action.timeMs<previousTime)throw new Error('Invalid replay action.');
+        previousTime=action.timeMs;
+      }
+      if(replay.elapsedMs<previousTime)throw new Error('Replay duration precedes its last action.');
+      game.certified=!!replay.certified;game.requiredStart=replay.requiredStart??null;
+      const count=upto===undefined?replay.actions.length:Math.max(0,Math.min(replay.actions.length,Math.floor(upto)));
+      let elapsed=0;
+      for(const action of replay.actions.slice(0,count)){
+        const result=game[action.type==='left'?'reveal':action.type==='right'?'toggleFlag':'chord'](action.index);
+        if(result.ignored)throw new Error('Replay contains an action that the game could not accept.');
+        elapsed=action.timeMs;if(game.actions.length)game.actions[game.actions.length-1].timeMs=elapsed;
+      }
+      game._frozenElapsed=count===replay.actions.length?replay.elapsedMs:elapsed;
+      return game;
+    }
+  }
+  const api={Game,random,neighborsFor,boardBenchmark,deductions,version:'1.0.0'};
+  root.MinesEngine=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
+})(typeof globalThis!=='undefined'?globalThis:this);
+
+</script><script>
+globalThis.MinesweeperExperiment = {
+  "study": "Oracle comparison of Minesweeper action economy",
+  "version": 1,
+  "sampleSizePerDifficulty": 500,
+  "totalBoards": 1500,
+  "firstClick": 0,
+  "firstClickPolicy": "zero-safe corner: clicked cell and its three neighbors excluded from mine placement",
+  "seedScheme": "uint32(0x51A7E000 + difficultyIndex*100000 + boardIndex)",
+  "generator": "Mulberry32 with Fisher-Yates shuffle via Math.floor(rng*(i+1)); finite PRNG precision applies",
+  "information": "All policies know every mine and zero component. Results measure click mechanics, not a solver or player under uncertainty.",
+  "actions": "1 per left reveal, flag placement, or chord. No no-op or unflag actions; random-safe can reveal opening borders prematurely. Flags are charged when placed, even if reused.",
+  "ciMethod": "Paired board differences, sample mean ± 1.96 sample standard error; an approximate sampling interval under the generator.",
+  "results": [
+    {
+      "difficulty": "Beginner",
+      "width": 9,
+      "height": 9,
+      "mines": 10,
+      "boards": 500,
+      "mean3BV": 15.868,
+      "policies": {
+        "random-safe": {
+          "mean3BV": 15.868,
+          "meanClicks": 18.396,
+          "meanEfficiency": 87.438356,
+          "pooledEfficiency": 86.257882,
+          "minEfficiency": 38.461538,
+          "maxEfficiency": 100,
+          "medianEfficiency": 89.473684,
+          "p10Efficiency": 70.333333,
+          "p90Efficiency": 100,
+          "meanLeft": 18.396,
+          "meanRight": 0,
+          "meanChord": 0
+        },
+        "opening-first": {
+          "mean3BV": 15.868,
+          "meanClicks": 15.868,
+          "meanEfficiency": 100,
+          "pooledEfficiency": 100,
+          "minEfficiency": 100,
+          "maxEfficiency": 100,
+          "medianEfficiency": 100,
+          "p10Efficiency": 100,
+          "p90Efficiency": 100,
+          "meanLeft": 15.868,
+          "meanRight": 0,
+          "meanChord": 0
+        },
+        "greedy-chord": {
+          "mean3BV": 15.868,
+          "meanClicks": 13.658,
+          "meanEfficiency": 115.037945,
+          "pooledEfficiency": 116.180993,
+          "minEfficiency": 100,
+          "maxEfficiency": 200,
+          "medianEfficiency": 111.111111,
+          "p10Efficiency": 100,
+          "p90Efficiency": 138.461538,
+          "meanLeft": 10.98,
+          "meanRight": 1.18,
+          "meanChord": 1.498
+        }
+      },
+      "paired": {
+        "comparator": "greedy-chord minus opening-first on identical boards",
+        "meanEfficiencyGainPercentagePoints": 15.037945,
+        "approximate95PercentCI": [
+          13.653606,
+          16.422283
+        ],
+        "meanClicksSaved": 2.21,
+        "approximate95PercentClicksSavedCI": [
+          1.989667,
+          2.430333
+        ],
+        "percentBoardsAbove100": 66.6,
+        "percentClicksSavedPooled": 13.927401
+      }
+    },
+    {
+      "difficulty": "Intermediate",
+      "width": 16,
+      "height": 16,
+      "mines": 40,
+      "boards": 500,
+      "mean3BV": 65.366,
+      "policies": {
+        "random-safe": {
+          "mean3BV": 65.366,
+          "meanClicks": 77.586,
+          "meanEfficiency": 84.545375,
+          "pooledEfficiency": 84.249736,
+          "minEfficiency": 60.674157,
+          "maxEfficiency": 100,
+          "medianEfficiency": 85.135135,
+          "p10Efficiency": 74.645785,
+          "p90Efficiency": 93.757716,
+          "meanLeft": 77.586,
+          "meanRight": 0,
+          "meanChord": 0
+        },
+        "opening-first": {
+          "mean3BV": 65.366,
+          "meanClicks": 65.366,
+          "meanEfficiency": 100,
+          "pooledEfficiency": 100,
+          "minEfficiency": 100,
+          "maxEfficiency": 100,
+          "medianEfficiency": 100,
+          "p10Efficiency": 100,
+          "p90Efficiency": 100,
+          "meanLeft": 65.366,
+          "meanRight": 0,
+          "meanChord": 0
+        },
+        "greedy-chord": {
+          "mean3BV": 65.366,
+          "meanClicks": 52.178,
+          "meanEfficiency": 124.908241,
+          "pooledEfficiency": 125.27502,
+          "minEfficiency": 100,
+          "maxEfficiency": 169.565217,
+          "medianEfficiency": 124,
+          "p10Efficiency": 110.330753,
+          "p90Efficiency": 140,
+          "meanLeft": 37.27,
+          "meanRight": 6.52,
+          "meanChord": 8.388
+        }
+      },
+      "paired": {
+        "comparator": "greedy-chord minus opening-first on identical boards",
+        "meanEfficiencyGainPercentagePoints": 24.908241,
+        "approximate95PercentCI": [
+          23.935633,
+          25.880849
+        ],
+        "meanClicksSaved": 13.188,
+        "approximate95PercentClicksSavedCI": [
+          12.62385,
+          13.75215
+        ],
+        "percentBoardsAbove100": 99.4,
+        "percentClicksSavedPooled": 20.175626
+      }
+    },
+    {
+      "difficulty": "Expert",
+      "width": 30,
+      "height": 16,
+      "mines": 99,
+      "boards": 500,
+      "mean3BV": 174.202,
+      "policies": {
+        "random-safe": {
+          "mean3BV": 174.202,
+          "meanClicks": 202.494,
+          "meanEfficiency": 86.089577,
+          "pooledEfficiency": 86.028228,
+          "minEfficiency": 71.859296,
+          "maxEfficiency": 97.175141,
+          "medianEfficiency": 86.313904,
+          "p10Efficiency": 80.486643,
+          "p90Efficiency": 91.792369,
+          "meanLeft": 202.494,
+          "meanRight": 0,
+          "meanChord": 0
+        },
+        "opening-first": {
+          "mean3BV": 174.202,
+          "meanClicks": 174.202,
+          "meanEfficiency": 100,
+          "pooledEfficiency": 100,
+          "minEfficiency": 100,
+          "maxEfficiency": 100,
+          "medianEfficiency": 100,
+          "p10Efficiency": 100,
+          "p90Efficiency": 100,
+          "meanLeft": 174.202,
+          "meanRight": 0,
+          "meanChord": 0
+        },
+        "greedy-chord": {
+          "mean3BV": 174.202,
+          "meanClicks": 136.242,
+          "meanEfficiency": 127.785491,
+          "pooledEfficiency": 127.862186,
+          "minEfficiency": 109.836066,
+          "maxEfficiency": 156.410256,
+          "medianEfficiency": 127.204086,
+          "p10Efficiency": 117.636739,
+          "p90Efficiency": 139.398207,
+          "meanLeft": 94.16,
+          "meanRight": 18.722,
+          "meanChord": 23.36
+        }
+      },
+      "paired": {
+        "comparator": "greedy-chord minus opening-first on identical boards",
+        "meanEfficiencyGainPercentagePoints": 27.785491,
+        "approximate95PercentCI": [
+          27.071167,
+          28.499814
+        ],
+        "meanClicksSaved": 37.96,
+        "approximate95PercentClicksSavedCI": [
+          36.918368,
+          39.001632
+        ],
+        "percentBoardsAbove100": 100,
+        "percentClicksSavedPooled": 21.790795
+      }
+    }
+  ]
+};
+
+</script><script>
+(function () {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const presets = { beginner: [9,9,10], intermediate: [16,16,40], expert: [30,16,99] };
+  const names = {classic:'Classic',ng:'No guess',nf:'No flags',budget:'Click budget',cross:'Crossfield',knight:'Knightfield'};
+  const STORAGE = 'field-notes-minesweeper-v1'+(new URLSearchParams(location.search).has('qa')?'-qa':'');
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(STORAGE) || '{}'); } catch (_) {}
+  let history = Array.isArray(saved.history) ? saved.history.slice(0,1000) : [];
+  let game, meta, cells=[], recorded=false, generation=0, busy=false, replay=null, suspended=null;
+  let touchFlag=false, gesture=null, longPress=null, lastPointer=null, distance=0, toastTimer, hinted=-1;
+  const fieldIds=['difficulty','mode','first-click','seed','action-budget','width','height','mines','cell-size','single-chord','press-mode','show-neighbors','sound'];
+  for (const id of fieldIds) {
+    const el=$(id), value=saved.settings?.[id];
+    if(value!==undefined) { if(el.type==='checkbox')el.checked=!!value; else el.value=String(value); }
+  }
+  const launch=new URLSearchParams(location.search);
+  if(Object.hasOwn(names,launch.get('mode')))$('mode').value=launch.get('mode');
+  if(['safe','zero'].includes(launch.get('first')))$('first-click').value=launch.get('first');
+  if(Object.hasOwn(presets,launch.get('difficulty')))$('difficulty').value=launch.get('difficulty');
+  function modeSettings(){ $('budget-settings').hidden=$('mode').value!=='budget'; }
+  $('mode').onchange=()=>{modeSettings();persist();};
+  function settings() { return Object.fromEntries(fieldIds.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value])); }
+  function persist() {
+    try { localStorage.setItem(STORAGE,JSON.stringify({settings:settings(),history})); }
+    catch (_) { toast('Browser storage is unavailable or full. Export your results to keep them.'); }
+  }
+  function toast(message) { $('toast').textContent=message;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,4500); }
+  function showTab(name) {
+    if(!['play','learn','history','variants'].includes(name))name='play';
+    document.querySelectorAll('.tab-panel').forEach(el=>el.hidden=el.id!=='tab-'+name);
+    document.querySelectorAll('[data-tab]').forEach(el=>{el.classList.toggle('active',el.dataset.tab===name);el.setAttribute('aria-current',el.dataset.tab===name?'page':'false');});
+    if(name==='history')renderHistory();
+    try { window.history.replaceState(null,'','#'+name); } catch (_) {}
+  }
+  document.querySelectorAll('[data-tab]').forEach(el=>el.onclick=()=>showTab(el.dataset.tab));
+  document.querySelectorAll('[data-goto]').forEach(el=>el.onclick=()=>showTab(el.dataset.goto));
+  function applySize() { const size=Math.max(18,Math.min(36,Number($('cell-size').value)||24));document.documentElement.style.setProperty('--cell',size+'px');$('size-label').value=size+'px'; }
+  $('cell-size').oninput=()=>{applySize();persist();};
+  $('difficulty').onchange=()=>{ $('custom-fields').hidden=$('difficulty').value!=='custom';persist(); };
+  for (const id of ['single-chord','press-mode','show-neighbors','sound'])$(id).onchange=persist;
+  $('focus-mode').onclick=()=>{document.body.classList.toggle('focus');toast('Focus view. Press Escape to return.');};
+  function configFromForm() {
+    const difficulty=$('difficulty').value;
+    const [width,height,mines]=presets[difficulty]||['width','height','mines'].map(id=>Number($(id).value));
+    if(!Number.isInteger(width)||!Number.isInteger(height)||width<5||width>60||height<5||height>40)throw new Error('Choose a width from 5–60 and a height from 5–40, using whole numbers.');
+    const mode=$('mode').value,topology=['cross','knight'].includes(mode)?mode:'classic';
+    const firstClick=$('first-click').value;
+    const reserve=firstClick==='zero'?(topology==='cross'?5:9):1;
+    if(!Number.isInteger(mines)||mines<1||mines>width*height-reserve)throw new Error('Use 1–'+(width*height-reserve)+' mines so the selected first-reveal protection fits anywhere.');
+    if(mode==='ng'&&(width*height>480||mines/(width*height)>.25))throw new Error('No-guess generation supports at most 480 cells and 25% mine density. Reduce the custom field or choose Classic.');
+    const actionLimit=mode==='budget'?Number($('action-budget').value):null;
+    if(actionLimit!==null&&(!Number.isInteger(actionLimit)||actionLimit<1||actionLimit>100000))throw new Error('Choose a whole action budget from 1 to 100,000.');
+    return {width,height,mines,actionLimit,seed:$('seed').value.trim()||freshSeed(),topology,firstClick,noFlags:mode==='nf',mode,difficulty};
+  }
+  function freshSeed(){return typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID().slice(0,13):Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,6);}
+  function resetLocal() {recorded=false;hinted=-1;distance=0;lastPointer=null;gesture=null;clearTimeout(longPress);$('hint-message').hidden=true;$('replay-controls').hidden=true;touchFlag=false;renderFlagMode();}
+  function record(outcome) {
+    if(recorded||replay||!game||!game.totalClicks)return;
+    recorded=true;
+    const stats=game.stats();
+    history.unshift({id:freshSeed(),date:new Date().toISOString(),outcome,mode:meta.mode,difficulty:meta.difficulty,assisted:meta.assisted,retried:meta.retried,pointerDistance:Math.round(distance),...stats,status:outcome,replay:game.exportReplay()});
+    history=history.slice(0,1000);persist();
+  }
+  async function newGame(config, retryData) {
+    let cfg;
+    try {cfg=config||configFromForm();}catch(error){toast(error.message);return;}
+    if(replay)exitReplay(false);
+    record('abandoned');
+    const token=++generation;busy=false;resetLocal();
+    meta={mode:cfg.mode||'classic',difficulty:cfg.difficulty||'custom',assisted:false,retried:!!retryData};
+    game=new MinesEngine.Game({...cfg,...(retryData?.mineIndices?{mineIndices:retryData.mineIndices}:{})});
+    if(retryData){game.certified=!!retryData.certified;game.requiredStart=retryData.requiredStart??retryData.actions.find(a=>a.type==='left')?.index??null;}
+    createBoard();render();persist();
+    if(meta.mode==='ng'&&!retryData) {
+      busy=true;setStatus('Finding a field solvable by visible logic…');$('run-indicator').textContent='◌ GENERATING';
+      await new Promise(resolve=>setTimeout(resolve,20));
+      const current=game;
+      try {
+        const result=await current.generateNoGuess(0,{maxAttempts:250,isCancelled:()=>token!==generation,onProgress:({attempts})=>{if(token===generation)setStatus('Checking no-guess field '+attempts+' / 250…');}});
+        if(token!==generation)return;
+        busy=false;
+        if(!result.success){setStatus('No certified field found. Choose New field to try another seed.');busy=true;toast('No-guess search ended without a certified board. No uncertified game was started.');return;}
+        render();setStatus('Logic-certified field. Start at the green dot in the top-left corner.');
+      } catch(error){if(token===generation){busy=true;setStatus('Generation failed: '+error.message);}}
+    }
+  }
+  function createBoard() {
+    const board=$('board');board.replaceChildren();board.style.gridTemplateColumns='repeat('+game.width+', var(--cell))';board.setAttribute('aria-rowcount',game.height);board.setAttribute('aria-colcount',game.width);
+    cells=Array.from({length:game.size},(_,i)=>{
+      const el=document.createElement('button');el.type='button';el.className='cell';el.dataset.index=i;el.setAttribute('role','gridcell');el.setAttribute('aria-rowindex',Math.floor(i/game.width)+1);el.setAttribute('aria-colindex',i%game.width+1);el.tabIndex=i===0?0:-1;board.append(el);return el;
+    });
+    $('field-title').textContent=meta.difficulty.charAt(0).toUpperCase()+meta.difficulty.slice(1);
+    $('field-spec').textContent=game.width+' × '+game.height+' / '+game.mines+' mines';
+    $('mode-badge').textContent=(names[meta.mode]||meta.mode).toUpperCase();
+  }
+  function setStatus(text){$('status').textContent=text;}
+  function renderCell(i) {
+    const el=cells[i],end=game.generated&&['won','lost','exhausted'].includes(game.status),mine=game.mineMask[i],flag=game.flags[i],open=game.revealed[i];
+    let text='',label='covered',cls='cell';
+    if(open&&!mine){cls+=' revealed';text=game.numbers[i]||'';label=text?text+' adjacent mines':'empty';el.dataset.number=game.numbers[i];}
+    else {delete el.dataset.number;if(flag){cls+=' flagged';text='⚑';label='flagged';}}
+    if(end&&mine&&!flag){cls+=' revealed';text=game.status==='won'?'⚑':'✹';label='mine';}
+    if(end&&flag&&!mine){cls+=' wrong';text='×';label='incorrect flag';}
+    if(i===game.exploded)cls+=' exploded';
+    if(i===hinted)cls+=' hinted';
+    if(game.status==='ready'&&game.requiredStart===i)cls+=' start';
+    el.className=cls;el.textContent=text;el.setAttribute('aria-label','Row '+(Math.floor(i/game.width)+1)+', column '+(i%game.width+1)+': '+label);
+  }
+  function render() {
+    cells.forEach((_,i)=>renderCell(i));renderStats();
+    $('mine-counter').textContent=game.status==='won'?'000':String(Math.max(-99,Math.min(999,game.mines-game.flagCount))).padStart(3,'0');
+    $('smile').textContent=game.status==='won'?'😎':game.status==='lost'?'😵':game.status==='exhausted'?'😐':'🙂';
+    $('run-indicator').textContent=replay?'▷ REPLAY':({ready:'○ READY',playing:'● PLAYING',won:'✓ CLEARED',lost:'× FINISHED',exhausted:'◇ BUDGET USED'}[game.status]);
+    if(replay)setStatus('Replay · use the slider to inspect every action.');
+    else if(game.status==='won')setStatus('Field cleared. '+game.stats().efficiency.toFixed(1)+'% efficiency'+(meta.assisted?' · assisted':'')+(meta.retried?' · retry':'')+'.');
+    else if(game.status==='exhausted')setStatus('Action budget used. Retry this field to find a cheaper route.');
+    else if(game.status==='lost')setStatus('A mine. Review the field, or retry the same layout.');
+    else if(game.status==='ready')setStatus(game.requiredStart!==null?'Start at the green dot to replay the same opening.':'Your first move is safe. Pick a square.');
+    else setStatus((names[meta.mode]||'Classic')+' · seed '+game.seed+(meta.assisted?' · assisted':'')+(meta.retried?' · retry':''));
+  }
+  function renderStats() {
+    if(!game)return;
+    $('budget-meter').hidden=game.actionLimit===null;
+    if(game.actionLimit!==null)$('budget-meter').textContent='Action budget: '+Math.max(0,game.actionLimit-game.totalClicks)+' remaining of '+game.actionLimit+(game.status==='won'?' · cleared within budget':game.status==='exhausted'?' · run ended':'');
+    const s=game.stats(),ended=game.generated&&['won','lost','exhausted'].includes(game.status),won=game.status==='won';
+    $('stat-time').textContent=s.seconds.toFixed(3);$('classic-timer').textContent=String(Math.min(999,Math.floor(s.seconds))).padStart(3,'0');
+    $('stat-eff').textContent=won?s.efficiency.toFixed(1)+'%':'—';
+    $('eff-caption').textContent=won?'3BV ÷ all actions × 100%':ended?'Unfinished board · no final score':'Final score after a win';
+    $('stat-actions').textContent=s.clicks;$('stat-bv').textContent=ended?s.bbbv:'—';$('bv-caption').textContent=ended?'board':'at finish';
+    $('stat-bvs').textContent=ended&&s.seconds?s.bbbvs.toFixed(2):'—';$('stat-aps').textContent=s.seconds?s.cps.toFixed(2):'—';
+    for(const key of ['left','right','chord','wasted'])$('stat-'+key).textContent=s[key];
+    $('stat-cleared').textContent=s.revealed+' / '+s.safeCells;$('stat-distance').textContent=Math.round(distance).toLocaleString()+' px';
+  }
+  let audioCtx;
+  function sound(outcome) {
+    if(!$('sound').checked)return;
+    try{audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();const oscillator=audioCtx.createOscillator(),gain=audioCtx.createGain();oscillator.connect(gain);gain.connect(audioCtx.destination);oscillator.type='sine';oscillator.frequency.value=outcome==='lost'?120:outcome==='won'?660:420;gain.gain.setValueAtTime(.025,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.08);oscillator.start();oscillator.stop(audioCtx.currentTime+.08);}catch(_){}
+  }
+  function act(type,index) {
+    if(busy||replay||!game)return;
+    if(type==='flag'&&game.noFlags){toast('Flags are disabled in No flags mode.');return;}
+    hinted=-1;const result=game[type==='flag'?'toggleFlag':type==='chord'?'chord':'reveal'](index);
+    if(result.requiredStart!==undefined){toast('Start at the green dot to preserve this board.');return;}
+    if(result.ignored)return;
+    render();if(result.changed.length)sound(game.status);
+    if(['won','lost','exhausted'].includes(game.status))record(game.status);
+  }
+  function leftAction(index){act(touchFlag&&!game.revealed[index]?'flag':game.revealed[index]&&$('single-chord').checked?'chord':'reveal',index);}
+  const board=$('board');
+  function eventIndex(e){const cell=e.target.closest('.cell');return cell?Number(cell.dataset.index):null;}
+  board.addEventListener('contextmenu',e=>e.preventDefault());
+  // Mouse Events report the second button of a chord even when Pointer Events do not.
+  board.addEventListener('mousedown',e=>{
+    const index=eventIndex(e);
+    if(index!==null&&(e.buttons&3)===3&&gesture&&!gesture.handled){e.preventDefault();gesture.chord=true;gesture.handled=true;act('chord',index);}
+  });
+  board.addEventListener('pointerdown',e=>{
+    const index=eventIndex(e);if(index===null||busy||replay)return;if(e.pointerType==='touch')e.preventDefault();
+    cells.forEach(el=>el.tabIndex=-1);cells[index].tabIndex=0;cells[index].focus({preventScroll:true});
+    if(!gesture)gesture={index,handled:false,chord:false};
+    if(e.pointerType==='touch'){
+      gesture.touch=true;gesture.x=e.clientX;gesture.y=e.clientY;
+      longPress=setTimeout(()=>{if(gesture){act('flag',index);gesture.handled=true;}},420);
+    }else if(e.button===1||(e.buttons&3)===3){clearTimeout(longPress);gesture.chord=true;if(!gesture.handled){act('chord',index);gesture.handled=true;}}
+    else if(e.button===0&&$('press-mode').checked&&!game.revealed[index]){leftAction(index);gesture.handled=true;}
+    if(!gesture.handled){cells[index].classList.add('pressed');if(game.status==='playing'||game.status==='ready')$('smile').textContent='😮';}
+  });
+  document.addEventListener('pointerup',e=>{
+    if(!gesture)return;clearTimeout(longPress);
+    const index=eventIndex(e),g=gesture;
+    if(index===g.index&&!g.handled){if(e.button===2)act('flag',index);else if(e.button===0||g.touch)leftAction(index);g.handled=true;}
+    if(!e.buttons){gesture=null;cells.forEach(el=>el.classList.remove('pressed'));$('smile').textContent=game.status==='won'?'😎':game.status==='lost'?'😵':game.status==='exhausted'?'😐':'🙂';}
+  });
+  document.addEventListener('pointercancel',()=>{clearTimeout(longPress);gesture=null;cells.forEach(el=>el.classList.remove('pressed'));});
+  board.addEventListener('pointermove',e=>{
+    if(gesture&&!gesture.handled&&(e.buttons&3)===3){gesture.chord=true;gesture.handled=true;act('chord',gesture.index);}
+    if(gesture?.touch&&Math.hypot(e.clientX-gesture.x,e.clientY-gesture.y)>12){clearTimeout(longPress);gesture.handled=true;}
+    if(game?.status==='playing'&&!replay){if(lastPointer)distance+=Math.hypot(e.clientX-lastPointer.x,e.clientY-lastPointer.y);lastPointer={x:e.clientX,y:e.clientY};}
+    const index=eventIndex(e);showNeighbors(index);
+  });
+  board.addEventListener('pointerleave',()=>{lastPointer=null;showNeighbors(null);});
+  board.addEventListener('focusin',e=>showNeighbors(eventIndex(e)));
+  function showNeighbors(index){cells.forEach(el=>el.classList.remove('neighbor'));if(index!==null&&($('show-neighbors').checked||game.topology==='knight'))for(const i of game.neighbors[index])cells[i].classList.add('neighbor');}
+  board.addEventListener('keydown',e=>{
+    const index=eventIndex(e);if(index===null)return;
+    const delta={ArrowLeft:-1,ArrowRight:1,ArrowUp:-game.width,ArrowDown:game.width}[e.key];
+    if(delta!==undefined){e.preventDefault();const next=Math.min(game.size-1,Math.max(0,index+delta));cells[index].tabIndex=-1;cells[next].tabIndex=0;cells[next].focus();}
+    else if(e.key==='f'||e.key==='F'){e.preventDefault();act('flag',index);}
+    else if(e.key==='Enter'||e.key===' '){e.preventDefault();leftAction(index);}
+    else if(e.key==='c'||e.key==='C'){e.preventDefault();act('chord',index);}
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='F2'){e.preventDefault();newGame();}if(e.key==='Escape')document.body.classList.remove('focus');});
+  function renderFlagMode(){$('touch-flag').textContent='⚑ Flag mode: '+(touchFlag?'on':'off');$('touch-flag').setAttribute('aria-pressed',String(touchFlag));}
+  $('touch-flag').onclick=()=>{touchFlag=!touchFlag;renderFlagMode();};
+  $('new-game').onclick=()=>newGame();$('smile').onclick=()=>newGame();
+  $('retry').onclick=()=>{
+    if(!game.generated){toast('Reveal a square first to create a repeatable layout.');return;}
+    const source=replay?MinesEngine.Game.fromReplay(replay):game;
+    const data=source.exportReplay(),cfg={...data.config,mode:meta.mode,difficulty:meta.difficulty};data.requiredStart=source.requiredStart??source.firstIndex;newGame(cfg,data);
+  };
+  $('hint').onclick=()=>{
+    if(busy||replay||!['ready','playing'].includes(game.status))return;
+    const hint=game.hint();
+    if(hint.type!=='none'){meta.assisted=true;hinted=hint.index;render();}
+    $('hint-message').hidden=false;$('hint-message').textContent=(hint.index!==undefined?'Row '+(Math.floor(hint.index/game.width)+1)+', column '+(hint.index%game.width+1)+': '+(hint.type==='flag'?'place a flag. ':hint.type==='unflag'?'remove the flag. ':'safe to reveal. '):'')+hint.reason+(hint.type!=='none'?' This run is marked assisted.':'');
+  };
+  function download(filename,text,type){const url=URL.createObjectURL(new Blob([text],{type})),link=document.createElement('a');link.href=url;link.download=filename;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+  $('save-replay').onclick=()=>{if(!game.generated){toast('Make a first reveal before saving a replay.');return;}download('minesweeper-'+game.seed.replace(/[^a-z0-9-]/gi,'_')+'.json',JSON.stringify({ ...game.exportReplay(),fieldNotes:{mode:meta.mode,difficulty:meta.difficulty,assisted:meta.assisted,retried:meta.retried}},null,2),'application/json');};
+  $('load-replay').onclick=()=>$('replay-file').click();
+  $('replay-file').onchange=async e=>{
+    const file=e.target.files[0];if(!file)return;
+    try{if(file.size>8*1024*1024)throw new Error('Replay is too large (maximum 8 MB).');const data=JSON.parse(await file.text());MinesEngine.Game.fromReplay(data);openReplay(data);}
+    catch(error){toast('Could not open replay: '+error.message);}e.target.value='';
+  };
+  function openReplay(data,recordMeta){
+    if(busy){toast('Finish or cancel generation before opening a replay.');return;}
+    if(!replay)suspended={game,meta,recorded,distance};
+    replay=data;hinted=-1;$('hint-message').hidden=true;meta=recordMeta||data.fieldNotes||{mode:data.config.topology==='classic'?(data.config.noFlags?'nf':'classic'):data.config.topology,difficulty:'custom'};
+    $('replay-slider').max=data.actions.length;$('replay-slider').value=data.actions.length;showReplayFrame();$('replay-controls').hidden=false;showTab('play');
+  }
+  function showReplayFrame(){game=MinesEngine.Game.fromReplay(replay,Number($('replay-slider').value));distance=0;createBoard();render();$('replay-position').textContent=$('replay-slider').value+' / '+replay.actions.length+' actions';}
+  $('replay-slider').oninput=showReplayFrame;
+  $('exact-demo').onclick=()=>{
+    const demo=MinesEngine.Game.fromLayout(4,4,[6,8,14],{seed:'exact-seven-action-example'});
+    for(const [method,index] of [['reveal',0],['reveal',7],['reveal',12],['toggleFlag',6],['chord',7],['toggleFlag',14],['chord',10]])demo[method](index);
+    const data=demo.exportReplay();data.actions.forEach((action,i)=>action.timeMs=(i+1)*1000);data.elapsedMs=7000;
+    openReplay(data,{mode:'classic',difficulty:'demonstration',assisted:true,retried:false});
+    $('hint-message').hidden=false;$('hint-message').textContent='Known-layout demonstration: 3BV 10, seven actions, 142.86% efficiency. Timing is illustrative at one second per action. This is not a speed record. Move the replay slider left to inspect the setup.';
+  };
+  function exitReplay(renderAgain=true){if(!replay)return;({game,meta,recorded,distance}=suspended);replay=null;suspended=null;$('replay-controls').hidden=true;if(renderAgain){createBoard();render();}}
+  $('exit-replay').onclick=()=>exitReplay();
+  function filteredHistory(){return history.filter(row=>($('history-filter').value==='all'||row.mode===$('history-filter').value)&&($('history-difficulty').value==='all'||row.difficulty===$('history-difficulty').value));}
+  function cell(text){const el=document.createElement('td');el.textContent=text;return el;}
+  function renderHistory(){
+    const rows=filteredHistory(),wins=rows.filter(r=>r.outcome==='won'),eligible=wins.filter(r=>!r.assisted&&!r.retried),bestTime=eligible.length?Math.min(...eligible.map(r=>r.seconds)):null,bestEff=eligible.length?Math.max(...eligible.map(r=>r.efficiency)):null;
+    $('history-summary').replaceChildren();
+    [['Attempts',rows.length],['Win rate',rows.length?(100*wins.length/rows.length).toFixed(1)+'%':'—'],['Best time',bestTime===null?'—':bestTime.toFixed(3)+' s'],['Best efficiency',bestEff===null?'—':bestEff.toFixed(1)+'%']].forEach(([label,value])=>{const wrap=document.createElement('div'),span=document.createElement('span'),strong=document.createElement('strong');span.textContent=label;strong.textContent=value;wrap.append(span,strong);$('history-summary').append(wrap);});
+    $('history-body').replaceChildren();$('history-empty').hidden=rows.length>0;
+    rows.forEach(row=>{
+      const tr=document.createElement('tr');const when=new Date(row.date).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+      tr.append(cell(when),cell((names[row.mode]||row.mode)+' · '+row.width+'×'+row.height),cell(row.outcome+(row.assisted?' · assisted':'')+(row.retried?' · retry':'')),cell(row.seconds.toFixed(3)+' s'),cell(row.bbbv),cell(row.clicks),cell(row.outcome==='won'?row.efficiency.toFixed(1)+'%':'—'));
+      const td=cell(''),button=document.createElement('button');button.className='text-button';button.textContent='Replay ↗';button.onclick=()=>openReplay(row.replay,{mode:row.mode,difficulty:row.difficulty,assisted:row.assisted,retried:row.retried});td.append(button);tr.append(td);$('history-body').append(tr);
+    });
+  }
+  $('history-filter').onchange=renderHistory;$('history-difficulty').onchange=renderHistory;
+  $('export-history').onclick=()=>{
+    const columns=['date','outcome','mode','difficulty','width','height','mines','seed','firstClick','actionLimit','actionsRemaining','assisted','retried','seconds','bbbv','solvedBBBV','clicks','left','right','chord','wasted','effective','efficiency','bbbvs','cps','effectiveActionRatio','flags','revealed','safeCells','openings','isolated','pointerDistance'];
+    const csvValue=value=>{let text=String(value??'');if(/^[=+@\-]/.test(text))text="'"+text;return '"'+text.replaceAll('"','""')+'"';};
+    const text=[columns.join(','),...filteredHistory().map(row=>columns.map(key=>csvValue(key==='efficiency'&&row.outcome!=='won'?'':key==='effectiveActionRatio'?row.ioe:row[key])).join(','))].join('\r\n');download('minesweeper-statistics.csv',text,'text/csv;charset=utf-8');
+  };
+  function updateLab(){const units=Number($('lab-units').value),flags=Number($('lab-flags').value),savings=units-flags-1;$('lab-units-out').value=units;$('lab-flags-out').value=flags;$('lab-result').textContent=savings>0?'Save '+savings+' action'+(savings===1?'':'s'):savings===0?'Break even · look for reuse':'Spend '+(-savings)+' extra action'+(savings===-1?'':'s');}
+  $('lab-units').oninput=updateLab;$('lab-flags').oninput=updateLab;
+  const study=globalThis.MinesweeperExperiment;
+  if(study?.results){
+    const table=document.createElement('table'),head=document.createElement('thead'),hr=document.createElement('tr');['500 boards each','Random safe','Opening-first NF','Selective chords'].forEach(text=>{const th=document.createElement('th');th.textContent=text;hr.append(th);});head.append(hr);table.append(head);
+    const body=document.createElement('tbody');study.results.forEach(result=>{const tr=document.createElement('tr');tr.append(cell(result.difficulty),...['random-safe','opening-first','greedy-chord'].map(policy=>cell(result.policies[policy].meanEfficiency.toFixed(1)+'%')));body.append(tr);});table.append(body);$('experiment-results').replaceChildren(table);
+  }
+  document.querySelectorAll('[data-mode]').forEach(el=>el.onclick=()=>{$('mode').value=el.dataset.mode;modeSettings();if(el.dataset.mode==='knight')$('show-neighbors').checked=true;newGame();showTab('play');});
+  window.addEventListener('pagehide',()=>{if(replay)exitReplay(false);record('abandoned');});
+  window.addEventListener('pageshow',event=>{if(event.persisted&&recorded&&game?.status==='playing')newGame();});
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persist();});
+  modeSettings();applySize();$('custom-fields').hidden=$('difficulty').value!=='custom';updateLab();newGame();showTab(location.hash.slice(1));
+  setInterval(renderStats,33);
+})();
+
+</script>
+</body></html>

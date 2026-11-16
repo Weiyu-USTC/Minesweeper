@@ -1,0 +1,162 @@
+{
+  "scenarios": [
+    {
+      "start": "corner",
+      "protection": "safe",
+      "eligible": 455,
+      "methods": {
+        "direct": {
+          "accepted": 45,
+          "p": 0.0989010989010989,
+          "positiveStartAccepted": 1
+        },
+        "subset": {
+          "accepted": 166,
+          "p": 0.3648351648351648,
+          "positiveStartAccepted": 1
+        },
+        "exact": {
+          "accepted": 182,
+          "p": 0.4,
+          "positiveStartAccepted": 1
+        }
+      }
+    },
+    {
+      "start": "corner",
+      "protection": "zero",
+      "eligible": 220,
+      "methods": {
+        "direct": {
+          "accepted": 44,
+          "p": 0.2,
+          "positiveStartAccepted": 0
+        },
+        "subset": {
+          "accepted": 165,
+          "p": 0.75,
+          "positiveStartAccepted": 0
+        },
+        "exact": {
+          "accepted": 181,
+          "p": 0.8227272727272728,
+          "positiveStartAccepted": 0
+        }
+      }
+    },
+    {
+      "start": "interior",
+      "protection": "safe",
+      "eligible": 455,
+      "methods": {
+        "direct": {
+          "accepted": 15,
+          "p": 0.03296703296703297,
+          "positiveStartAccepted": 0
+        },
+        "subset": {
+          "accepted": 87,
+          "p": 0.1912087912087912,
+          "positiveStartAccepted": 52
+        },
+        "exact": {
+          "accepted": 87,
+          "p": 0.1912087912087912,
+          "positiveStartAccepted": 52
+        }
+      }
+    },
+    {
+      "start": "interior",
+      "protection": "zero",
+      "eligible": 35,
+      "methods": {
+        "direct": {
+          "accepted": 15,
+          "p": 0.42857142857142855,
+          "positiveStartAccepted": 0
+        },
+        "subset": {
+          "accepted": 35,
+          "p": 1,
+          "positiveStartAccepted": 0
+        },
+        "exact": {
+          "accepted": 35,
+          "p": 1,
+          "positiveStartAccepted": 0
+        }
+      }
+    }
+  ],
+  "nonuniqueExample": {
+    "start": 0,
+    "protection": "safe",
+    "mask": 324,
+    "solvers": {
+      "direct": {
+        "success": false,
+        "initialCandidates": 2,
+        "initialVisible": 51,
+        "finalVisible": 51,
+        "firstClue": 0
+      },
+      "subset": {
+        "success": true,
+        "initialCandidates": 2,
+        "initialVisible": 51,
+        "finalVisible": 65211,
+        "firstClue": 0
+      },
+      "exact": {
+        "success": true,
+        "initialCandidates": 2,
+        "initialVisible": 51,
+        "finalVisible": 65211,
+        "firstClue": 0
+      }
+    }
+  },
+  "strongerExample": {
+    "start": 0,
+    "protection": "safe",
+    "mask": 268,
+    "solvers": {
+      "direct": {
+        "success": false,
+        "initialCandidates": 28,
+        "initialVisible": 51,
+        "finalVisible": 51,
+        "firstClue": 0
+      },
+      "subset": {
+        "success": false,
+        "initialCandidates": 28,
+        "initialVisible": 51,
+        "finalVisible": 51,
+        "firstClue": 0
+      },
+      "exact": {
+        "success": true,
+        "initialCandidates": 28,
+        "initialVisible": 51,
+        "finalVisible": 65267,
+        "firstClue": 0
+      }
+    }
+  },
+  "simulation": {
+    "meanAttempts": 1.3386,
+    "theoreticalMeanAttempts": 1.3333333333333333,
+    "maxAbsoluteMarginalError": 0.006751515151515175,
+    "cap": {
+      "K": 3,
+      "samples": 10000,
+      "failures": 162,
+      "empiricalFailure": 0.0162,
+      "theoreticalFailure": 0.015625,
+      "empiricalMeanAttempts": 1.3252,
+      "theoreticalMeanAttempts": 1.3125
+    }
+  }
+}

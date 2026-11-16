@@ -1,0 +1,65 @@
+{
+  "format": "minesweeper-lab",
+  "version": 1,
+  "config": {
+    "width": 4,
+    "height": 4,
+    "mines": 3,
+    "seed": "exact-seven-action-example",
+    "topology": "classic",
+    "firstClick": "zero",
+    "noFlags": false
+  },
+  "mineIndices": [
+    6,
+    8,
+    14
+  ],
+  "certified": false,
+  "requiredStart": null,
+  "actions": [
+    {
+      "type": "left",
+      "index": 0,
+      "timeMs": 1000
+    },
+    {
+      "type": "left",
+      "index": 7,
+      "timeMs": 2000
+    },
+    {
+      "type": "left",
+      "index": 12,
+      "timeMs": 3000
+    },
+    {
+      "type": "right",
+      "index": 6,
+      "timeMs": 4000
+    },
+    {
+      "type": "chord",
+      "index": 7,
+      "timeMs": 5000
+    },
+    {
+      "type": "right",
+      "index": 14,
+      "timeMs": 6000
+    },
+    {
+      "type": "chord",
+      "index": 10,
+      "timeMs": 7000
+    }
+  ],
+  "elapsedMs": 7000,
+  "fieldNotes": {
+    "mode": "classic",
+    "difficulty": "demonstration",
+    "assisted": true,
+    "retried": false,
+    "timing": "Illustrative one second per action, not a speed record."
+  }
+}

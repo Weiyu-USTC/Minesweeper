@@ -1,0 +1,30 @@
+# Local review files, screenshots of paper pages, and upload archives.
+/.local-artifacts/
+/Minesweeper-GitHub.zip
+/papers/*/qa/
+/papers/*/preview/
+
+# Reproducible LaTeX intermediates. Keep the named final PDFs and figures.
+/papers/*/build/
+/papers/*/main.pdf
+/papers/*/data/latex-check.txt
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Operating system, editor, and optional local environment files.
+.DS_Store
+._*
+Thumbs.db
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+.vscode/
+.idea/

@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Minesweeper Field Notes · Learn & practice</title><meta name="description" content="An offline Minesweeper course with a placement quiz, interactive logic boards, efficiency puzzles, and pattern practice."><style>
+@charset "UTF-8";
+:root{--ink:#242b28;--muted:#727970;--paper:#f6f6f0;--line:#dedfd5;--green:#215c47;--lime:#e0ecc7;--card:#fdfdf8;--cell:24px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);font-synthesis:none}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button,a,input,select,summary{-webkit-tap-highlight-color:transparent}button,summary{cursor:pointer}a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #7ea65a;outline-offset:3px}button{color:inherit}button:disabled{opacity:.5;cursor:wait}button{border:0}button,input,select{border-radius:4px}[hidden]{display:none!important}.masthead{height:78px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 4vw}.brand{color:var(--ink);font-size:13px;font-weight:700;letter-spacing:1.5px;display:flex;gap:16px;align-items:center}.brand>span:last-child{font-weight:400;letter-spacing:0}.brand-icon{font-size:34px;color:var(--green)}.brand-divider{color:#a8afa3}.local{font-size:10px;letter-spacing:1.5px;color:#68745f}.local i{display:inline-block;background:#759860;width:6px;height:6px;border-radius:50%;margin-right:8px}main{max-width:1560px;margin:auto;padding:42px 4vw 0}.intro{display:flex;justify-content:space-between;align-items:center;margin-bottom:35px}.eyebrow,.section-label{font-size:10px;letter-spacing:1.7px;font-weight:650;color:var(--muted)}.eyebrow{margin:0 0 14px}h1{font:500 clamp(38px,4.2vw,58px)/1.08 Georgia,"Times New Roman",serif;letter-spacing:-1.8px;margin:0 0 13px}h2{font:500 38px/1.15 Georgia,serif;letter-spacing:-1px;margin:0 0 14px}h3{font-size:19px;letter-spacing:-.4px;margin:18px 0 10px}.subtitle,.section-intro>p,.section-intro>div>p{font-size:14px;color:var(--muted);margin-bottom:0}.edition{text-align:right;line-height:2.2;font-size:10px;letter-spacing:1.5px;color:var(--muted)}.edition strong{font-size:12px;letter-spacing:0;font-weight:400;color:var(--ink)}.tabs{display:flex;gap:32px;border-bottom:1px solid var(--line);margin-bottom:28px}.tabs button{background:none;font-size:10px;color:#939b8d;padding:16px 0;border-bottom:2px solid transparent;border-radius:0;margin-bottom:-1px;white-space:nowrap}.tabs span{margin-left:9px;color:var(--muted);font-size:13px}.tabs button.active{border-color:var(--green);color:var(--green)}.tabs button.active span{color:var(--green);font-weight:600}.play-layout{display:grid;grid-template-columns:228px minmax(0,1fr) 232px;gap:24px;align-items:start}.card{background:var(--card);border:1px solid var(--line);border-radius:7px;padding:24px}.settings{padding:22px 18px}.settings .section-label{margin-bottom:24px}label{display:block;font-size:12px;margin:18px 0 8px;font-weight:500}input:not([type=checkbox],[type=range]),select{width:100%;height:38px;border:1px solid var(--line);background:#fffef9;color:var(--ink);padding:0 9px;font-size:12px}select{padding-right:20px}.optional{font-weight:400;color:var(--muted);float:right;font-size:10px}.primary{background:var(--green);color:#fff;padding:12px 15px;display:inline-flex;align-items:center;justify-content:space-between;font-size:12px;gap:25px}.primary:hover{background:#164532}#new-game{width:100%;margin-top:20px}.preferences{border-top:1px solid var(--line);margin-top:22px;padding-top:18px;font-size:11px}.preferences summary{font-weight:500}.preferences label{font-size:11px}.check{display:flex;gap:7px;align-items:center;line-height:1.5}.check input{accent-color:var(--green)}input[type=range]{width:100%;accent-color:var(--green)}output{float:right;font-variant-numeric:tabular-nums;color:var(--green)}.setup-note{font-size:10px;line-height:1.7;color:var(--muted);border-top:1px solid var(--line);margin-top:20px;padding-top:17px}.custom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.custom-grid input{padding:4px}.field-heading{display:flex;justify-content:space-between;align-items:center;margin:0 0 14px;font-size:12px;min-height:22px;gap:12px}.field-heading>div{display:flex;gap:13px;flex-wrap:wrap}.muted{color:var(--muted);font-size:10px}.badge{font-size:8px;letter-spacing:1px;background:#e6ecdf;color:#5c7450;padding:6px 8px;border-radius:3px;white-space:nowrap}.field-stage{background:#e9ece3;border:1px solid #dce1d5;border-radius:6px;min-height:478px;display:flex;align-items:flex-start;justify-content:flex-start;padding:34px 24px;overflow:auto;box-shadow:inset 0 0 40px #dbe0d518}.game-window{background:#c0c0c0;box-shadow:0 7px 12px #29312124;border:2px solid;border-color:#fff #6d6d6d #6d6d6d #fff;flex-shrink:0;margin:auto}.game-titlebar{background:#000080;color:white;font:bold 11px/21px Arial,sans-serif;height:23px;padding:0 6px;display:flex;justify-content:space-between;gap:28px}.window-dots{font-size:13px;letter-spacing:5px;color:#ddd}.game-interior{padding:9px}.game-counterbar{border:2px solid;border-color:#808080 #fff #fff #808080;padding:5px 6px;display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;gap:18px}.digital{font:32px/.97 "Courier New",monospace;letter-spacing:-1px;font-weight:bold;color:#fa0908;background:#190000;min-width:61px;text-align:right;padding:1px 2px 0;border:1px solid;border-color:#777 #eee #eee #777;font-variant-numeric:tabular-nums}.smile{font-size:23px;padding:0;width:34px;height:33px;line-height:29px;background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;border-radius:0}.smile:active{border-color:#808080 #fff #fff #808080}#board{display:grid;border:3px solid;border-color:#808080 #fff #fff #808080;width:max-content;user-select:none;touch-action:manipulation;-webkit-user-select:none}.cell{width:var(--cell);height:var(--cell);padding:0;background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;border-radius:0;font:bold calc(var(--cell) * .72)/1 "Courier New",monospace;display:flex;align-items:center;justify-content:center;cursor:default;position:relative}.cell.revealed{border:0;border-left:1px solid #808080;border-top:1px solid #808080}.cell.pressed{border:1px solid #808080}.cell.neighbor:after{content:"";position:absolute;inset:0;background:#e9ec5480;pointer-events:none}.cell.hinted{box-shadow:inset 0 0 0 3px #719a2b}.cell.exploded{background:#ff3636}.cell.wrong{color:#c60000}.cell.flagged{font-size:calc(var(--cell) * .65);color:#e90000}.cell[data-number="1"]{color:#0000ff}.cell[data-number="2"]{color:#008000}.cell[data-number="3"]{color:#ff0000}.cell[data-number="4"]{color:#000080}.cell[data-number="5"]{color:#800000}.cell[data-number="6"]{color:#008080}.cell[data-number="7"]{color:#000}.cell[data-number="8"]{color:#808080}.cell:focus-visible{outline:2px solid #1d653c;outline-offset:-3px;z-index:2}.cell.start:before{content:"";width:6px;height:6px;background:#246746;border-radius:50%}.field-status{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:15px 0;font-size:11px;min-height:28px}.text-button{background:none;color:var(--green);padding:4px 0;font-size:11px;white-space:nowrap}.action-row{display:flex;flex-wrap:wrap;gap:8px}.quiet-button{border:1px solid var(--line);background:#fbfcf6;padding:9px 12px;font-size:11px}.quiet-button:hover{background:#eaf0e1}.control-guide{font-size:9px;color:var(--muted);line-height:2.5;display:flex;gap:8px 15px;flex-wrap:wrap;margin-top:18px}kbd{font-family:inherit;border:1px solid #d5dbcc;border-radius:3px;padding:2px 4px;color:#5b6754;font-size:9px;background:#fafbf5}.telemetry{padding:22px 20px}.telemetry .section-label{display:flex;justify-content:space-between;gap:5px;font-size:9px;letter-spacing:1.2px}#run-indicator{font-size:8px;letter-spacing:.6px;color:var(--green)}.hero-stat{margin-top:29px}.hero-stat>span,.eff-stat>span:first-child{font-size:11px;color:var(--muted)}.hero-stat>div{display:flex;align-items:baseline;gap:5px;margin-top:6px}.hero-stat strong{font-size:38px;font-weight:450;font-variant-numeric:tabular-nums;letter-spacing:-1.5px}.hero-stat small{font-size:13px;color:var(--muted)}.eff-stat{border-bottom:1px solid var(--line);padding:22px 0 18px;display:flex;flex-direction:column;gap:4px}.eff-stat strong{font-size:28px;font-weight:500;color:var(--green);font-variant-numeric:tabular-nums}.tiny{font-size:10px;color:var(--muted);line-height:1.7}.info{cursor:help}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 10px;padding:22px 0;border-bottom:1px solid var(--line)}.stat-grid>div{display:flex;flex-direction:column;gap:7px}.stat-grid span{font-size:9px;color:var(--muted);white-space:nowrap}.stat-grid small{font-size:8px}.stat-grid strong{font-size:20px;font-weight:500;font-variant-numeric:tabular-nums}.click-breakdown{padding-top:18px;font-size:10px}.click-breakdown>div{display:flex;justify-content:space-between;margin-bottom:11px;color:var(--muted)}.click-breakdown strong{color:var(--ink);font-weight:500}.field-note{border-top:1px solid var(--line);margin-top:23px;padding-top:18px}.field-note>span{font-size:8px;letter-spacing:1.5px;color:#6d835d}.field-note p{font:16px/1.45 Georgia,serif;margin:12px 0}.field-note button{font-size:9px}.notice{background:#e8efde;border:1px solid #cbd8ba;padding:13px 15px;border-radius:4px;font-size:12px;line-height:1.6;margin-top:14px}.section-intro{margin:44px 0 30px;max-width:800px}.split{max-width:none;display:flex;justify-content:space-between;align-items:center;gap:20px}.lab-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:24px}.lab-grid .card{padding:30px}.lab-grid p,.variant p,.budget p,.experiment-card p{font-size:13px;line-height:1.8;color:#67705f}.formula{font:26px/1.7 Georgia,serif;margin:25px 0 20px}.formula span{background:#e8efdd;padding:5px 8px;color:var(--green);white-space:nowrap}.formula-card a{font-size:11px}.lab-result{background:var(--green);color:#eff6e3;padding:15px;font-size:20px;margin:22px 0 10px;border-radius:4px}.lab-grid .tiny{font-size:10px}.principles{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin:38px 0}.principles article>span{font:28px Georgia,serif;color:#9caa8c}.principles h3{font-size:15px}.principles p{font-size:12px;color:var(--muted);line-height:1.8}.experiment-card{padding:30px}.experiment-card h3{font:27px Georgia,serif}.experiment-card table{margin:20px 0}.research-links{display:flex;gap:25px;font-size:12px;margin:24px 0;flex-wrap:wrap}.history-filters{display:flex;gap:20px;align-items:end;margin-bottom:20px}.history-filters label{margin:0;display:flex;gap:14px;align-items:center;white-space:nowrap}.history-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:25px 0}.history-summary>div{border:1px solid var(--line);border-radius:5px;padding:22px;background:var(--card)}.history-summary span{font-size:11px;color:var(--muted)}.history-summary strong{display:block;font-size:28px;font-weight:500;margin-top:12px}.history-table{padding:12px 22px;overflow:auto}table{width:100%;border-collapse:collapse;text-align:left;font-size:11px}th{font-size:9px;text-transform:uppercase;letter-spacing:.8px;font-weight:500;color:var(--muted);padding:14px 9px;white-space:nowrap}td{border-top:1px solid var(--line);padding:14px 9px;white-space:nowrap;font-variant-numeric:tabular-nums}td small{color:var(--muted)}.empty{text-align:center;padding:60px 10px}.empty>span{font-size:34px;color:#819974}.empty h3{font:28px Georgia,serif}.empty p{font-size:13px;color:var(--muted);margin-bottom:24px}.variant-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.variant{padding:30px}.neighborhood{height:155px;display:flex;flex-direction:column;align-items:center;justify-content:center;white-space:pre;text-align:center;font:25px/1.5 monospace;color:#9ca989;background:#edf0e5;border-radius:4px;margin-bottom:25px;display:block;padding:20px}.neighborhood b{color:var(--green)}.knight-diagram{font-size:16px;line-height:1.45;padding:20px}.variant .section-label{font-size:8px}.variant h3{font:30px Georgia,serif}.variant p{min-height:90px}.budget{margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:35px}.budget p{max-width:800px}.budget button{white-space:nowrap}footer{margin-top:55px;border-top:1px solid var(--line);padding:24px 0;display:flex;justify-content:space-between;gap:20px;color:#87917e;font-size:9px;letter-spacing:.3px}footer>span:first-child{font-size:8px;letter-spacing:1.4px}#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);padding:14px 22px;background:#273c2f;color:#fff;border-radius:6px;box-shadow:0 4px 20px #0002;font-size:12px;z-index:100;max-width:90vw}body.focus .masthead,body.focus .intro,body.focus .tabs,body.focus footer,body.focus .settings{display:none}body.focus main{padding-top:24px}body.focus .play-layout{grid-template-columns:minmax(0,1fr) 232px}body.focus .field-stage{min-height:70vh}body.focus #focus-mode{display:block}.bar-chart{height:9px;min-width:20px;max-width:260px;background:#d6e4c6;border-radius:2px}.bar-chart span{display:block;height:100%;background:#567b43;border-radius:2px}.result-positive{color:var(--green)}@media(min-width:1500px){.play-layout{grid-template-columns:240px minmax(0,1fr) 250px}.field-stage{min-height:500px}}@media(max-width:1150px){main{padding:30px 25px 0}.masthead{padding:0 25px}.play-layout{grid-template-columns:195px minmax(0,1fr);gap:20px}.telemetry{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr;gap:20px;align-items:start}.telemetry>.section-label{grid-column:1/-1}.hero-stat{margin:0}.eff-stat{padding:0;border:0}.stat-grid{padding:0;border:0;gap:15px}.click-breakdown{padding:0}.field-note{display:none}.field-stage{min-height:468px}.hero-stat strong{font-size:34px}.tabs{gap:25px}}@media(max-width:760px){.masthead{height:60px;padding:0 18px}.local{display:none}.brand{font-size:11px;gap:10px}.brand-icon{font-size:29px}main{padding:30px 16px 0}.edition{display:none}.intro{margin-bottom:23px}h1{font-size:42px}.tabs{gap:22px;overflow:auto;margin-bottom:22px}.tabs span{font-size:11px;margin-left:5px}.play-layout{display:flex;flex-direction:column;gap:22px}.settings{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:9px 14px;padding:18px}.settings>.section-label{grid-column:1/-1;margin-bottom:7px}.settings>label{margin:4px 0 -3px;grid-column:auto}.settings>label[for=difficulty]{grid-column:1;grid-row:2}.settings>#difficulty{grid-column:1;grid-row:3}.settings>label[for=mode]{grid-column:2;grid-row:2}.settings>#mode{grid-column:2;grid-row:3}.custom-grid{grid-column:1/-1;grid-row:4}.settings>label[for=first-click]{grid-column:1;grid-row:5}.settings>#first-click{grid-column:1;grid-row:6}.settings>label[for=seed]{grid-column:2;grid-row:5}.settings>#seed{grid-column:2;grid-row:6}#new-game{margin-top:4px;grid-column:1/-1}.preferences{grid-column:1/-1;margin-top:7px;padding-top:13px}.setup-note{display:none}.field-column{width:100%}.field-stage{min-height:0;padding:24px 12px}.telemetry{width:100%;display:grid;grid-template-columns:1fr 1fr;padding:20px}.stat-grid{grid-column:1}.click-breakdown{grid-column:2}.control-guide{font-size:9px}.lab-grid,.variant-grid{grid-template-columns:1fr}.lab-grid .card,.variant{padding:23px}.principles{grid-template-columns:1fr 1fr}.section-intro{margin-top:32px}h2{font-size:32px}.formula{font-size:22px}.split,.budget{align-items:flex-start;flex-direction:column}.history-summary{grid-template-columns:1fr 1fr;gap:12px}.history-summary>div{padding:16px}.history-filters{flex-wrap:wrap}.history-filters label{font-size:11px}.variant p{min-height:0}footer{flex-wrap:wrap;font-size:8px;gap:14px}.field-status{font-size:10px}.experiment-card{padding:20px;overflow:auto}body.focus .telemetry{display:none}body.focus .field-stage{min-height:70vh}}
+
+.tabs .tutorial-link{display:block;padding:16px 0;font-size:10px;white-space:nowrap;color:var(--green);border-bottom:2px solid transparent}.tabs .tutorial-link span{color:var(--green)}#budget-settings{grid-column:1/-1}#budget-meter{margin:0 0 12px}#budget-settings .tiny{margin:8px 0 0}.tabs{flex-wrap:wrap;gap:12px 28px}
+
+</style><style>
+.tutorial-main{max-width:1320px;padding-top:50px}.back-link{font-size:12px}.learn-hero{display:flex;align-items:center;justify-content:space-between;gap:35px;margin-bottom:42px}.learn-hero h1{font-size:clamp(42px,5vw,70px);line-height:1.04;letter-spacing:-2.3px}.learn-deck{font-size:15px;line-height:1.8;color:#6c7569;margin:22px 0 0}.hero-note{border-left:1px solid var(--line);padding:15px 20px 15px 45px;min-width:290px}.hero-note p{font:29px/1.4 Georgia,serif;margin:16px 0;color:#3b5b40}.hero-note em{color:var(--green)}.route-panel{padding:28px 30px}.section-top{display:flex;justify-content:space-between;align-items:center;gap:18px}.section-top h2{font-size:33px;margin-bottom:0}.route-description{font-size:13px;line-height:1.8;color:#6b7565;max-width:870px}.level-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 20px}.level-card{text-align:left;padding:20px 17px;border:1px solid var(--line);background:#fafbf5;min-height:176px;display:flex;flex-direction:column;gap:10px}.level-card:hover{background:#f0f5e8}.level-card.selected{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green);background:#eef4e6}.level-card .level-index{font-size:10px;color:#798c69}.level-card strong{font:22px Georgia,serif;letter-spacing:-.3px}.level-card small{font-size:11px;color:#65725d;line-height:1.65}.level-card .selected-marker{font-size:9px;color:var(--green);margin-top:auto;letter-spacing:.5px;min-height:12px}.route-status{border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:18px;align-items:center;font-size:12px;color:#65725d}.course{margin-top:48px}.progress-caption{text-align:right;font-size:10px;color:var(--muted);display:flex;flex-direction:column;gap:6px}.progress-caption strong{font-size:22px;font-weight:450;color:var(--green)}.course-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:24px;margin-top:25px;align-items:start}.lesson-nav{display:flex;flex-direction:column;gap:4px;position:sticky;top:20px}.lesson-link{display:grid;grid-template-columns:24px 1fr 12px;gap:10px;align-items:center;text-align:left;background:none;padding:12px 9px;color:#6a7461;font-size:11px;border:1px solid transparent}.lesson-link.active{background:#e9efdf;border-color:#d3dfc3;color:#294e36}.lesson-link .nav-num{font-size:10px;color:#839477}.lesson-link .nav-title{line-height:1.5}.lesson-link .nav-check{color:#315f3e}.nav-level{font-size:9px;letter-spacing:1.2px;color:#859276;margin:16px 9px 6px;text-transform:uppercase}.nav-level:first-child{margin-top:0}.lesson-panel{padding:30px;min-height:620px}.lesson-panel h3{font:32px/1.2 Georgia,serif;letter-spacing:-.8px;margin:0 0 17px}.lesson-copy{font-size:13px;line-height:1.85;color:#5e6b58}.lesson-task{font-size:13px;line-height:1.8;border-left:3px solid #b5c99e;padding:10px 15px;background:#f0f4e8;margin:21px 0}.lesson-task strong{color:#34543a}.lesson-topline{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:16px}.lesson-topline .eyebrow{margin:0}.lesson-evidence{color:#406a3e;font-size:10px}.teaching-layout{display:grid;grid-template-columns:minmax(180px,auto) 1fr;gap:24px;align-items:start;margin:24px 0}.mini-board{display:grid;grid-template-columns:repeat(var(--cols,3),48px);width:max-content;border:3px solid;border-color:#818181 #fff #fff #818181;background:#c0c0c0;padding:0;user-select:none;margin:16px 0;box-shadow:0 6px 12px #27342114}.mini-cell{width:48px;height:48px;background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;position:relative;border-radius:0;padding:0;color:#343c32;font:bold 22px/1 "Courier New",monospace;display:flex;align-items:center;justify-content:center;touch-action:manipulation}.mini-cell.known,.mini-cell.opened{border:0;border-top:1px solid #8d8d8d;border-left:1px solid #8d8d8d}.mini-cell.known{cursor:default}.mini-cell[data-value="1"]{color:#0000c2}.mini-cell[data-value="2"]{color:#006d00}.mini-cell[data-value="3"]{color:#df0000}.mini-cell[data-value="4"]{color:#000080}.mini-cell[data-value="5"]{color:#800000}.mini-cell.unknown{font:500 14px/1 -apple-system,BlinkMacSystemFont,sans-serif}.mini-cell .cell-name{position:absolute;left:3px;top:3px;font:9px/1 sans-serif;color:#6d7369}.mini-cell.flagged{color:#d00000}.mini-cell.known-mine{color:#a80000;background:#dad0c5;border:1px solid #919184;font-size:25px}.mini-cell.certified-safe{color:#647b54;font:19px sans-serif;background:#d7dccd}.mini-cell.ghost{color:#626e60}.mini-cell.ghost:after{content:"";position:absolute;inset:4px;border:1px dashed #89927d;pointer-events:none}.mini-cell:focus-visible{outline:3px solid #295f3b;outline-offset:-4px;z-index:1}.board-caption{font-size:10px;line-height:1.7;color:#75816d;max-width:270px}.tool-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:5px}.tool{background:#f7f9f0;border:1px solid #d5deca;padding:8px 10px;font-size:10px;color:#68795c}.tool.active{background:#e0ebd1;border-color:#738d5f;color:#2b5139}.equation-list{font:13px/1.8 "Courier New",monospace;color:#34543e;border:1px solid #d8e2cf;background:#f5f8ee;padding:13px 15px;margin:14px 0}.equation-list div+div{border-top:1px dotted #dbe3d2;padding-top:5px;margin-top:5px}.equation-title{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#728467}.feedback{font-size:12px;line-height:1.75;padding:13px 15px;border:1px solid #d8dfce;background:#f5f7ef;margin-top:16px;min-height:48px}.feedback.error{border-color:#dbc4a9;background:#fff6e9;color:#785638}.feedback.success{border-color:#aabf94;background:#eaf3df;color:#345837}.evidence-strip{font-size:10px;color:#78846d;display:flex;gap:14px;flex-wrap:wrap;margin-top:15px}.lesson-controls{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}.hint-box{border-top:1px solid var(--line);margin-top:18px;padding-top:15px;font-size:12px;line-height:1.8;color:#526c45}.hint-box ol{padding-left:20px}.hint-box li+li{margin-top:8px}.lesson-pager{display:flex;justify-content:space-between;gap:15px;border-top:1px solid var(--line);margin-top:25px;padding-top:20px}.lesson-pager button{font-size:11px}.game-meters{display:flex;gap:18px;margin:18px 0;font-size:11px;color:#6e7b62;flex-wrap:wrap}.game-meters strong{font-size:20px;display:block;color:#2f543a;margin-top:4px;font-weight:450}.oracle-note{font-size:10px;color:#8c6d43;background:#f4eddf;border:1px solid #e5d8bf;padding:9px 12px;line-height:1.6}.quiz-shell{margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}.quiz-meta{display:flex;justify-content:space-between;gap:15px;font-size:10px;color:#748469;margin-bottom:14px}.quiz-shell h3{font:25px/1.35 Georgia,serif;max-width:850px}.quiz-choices{display:grid;gap:8px;max-width:860px;margin:20px 0}.quiz-choice{text-align:left;border:1px solid var(--line);background:#fbfcf6;padding:14px 16px;font-size:12px;line-height:1.5;display:flex;gap:12px;align-items:flex-start}.quiz-choice:hover:not(:disabled){background:#edf3e4}.quiz-choice.selected{border-color:#8c9d77;background:#edf3e4}.quiz-choice.correct{border-color:#6c9459;background:#e6f1da}.quiz-choice.incorrect{background:#f8ecdd;border-color:#cdb18f}.quiz-choice:disabled{opacity:1;cursor:default}.quiz-feedback{font-size:12px;line-height:1.8;background:#edf2e5;padding:14px 16px;margin-bottom:18px;max-width:860px}.domain-results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0}.domain-results>div{background:#f1f5e9;border:1px solid #dbe2cf;padding:15px;font-size:11px;color:#627157}.domain-results strong{font-size:21px;font-weight:450;color:#365c39;display:block;margin-top:8px}.practice-section{margin-top:48px;padding:30px}.practice-controls{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:23px}.practice-controls label{margin:0;font-size:11px}.practice-meta{display:flex;justify-content:space-between;font-size:12px;color:#607852;margin-top:24px;border-top:1px solid var(--line);padding-top:20px}.practice-meta strong{font-variant-numeric:tabular-nums}.practice-inner{display:grid;grid-template-columns:260px 1fr;gap:35px;margin-top:18px}.practice-explanation{font-size:13px;color:#67755e;line-height:1.8}.practice-explanation button{margin:10px 8px 0 0}.reading-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}.reading-grid h3{font:27px Georgia,serif;margin:0 0 14px}.reading-grid p{font-size:12px;line-height:1.8;color:#75816c}.reading-links{display:flex;flex-direction:column;gap:13px;margin-top:20px;font-size:12px}.unit-row{display:flex;gap:9px;flex-wrap:wrap;margin:24px 0}.unit{width:55px;height:55px;border:1px solid #c6d3b6;background:#f4f7ed;color:#859575;display:flex;align-items:center;justify-content:center;font:22px Georgia,serif;border-radius:4px}.unit.covered{background:#d7e7c2;border-color:#819d64;color:#315536}.unit.overlapped{background:repeating-linear-gradient(135deg,#d3e4be,#d3e4be 6px,#e3eed5 6px,#e3eed5 12px)}.plan-buttons{display:flex;gap:10px;flex-wrap:wrap}.plan-buttons button{font-size:12px}.answer-row{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}.answer-row button{font-size:12px;padding:10px 16px;border:1px solid #cdd8c1;background:#f6f8ee}.prob-controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}.prob-controls label{font-size:11px;margin:0 0 7px}.prob-bars{margin:25px 0}.prob-row{display:grid;grid-template-columns:92px 1fr 60px;gap:12px;align-items:center;margin:16px 0;font-size:11px;color:#607554}.prob-track{height:15px;background:#e9eedf;border-radius:2px;overflow:hidden}.prob-fill{height:100%;background:#6d8e4e}.prob-row strong{text-align:right;font-weight:500;font-variant-numeric:tabular-nums}.compact-note{font-size:11px;line-height:1.8;color:#7c865f}.storage-warning{color:#976d34!important}@media(max-width:1020px){.course-layout{grid-template-columns:200px minmax(0,1fr);gap:18px}.lesson-panel{padding:24px}.teaching-layout{grid-template-columns:1fr}.level-cards{grid-template-columns:1fr 1fr}.level-card{min-height:140px}.hero-note{min-width:240px;padding-left:25px}.hero-note p{font-size:25px}.practice-inner{grid-template-columns:240px 1fr}}@media(max-width:700px){.tutorial-main{padding-top:32px}.learn-hero{display:block}.hero-note{display:none}.learn-hero h1{font-size:48px}.learn-deck{font-size:13px}.section-top{align-items:flex-start;flex-direction:column}.route-panel,.lesson-panel,.practice-section{padding:21px 18px}.level-cards{gap:9px}.level-card{padding:16px 13px;min-height:165px}.level-card strong{font-size:20px}.level-card small{font-size:10px}.route-status{align-items:flex-start;flex-direction:column;gap:8px}.course-layout{display:flex;flex-direction:column}.lesson-nav{position:static;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:3px}.nav-level{grid-column:1/-1;margin:12px 7px 5px}.lesson-link{padding:9px 6px;gap:6px;font-size:10px;grid-template-columns:19px 1fr 10px}.lesson-panel{width:100%;min-height:0}.lesson-panel h3{font-size:28px}.progress-caption{text-align:left;flex-direction:row;align-items:baseline;gap:10px}.practice-inner{grid-template-columns:1fr;gap:5px}.practice-controls{gap:12px}.reading-grid{grid-template-columns:1fr}.domain-results{grid-template-columns:1fr 1fr}.teaching-layout{gap:8px}.mini-cell{width:44px;height:44px;font-size:21px}.mini-board{grid-template-columns:repeat(var(--cols,3),44px)}.back-link{font-size:10px}.masthead .brand>span:last-child{display:none}.prob-controls{grid-template-columns:1fr}.lesson-topline{align-items:flex-start;flex-direction:column;gap:7px}.lesson-pager{gap:9px}.lesson-pager button{white-space:normal;text-align:left}.unit{width:46px;height:46px}.learn-hero .eyebrow{font-size:8px;line-height:1.6}}
+
+</style></head>
+<body>
+<header class="masthead"><a class="brand" href="Minesweeper.html"><span class="brand-icon" aria-hidden="true">✳</span><span>FIELD NOTES</span><span class="brand-divider">/</span><span>Minesweeper</span></a><a class="back-link" href="Minesweeper.html">← Back to the game</a></header>
+<main class="tutorial-main">
+  <section class="learn-hero"><div><p class="eyebrow">THE PRACTICE NOTEBOOK / OFFLINE, NO ACCOUNT</p><h1>From first clue<br>to fewer clicks.</h1><p class="learn-deck">Learn the proof. Try the move. Then make it efficient.<br>A hands-on route through Minesweeper, at your own level.</p></div><aside class="hero-note"><span class="section-label">ONE GOOD HABIT</span><p>Count what a move<br><em>proves</em> before counting<br>what it opens.</p><span class="tiny">11 lessons · 4 entry points · entirely local</span></aside></section>
+  <section class="route-panel card" aria-labelledby="route-title"><div class="section-top"><div><p class="eyebrow">01 / FIND YOUR STARTING POINT</p><h2 id="route-title">Choose a route.</h2></div><button class="quiet-button" id="start-quiz">Take the 6-question placement quiz →</button></div><p class="route-description">Choose the level that feels right, or use the short diagnostic. Every lesson remains available; a recommendation is a starting point, not a player rating.</p><div id="level-cards" class="level-cards"></div><div class="route-status"><span id="route-status"></span><button class="text-button" id="reset-quiz">Reset placement quiz</button></div><div id="quiz-panel" hidden aria-live="polite"></div></section>
+  <section class="course" aria-labelledby="course-title"><div class="section-top"><div><p class="eyebrow">02 / LEARN BY DOING</p><h2 id="course-title">The field guide.</h2></div><div class="progress-caption"><strong id="progress-count">0 / 11</strong><span>lessons completed locally</span></div></div><div class="course-layout"><nav id="lesson-nav" class="lesson-nav" aria-label="Lessons"></nav><article id="lesson-panel" class="lesson-panel card" tabindex="-1"></article></div></section>
+  <section class="practice-section card" aria-labelledby="practice-title"><div class="section-top"><div><p class="eyebrow">03 / KEEP THE GEOMETRY, CHANGE THE VIEW</p><h2 id="practice-title">Pattern shuffle.</h2></div><span class="badge">OPTIONAL PRACTICE</span></div><p class="route-description">Classify a closed 1–2–1 or 1–2–2–1 frontier in a rotated view. The clue boundaries rotate with it. Completed rounds introduce more orientations; speed never substitutes for proof.</p><div class="practice-controls"><label class="check"><input id="practice-timed" type="checkbox"> Optional 30-second session</label><button id="practice-start" class="primary">Start a session <span>↗</span></button><button id="practice-stop" class="quiet-button" hidden>End session</button><span id="practice-summary" class="tiny">Untimed by default. Your completed lessons are separate.</span></div><div id="practice-area" hidden><div class="practice-meta"><span id="practice-kind"></span><strong id="practice-clock"></strong></div><div class="practice-inner"><div><div class="tool-row" id="practice-tools"><button data-tool="reveal" class="tool active" aria-pressed="true">Reveal / safe</button><button data-tool="flag" class="tool" aria-pressed="false">Flag / mine</button></div><div id="practice-board" class="mini-board" role="group" aria-label="Practice pattern"></div></div><div class="practice-explanation"><p id="practice-feedback" role="status">Use the selected tool on each unknown cell.</p><button id="practice-next" class="primary" hidden>Next pattern →</button><button id="practice-hint" class="quiet-button">Show equations</button><div id="practice-equations" class="equation-list" hidden></div></div></div></div></section>
+  <section class="reading-grid"><article class="card"><p class="eyebrow">KEEP EXPLORING</p><h3>Play with a purpose.</h3><p>Try fresh boards to check that a pattern transfers beyond a memorized layout. Record win rate and time alongside efficiency.</p><div class="reading-links"><a href="Minesweeper.html?mode=ng&first=safe&difficulty=beginner">Certified no-guess · safe first →</a><a href="Minesweeper.html?mode=nf&first=safe&difficulty=beginner">No flags · safe first →</a><a href="Minesweeper.html?mode=budget&first=zero&difficulty=beginner">Click-budget practice →</a></div></article><article class="card"><p class="eyebrow">THE LONGER ARGUMENT</p><h3>Read the research.</h3><p>The papers separate proved facts, declared generator assumptions, and empirical results.</p><div class="reading-links"><a href="papers/efficiency/efficiency.pdf">Efficiency paper (PDF) →</a><a href="papers/no-guess/no-guess.pdf">No-guess generation paper (PDF) →</a><a href="https://minesweeper.online/help/patterns" target="_blank" rel="noopener">Minesweeper Online · official patterns ↗</a><a href="https://minesweeper.online/help/efficiency" target="_blank" rel="noopener">Official efficiency definition ↗</a></div></article></section>
+  <footer><span>FIELD NOTES / THE MINESWEEPER NOTEBOOK</span><span id="storage-status">Progress stays in this browser. No data is sent.</span><button class="text-button" id="reset-progress">Reset lesson progress</button></footer>
+</main>
+<script>
+/* Minesweeper Lab: dependency-free deterministic game model. */
+(function (root) {
+  'use strict';
+  const now = () => typeof performance !== 'undefined' ? performance.now() : Date.now();
+  function hash(seed) {
+    let h = 2166136261;
+    for (const c of String(seed)) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+    return h >>> 0;
+  }
+  function random(seed) {
+    let a = hash(seed);
+    return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  }
+  function neighborsFor(width, height, topology) {
+    const offsets = topology === 'cross' ? [[1,0],[-1,0],[0,1],[0,-1]] : topology === 'knight' ? [[1,2],[2,1],[-1,2],[-2,1],[1,-2],[2,-1],[-1,-2],[-2,-1]] : [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]];
+    return Array.from({length: width * height}, (_, i) => {
+      const x = i % width, y = Math.floor(i / width);
+      return offsets.map(([dx, dy]) => [x+dx,y+dy]).filter(([a,b]) => a>=0 && b>=0 && a<width && b<height).map(([a,b]) => b*width+a);
+    });
+  }
+  function boardBenchmark(mineMask, numbers, neighbors) {
+    const seen = new Set(), openings = [], border = new Set(), singles = [];
+    for (let i=0; i<mineMask.length; i++) {
+      if (mineMask[i] || numbers[i] !== 0 || seen.has(i)) continue;
+      const cells = [], stack = [i]; seen.add(i);
+      while (stack.length) {
+        const v=stack.pop(); cells.push(v);
+        for (const n of neighbors[v]) {
+          if (mineMask[n]) continue;
+          if (numbers[n] === 0 && !seen.has(n)) { seen.add(n); stack.push(n); }
+          else if (numbers[n] > 0) border.add(n);
+        }
+      }
+      openings.push(cells);
+    }
+    for (let i=0;i<mineMask.length;i++) if (!mineMask[i] && numbers[i] > 0 && !border.has(i)) singles.push(i);
+    const openingAreas=openings.map(cells=>Array.from(new Set(cells.flatMap(i=>[i,...neighbors[i].filter(n=>!mineMask[n])]))));
+    return {bbbv:openings.length+singles.length, openings, openingAreas, singles};
+  }
+  // Only revealed clues and the public total mine count enter this solver.
+  // User flags are deliberately ignored: a mistaken flag cannot make a hint unsafe.
+  function deductions(width, height, totalMines, revealed, visibleNumbers, neighbors) {
+    const safe = new Set(), mines = new Set();
+    const hidden = Array.from({length:width*height},(_,i)=>i).filter(i=>!revealed[i]);
+    let inconsistent = false;
+    for (let pass=0; pass<100; pass++) {
+      let changed=false;
+      const constraints=[], keys=new Set();
+      function add(cells, count) {
+        cells=cells.filter(i=>!safe.has(i));
+        count-=cells.reduce((a,i)=>a+(mines.has(i)?1:0),0);
+        cells=cells.filter(i=>!mines.has(i)).sort((a,b)=>a-b);
+        if (count<0 || count>cells.length) { inconsistent=true; return; }
+        if (!cells.length) return;
+        if (count===0 || count===cells.length) {
+          const set=count===0?safe:mines;
+          for (const i of cells) if (!set.has(i)) {set.add(i);changed=true;}
+        } else {
+          const key=cells.join(',')+':'+count;
+          if (!keys.has(key)) {keys.add(key);constraints.push({cells,count,set:new Set(cells)});}
+        }
+      }
+      for(let i=0;i<revealed.length;i++) if(revealed[i]) add(neighbors[i].filter(n=>!revealed[n]),visibleNumbers[i]);
+      add(hidden,totalMines);
+      if(inconsistent) break;
+      if(changed) continue;
+      // A subset of one clue's unknowns can be subtracted from another clue.
+      // Limit derived constraints, never infer facts when that limit is reached.
+      const initialLength=constraints.length;
+      for(let a=0;a<initialLength && constraints.length<1600;a++) {
+        for(let b=0;b<initialLength && constraints.length<1600;b++) {
+          if(a===b)continue;
+          const A=constraints[a],B=constraints[b];
+          if(A.cells.length>=B.cells.length || !A.cells.every(i=>B.set.has(i)))continue;
+          add(B.cells.filter(i=>!A.set.has(i)), B.count-A.count);
+        }
+      }
+      if(!changed) break;
+    }
+    return {safe:Array.from(safe),mines:Array.from(mines),inconsistent};
+  }
+  class Game {
+    constructor(options={}) {
+      this.width=Number(options.width ?? 9); this.height=Number(options.height ?? 9); this.mines=Number(options.mines ?? 10);
+      if(!Number.isInteger(this.width)||!Number.isInteger(this.height)||this.width<1||this.height<1||this.width>80||this.height>80)throw new Error('Board dimensions must be whole numbers from 1 to 80.');
+      this.size=this.width*this.height;
+      if(!Number.isInteger(this.mines)||this.mines<0||this.mines>=this.size)throw new Error('Mine count must be a whole number below the number of cells.');
+      this.seed=String(options.seed ?? Math.floor(Math.random()*0xFFFFFFFF).toString(36));
+      this.topology=['classic','cross','knight'].includes(options.topology)?options.topology:'classic';
+      this.firstClick=options.firstClick==='safe'?'safe':'zero'; this.noFlags=!!options.noFlags;
+      this.actionLimit=options.actionLimit??null;
+      if(this.actionLimit!==null&&(!Number.isInteger(this.actionLimit)||this.actionLimit<1||this.actionLimit>100000))throw new Error('Action budget must be a whole number from 1 to 100,000.');
+      this.neighbors=neighborsFor(this.width,this.height,this.topology);
+      this.mineMask=Array(this.size).fill(false);this.numbers=Array(this.size).fill(0);
+      this.revealed=Array(this.size).fill(false);this.flags=Array(this.size).fill(false);
+      this.status='ready';this.generated=false;this.clicks={left:0,right:0,chord:0,wasted:0};this.actions=[];
+      this.bbbv=0;this._benchmark={openings:[],openingAreas:[],singles:[]};this._start=null;this._end=null;this._frozenElapsed=null;
+      this.exploded=-1;this.firstIndex=null;this.certified=false;this.requiredStart=null;this.zeroFallback=false;this.preset=options.mineIndices!==undefined;
+      if(options.mineIndices!==undefined)this._setLayout(options.mineIndices);
+    }
+    get elapsedMs(){if(this._frozenElapsed!==null)return this._frozenElapsed;return this._start===null?0:Math.max(0,(this._end??now())-this._start);}
+    get solvedBBBV(){return this._benchmark.openingAreas.filter(cells=>cells.every(i=>this.revealed[i])).length+this._benchmark.singles.filter(i=>this.revealed[i]).length;}
+    get totalClicks(){return this.clicks.left+this.clicks.right+this.clicks.chord;}
+    get flagCount(){return this.flags.filter(Boolean).length;}
+    get revealedCount(){return this.revealed.filter((v,i)=>v&&!this.mineMask[i]).length;}
+    _setLayout(indices){
+      if(!Array.isArray(indices)||indices.length!==this.mines||new Set(indices).size!==indices.length||indices.some(i=>!Number.isInteger(i)||i<0||i>=this.size))throw new Error('Invalid mine layout.');
+      this.mineMask=Array(this.size).fill(false);for(const i of indices)this.mineMask[i]=true;
+      this.numbers=this.neighbors.map(ns=>ns.reduce((n,i)=>n+(this.mineMask[i]?1:0),0));
+      this._benchmark=boardBenchmark(this.mineMask,this.numbers,this.neighbors);this.bbbv=this._benchmark.bbbv;this.generated=true;
+    }
+    _generate(index){
+      let excluded=new Set([index,...(this.firstClick==='zero'?this.neighbors[index]:[])]);
+      if(this.size-excluded.size<this.mines){excluded=new Set([index]);this.zeroFallback=true;}
+      const available=Array.from({length:this.size},(_,i)=>i).filter(i=>!excluded.has(i)),rng=random(this.seed);
+      for(let i=available.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[available[i],available[j]]=[available[j],available[i]];}
+      this._setLayout(available.slice(0,this.mines));
+    }
+    _valid(index){return Number.isInteger(index)&&index>=0&&index<this.size&&['ready','playing'].includes(this.status);}
+    _begin(index){if(this._start===null){this._start=now();this.firstIndex=index;this.status='playing';}}
+    _open(indices){
+      const changed=[],queue=indices.slice();
+      while(queue.length && this.status!=='lost'){
+        const i=queue.pop();if(this.revealed[i]||this.flags[i])continue;
+        this.revealed[i]=true;changed.push(i);
+        if(this.mineMask[i]){this.exploded=i;this.status='lost';this._end=now();break;}
+        if(this.numbers[i]===0)for(const n of this.neighbors[i])if(!this.revealed[n]&&!this.flags[n])queue.push(n);
+      }
+      if(this.status!=='lost'&&this.revealedCount===this.size-this.mines){this.status='won';this._end=now();}
+      return changed;
+    }
+    _record(type,index,changed,before){
+      if(!changed.length)this.clicks.wasted++;
+      if(this.actionLimit!==null&&this.totalClicks>=this.actionLimit&&['ready','playing'].includes(this.status)){this.status='exhausted';this._end=now();}
+      const action={type,index,timeMs:Math.round(this.elapsedMs*1000)/1000,changed:changed.slice(),bbbvGain:this.solvedBBBV-before,status:this.status};
+      this.actions.push(action);return {changed,status:this.status,action,bbbvGain:action.bbbvGain};
+    }
+    reveal(index){
+      if(!this._valid(index))return {changed:[],ignored:true,status:this.status};
+      if(this.requiredStart!==null&&this.status==='ready'&&index!==this.requiredStart)return {changed:[],ignored:true,requiredStart:this.requiredStart,status:this.status};
+      const before=this.solvedBBBV;this.clicks.left++;
+      if(this.flags[index]||this.revealed[index])return this._record('left',index,[],before);
+      if(!this.generated)this._generate(index);this._begin(index);
+      return this._record('left',index,this._open([index]),before);
+    }
+    toggleFlag(index){
+      if(!this._valid(index)||this.noFlags)return {changed:[],ignored:true,status:this.status};
+      const before=this.solvedBBBV;this.clicks.right++;
+      if(this.revealed[index])return this._record('right',index,[],before);
+      this.flags[index]=!this.flags[index];return this._record('right',index,[index],before);
+    }
+    chord(index){
+      if(!this._valid(index))return {changed:[],ignored:true,status:this.status};
+      const before=this.solvedBBBV;this.clicks.chord++;
+      if(!this.revealed[index]||this.numbers[index]===0||this.neighbors[index].filter(i=>this.flags[i]).length!==this.numbers[index])return this._record('chord',index,[],before);
+      return this._record('chord',index,this._open(this.neighbors[index].filter(i=>!this.flags[i]&&!this.revealed[i])),before);
+    }
+    stats(){
+      const seconds=this.elapsedMs/1000,total=this.totalClicks,solved=this.solvedBBBV;
+      return {status:this.status,width:this.width,height:this.height,mines:this.mines,seed:this.seed,topology:this.topology,noFlags:this.noFlags,
+        elapsedMs:this.elapsedMs,seconds,time:seconds,bbbv:this.bbbv,solvedBBBV:solved,
+        efficiency:total?100*solved/total:0,bbbvs:seconds?solved/seconds:0,cps:seconds?total/seconds:0,
+        clicks:total,left:this.clicks.left,right:this.clicks.right,chord:this.clicks.chord,wasted:this.clicks.wasted,effective:total-this.clicks.wasted,
+        ioe:total>this.clicks.wasted?solved/(total-this.clicks.wasted):0,
+        flags:this.flagCount,revealed:this.revealedCount,safeCells:this.size-this.mines,
+        openings:this._benchmark.openings.length,isolated:this._benchmark.singles.length,certified:this.certified,firstIndex:this.firstIndex,
+        actionLimit:this.actionLimit,actionsRemaining:this.actionLimit===null?null:Math.max(0,this.actionLimit-total),firstClick:this.firstClick};
+    }
+    hint(){
+      if(this.status==='ready')return this.preset&&this.requiredStart===null?{type:'none',reason:'This preset has a fixed layout, so first-click protection does not apply.'}:{type:'reveal',index:this.requiredStart??0,reason:'Start here. The first reveal is protected.',initial:true};
+      if(this.status!=='playing')return {type:'none',reason:'This game has finished.'};
+      const d=deductions(this.width,this.height,this.mines,this.revealed,this.numbers.map((n,i)=>this.revealed[i]?n:null),this.neighbors);
+      if(d.inconsistent)return {type:'none',reason:'The visible constraints are inconsistent.'};
+      const safe=d.safe.find(i=>!this.flags[i]);
+      if(safe!==undefined)return {type:'reveal',index:safe,reason:'This cell is safe by visible clue constraints (including subset and total-mine deductions).',assumesFlags:false};
+      const wrong=d.safe.find(i=>this.flags[i]);
+      if(wrong!==undefined)return {type:'unflag',index:wrong,reason:'This flagged cell is provably safe from the visible clues.',assumesFlags:false};
+      const mine=d.mines.find(i=>!this.flags[i]);
+      if(mine!==undefined&&!this.noFlags)return {type:'flag',index:mine,reason:'This cell must contain a mine by the visible clues.',assumesFlags:false};
+      return {type:'none',reason:'No forced move was found by the direct and subset solver. Stronger reasoning or a guess may be needed.',assumesFlags:false};
+    }
+    async generateNoGuess(start=0,{maxAttempts=150,onProgress,signal,isCancelled}={}){
+      if(!Number.isInteger(start)||start<0||start>=this.size)throw new Error('Invalid starting cell.');
+      if(this.totalClicks||this.status!=='ready')throw new Error('Start a fresh game before generating a no-guess board.');
+      if(!Number.isInteger(maxAttempts)||maxAttempts<0||maxAttempts>10000)throw new Error('Search limit must be a whole number from 0 to 10,000.');
+      const baseSeed=this.seed;
+      const cancelled=()=>!!(signal?.aborted||isCancelled?.());
+      for(let attempt=0;attempt<maxAttempts;attempt++){
+        // Yield for paint/input each attempt; a cancelled search never installs its board.
+        await new Promise(resolve=>setTimeout(resolve,0));
+        if(cancelled())return {success:false,cancelled:true,attempts:attempt,start,seed:baseSeed};
+        const candidate=new Game({width:this.width,height:this.height,mines:this.mines,seed:baseSeed+':ng:'+attempt,topology:this.topology,firstClick:this.firstClick,noFlags:true});
+        candidate.reveal(start);
+        let steps=0,lastYield=now();
+        while(candidate.status==='playing'&&steps++<this.size){
+          const d=deductions(candidate.width,candidate.height,candidate.mines,candidate.revealed,candidate.numbers.map((n,i)=>candidate.revealed[i]?n:null),candidate.neighbors);
+          if(!d.safe.length||d.inconsistent)break;
+          for(const i of d.safe)if(candidate.status==='playing')candidate.reveal(i);
+          if(now()-lastYield>8){await new Promise(resolve=>setTimeout(resolve,0));lastYield=now();}
+          if(cancelled())return {success:false,cancelled:true,attempts:attempt+1,start,seed:baseSeed};
+        }
+        if(cancelled())return {success:false,cancelled:true,attempts:attempt+1,start,seed:baseSeed};
+        if(candidate.status==='won'){
+          this.seed=candidate.seed;this._setLayout(candidate.mineMask.flatMap((v,i)=>v?[i]:[]));this.zeroFallback=candidate.zeroFallback;
+          this.certified=true;this.requiredStart=start;
+          return {success:true,attempts:attempt+1,start,seed:this.seed};
+        }
+        if(onProgress)onProgress({attempts:attempt+1,maxAttempts});
+      }
+      return {success:false,attempts:maxAttempts,start,seed:baseSeed};
+    }
+    exportReplay(){return {format:'minesweeper-lab',version:1,config:{width:this.width,height:this.height,mines:this.mines,seed:this.seed,topology:this.topology,firstClick:this.firstClick,noFlags:this.noFlags,actionLimit:this.actionLimit},mineIndices:this.generated?this.mineMask.flatMap((v,i)=>v?[i]:[]):null,certified:this.certified,requiredStart:this.requiredStart,actions:this.actions.map(a=>({type:a.type,index:a.index,timeMs:a.timeMs})),elapsedMs:Math.max(this.elapsedMs,this.actions.at(-1)?.timeMs??0)};}
+    static fromLayout(width,height,mineIndices,options={}){return new Game({...options,width,height,mines:mineIndices.length,mineIndices});}
+    static fromReplay(replay,upto){
+      if(!replay||replay.format!=='minesweeper-lab'||replay.version!==1||!Array.isArray(replay.actions)||replay.actions.length>100000)throw new Error('Unsupported or invalid replay.');
+      const config=replay.config;
+      if(!config||!Number.isInteger(config.width)||!Number.isInteger(config.height)||!Number.isInteger(config.mines)||typeof config.seed!=='string'||!['classic','cross','knight'].includes(config.topology)||!['safe','zero'].includes(config.firstClick)||typeof config.noFlags!=='boolean'||(replay.mineIndices!==null&&!Array.isArray(replay.mineIndices)))throw new Error('Invalid replay configuration.');
+      const game=new Game({...replay.config,...(replay.mineIndices?{mineIndices:replay.mineIndices}:{})});
+      if(replay.requiredStart!==null&&replay.requiredStart!==undefined&&(!Number.isInteger(replay.requiredStart)||replay.requiredStart<0||replay.requiredStart>=game.size))throw new Error('Invalid replay starting cell.');
+      if(!Number.isFinite(replay.elapsedMs)||replay.elapsedMs<0)throw new Error('Invalid replay time.');
+      let previousTime=0;
+      for(const action of replay.actions){
+        if(!action||!['left','right','chord'].includes(action.type)||!Number.isInteger(action.index)||action.index<0||action.index>=game.size||!Number.isFinite(action.timeMs)||action.timeMs<previousTime)throw new Error('Invalid replay action.');
+        previousTime=action.timeMs;
+      }
+      if(replay.elapsedMs<previousTime)throw new Error('Replay duration precedes its last action.');
+      game.certified=!!replay.certified;game.requiredStart=replay.requiredStart??null;
+      const count=upto===undefined?replay.actions.length:Math.max(0,Math.min(replay.actions.length,Math.floor(upto)));
+      let elapsed=0;
+      for(const action of replay.actions.slice(0,count)){
+        const result=game[action.type==='left'?'reveal':action.type==='right'?'toggleFlag':'chord'](action.index);
+        if(result.ignored)throw new Error('Replay contains an action that the game could not accept.');
+        elapsed=action.timeMs;if(game.actions.length)game.actions[game.actions.length-1].timeMs=elapsed;
+      }
+      game._frozenElapsed=count===replay.actions.length?replay.elapsedMs:elapsed;
+      return game;
+    }
+  }
+  const api={Game,random,neighborsFor,boardBenchmark,deductions,version:'1.0.0'};
+  root.MinesEngine=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
+})(typeof globalThis!=='undefined'?globalThis:this);
+
+</script><script>
+(function(root){
+  'use strict';
+  const neighbors=(w,h,i)=>{const out=[];for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;const x=i%w+dx,y=Math.floor(i/w)+dy;if(x>=0&&y>=0&&x<w&&y<h)out.push(y*w+x);}return out;};
+  function makePuzzle(kind){
+    if(kind==='uncertainty')return {kind,width:2,height:2,mines:[0],unknown:[0,1],clues:[2,3],knownMines:[],targets:[],names:{0:'A',1:'B'},totalMines:1};
+    if(kind==='subset')return {kind,width:3,height:2,mines:[0],unknown:[0,1,2],clues:[3,4],knownMines:[],targets:[2],names:{0:'A',1:'B',2:'C'},totalMines:null};
+    const width=kind==='1221'?4:3,height=kind==='reduction'?3:2;
+    const mines=kind==='1221'?[1,2]:kind==='basics'?[0]:kind==='reduction'?[0,2,7]:[0,2];
+    return {kind,width,height,mines,unknown:Array.from({length:width},(_,i)=>i),clues:Array.from({length:width},(_,i)=>width+i),knownMines:kind==='reduction'?[7]:[],targets:Array.from({length:width},(_,i)=>i),names:Object.fromEntries(Array.from({length:width},(_,i)=>[i,String.fromCharCode(65+i)])),totalMines:null};
+  }
+  function clue(p,i){return neighbors(p.width,p.height,i).filter(n=>p.mines.includes(n)).length;}
+  function possibleLayouts(p,opened=[]){
+    const clues=[...new Set([...p.clues,...opened])],unknown=p.unknown.filter(i=>!opened.includes(i)),answers=[];
+    for(let bits=0;bits<2**unknown.length;bits++){
+      const mines=[...p.knownMines,...unknown.filter((_,k)=>bits&(1<<k))];
+      if(p.totalMines!==null&&mines.length!==p.totalMines)continue;
+      if(clues.every(i=>neighbors(p.width,p.height,i).filter(n=>mines.includes(n)).length===clue(p,i)))answers.push(mines);
+    }
+    return answers;
+  }
+  function verdict(p,index,action,opened=[]){
+    const layouts=possibleLayouts(p,opened);if(!layouts.length)return {valid:false,reason:'inconsistent',layouts:0};
+    const mineCount=layouts.filter(m=>m.includes(index)).length;
+    const forcedMine=mineCount===layouts.length,forcedSafe=mineCount===0;
+    return {valid:action==='flag'?forcedMine:forcedSafe,reason:forcedMine?'mine':forcedSafe?'safe':'ambiguous',layouts:layouts.length,mineCount};
+  }
+  function rotate(p,turns=1){
+    let q=JSON.parse(JSON.stringify(p));
+    for(let t=0;t<(turns%4+4)%4;t++){
+      const map=i=>(i%q.width)*q.height+(q.height-1-Math.floor(i/q.width));
+      const next={...q,width:q.height,height:q.width};
+      for(const key of ['mines','unknown','clues','knownMines','targets'])next[key]=q[key].map(map);
+      next.names=Object.fromEntries(Object.entries(q.names).map(([i,name])=>[map(Number(i)),name]));q=next;
+    }
+    return q;
+  }
+  const levels=[
+    {name:'Foundation',tag:'Learn what a clue proves',start:'basics',text:'Read numbers, prove safe moves, and learn why a first reveal may be numbered.'},
+    {name:'Pattern player',tag:'Read the geometry',start:'121',text:'Use bounded 1–2–1 and 1–2–2–1 patterns, subtraction, and overlapping clues.'},
+    {name:'Efficiency player',tag:'Make every action useful',start:'opening',text:'Count 3BV work, compare chords with individual reveals, and avoid overlap.'},
+    {name:'Expert',tag:'Plan beyond the next click',start:'seven',text:'Solve setup-sensitive action plans and distinguish proof, chance, and generator promises.'}
+  ];
+  const lessons=[
+    {id:'basics',title:'Read a clue, then act',level:0,type:'pattern',kind:'basics',eyebrow:'01 / THE RULES',intro:'A number counts mines in its eight surrounding cells. A zero therefore proves every neighboring square safe. A numbered first reveal is perfectly valid: safe-first promises no mine, not necessarily a zero.',task:'Reveal the safe unknowns and flag the mine. Every square below the unknown row is a visible clue; the outside of this small board is a real boundary.',equations:['B + C = 0','A + B + C = 1'],hints:['Find the zero at the right end of the clue row. It touches B and C.','B and C are safe. Once those are clear, the middle 1 still needs one mine.','Reveal B and C; flag A. Flags record deductions, but do not make an unproved guess safe.'],challengeHint:'Which equation forces two variables to zero?',expertHint:'Classify the entire frontier without appealing to the hidden layout.',success:'The zero proves B and C safe; the 1 then forces A to be a mine. A flag is optional in ordinary play: clearing every safe cell wins.'},
+    {id:'121',title:'The bounded 1–2–1',level:1,type:'pattern',kind:'121',eyebrow:'02 / PATTERN GEOMETRY',intro:'This pattern works because the unknown row is the whole relevant frontier. There are no extra covered neighbors to the sides or behind these clues. The digits alone do not establish the pattern.',task:'Classify A, B, and C. Use the cells each clue actually touches.',equations:['A + B = 1','A + B + C = 2','B + C = 1'],hints:['Compare the middle equation with the left equation. What cell is added?','Subtract: (A + B + C) − (A + B) = 2 − 1, so C is a mine. Symmetry forces A.','Flag A and C; reveal B. Two proven mines satisfy the middle 2.'],challengeHint:'Subtract the shorter unknown sets from the longer set.',expertHint:'Prove the result from neighborhood sets, rather than recalling the digits.',success:'The outside two cells are mines and the middle cell is safe. Rotation preserves the argument; extra unknown neighbors can destroy it.'},
+    {id:'1221',title:'The bounded 1–2–2–1',level:1,type:'pattern',kind:'1221',eyebrow:'03 / PATTERN GEOMETRY',intro:'Four unknown cells face four revealed clues. Both ends are closed by the board boundary. We again account for every covered neighbor before applying the pattern.',task:'Classify all four unknowns. Try subtracting neighboring equations.',equations:['A + B = 1','A + B + C = 2','B + C + D = 2','C + D = 1'],hints:['Subtract the first equation from the second. Then subtract the last from the third.','Those differences force C = 1 and B = 1. The end clues then leave A = D = 0.','Reveal A and D; flag B and C.'],challengeHint:'The two equation differences reveal the interior pair.',expertHint:'Identify the boundary assumptions needed for both subtractions.',success:'The middle pair are mines; the outer pair are safe. This is a claim about these neighborhoods, not every row displaying these four digits.'},
+    {id:'reduction',title:'Subtract known mines first',level:1,type:'pattern',kind:'reduction',eyebrow:'04 / RESIDUAL CLUES',intro:'The starred mine below the center is already certified and touches all three clues. Subtract that one mine from each clue. The visible 2–3–2 becomes a residual 1–2–1.',task:'Classify the top row using residual counts. The star is given evidence, not a flag you must assume is correct.',equations:['(2 − 1): A + B = 1','(3 − 1): A + B + C = 2','(2 − 1): B + C = 1'],hints:['A residual clue is its displayed number minus adjacent mines already proved.','The certified mine touches each clue once. Subtract one from 2, 3, and 2.','Apply the residual 1–2–1: flag A and C, reveal B.'],challengeHint:'Build residual constraints before recognizing a pattern.',expertHint:'Why is a certified mine different from an arbitrary user flag?',success:'Reduction recovers the same equations. Subtracting an incorrectly placed flag would invalidate the proof.'},
+    {id:'subset',title:'Find safety before certainty',level:1,type:'pattern',kind:'subset',eyebrow:'05 / SUBSET LOGIC',intro:'The left clue says A + B = 1. The middle clue says A + B + C = 1. The checked square is certified safe but its number is withheld: only the shown clues enter this exercise.',task:'Reveal the one cell already proved safe. A and B need not be individually determined first.',equations:['A + B = 1','A + B + C = 1','Subtract to determine C.'],hints:['The two constraints share exactly the same A and B cells.','The larger set has the same mine count. Its extra cell contributes zero mines.','Reveal C. The initial evidence allows two mine layouts, yet still gives a safe move.'],challengeHint:'Does a unique next safe move require a unique full layout?',expertHint:'Exhibit the compatible layouts and their common safe cell.',success:'C is safe in both compatible layouts. A no-guess path can begin while the full mine arrangement is still ambiguous: new safe reveals supply new information.'},
+    {id:'opening',title:'Count work, not visible tiles',level:2,type:'game',width:4,height:4,mines:[0],budget:1,eyebrow:'06 / THE 3BV BASELINE',intro:'3BV (Bechtel’s Board Benchmark Value) is the fewest reveal clicks needed without flags, assuming you know the layout. Count one per connected zero region and one per numbered cell touching no zero. Here the faint digits disclose the answer: all fifteen safe cells belong to one opening and its boundary, so 3BV = 1.',task:'Clear the board in one reveal. Look for a zero before opening a numbered boundary cell.',equations:['3BV = zero components + isolated numbered cells','Here: 1 opening + 0 isolated cells = 1'],hints:['Several safe tiles may represent just one action of work. Find any faint zero.','A zero opens its connected zero region and the numbered boundary. A boundary number does not start that flood.','Reveal any 0, such as the bottom-right square. Do not flag the known mine: it is unnecessary here.'],challengeHint:'Which click covers the entire remaining no-flag work unit?',expertHint:'Explain why opening a boundary 1 first raises the optimal remaining total.',success:'One zero reveal clears fifteen safe cells. Opening a boundary number first adds an action without lowering the final remaining opening cost.'},
+    {id:'chord',title:'Make a flag earn its click',level:2,type:'game',width:3,height:3,mines:[4],budget:5,eyebrow:'07 / MARGINAL CHORD SAVINGS',intro:'Efficiency = 100 × 3BV / total actions on a won board. Known-layout exercise: the center is the only mine, and there are no zero cells. Every safe number is an independent 3BV unit, giving B = 8. Reveal a clue, place a useful flag, then chord satisfied clues.',task:'Clear all safe cells in at most five actions. A reveal, flag, or chord each costs one. Click a revealed number to chord it.',equations:['net saving = independent work − new flags − chords','Winning in 5 actions: 100 × 8 / 5 = 160%'],hints:['An edge-center clue touches more safe neighbors than a corner clue. A chord needs its clue revealed first.','Reveal the top-middle cell, then flag the center. Chord the top-middle clue.','After that, chord the middle-left and middle-right clues. The center flag serves all three chords.'],challengeHint:'Charge the center flag once, and include the setup reveal.',expertHint:'Find a five-action route; explain why a raw tile count happens to equal work on this board.',success:'One flag supports several chords. Eight independent reveals have been replaced by five total actions, for 160% efficiency. This exercise reveals the layout in advance; it is not a blind deduction challenge.'},
+    {id:'overlap',title:'Shared flags, overlapping work',level:3,type:'overlap',eyebrow:'08 / PLAN ACCOUNTING',intro:'Each labeled square below represents one independent remaining 3BV work unit, not necessarily one physical tile. Chord A covers units 1–3; chord B covers 3–5. Both need the same one new flag. Their setup clues are already revealed.',task:'Select both proposed chords, then calculate their combined saving. Count their shared work once and their shared flag once.',equations:['A = {1, 2, 3}; B = {3, 4, 5}','joint cost = 1 shared flag + 2 chords'],hints:['The overlap is unit 3. Revealing it twice cannot save two direct reveals.','The union has five units. The plan costs three actions: one flag and two chords.','The net saving is 5 − 3 = 2 actions, not 3.'],challengeHint:'Compare a set union with the sum of set sizes.',expertHint:'State which costs are sunk and which are marginal.',success:'The joint plan saves two actions. Local savings cannot simply be added when chords overlap or reuse setup. The premise explicitly excludes any additional setup reveal.'},
+    {id:'seven',title:'A setup-sensitive seven-click plan',level:3,type:'game',width:4,height:4,mines:[6,8,14],budget:7,fixedFirst:0,eyebrow:'09 / EXACT SMALL-BOARD CHALLENGE',intro:'Known-layout exercise from the saved exhaustive-search example. The first reveal at (row 1, column 1) is fixed and counted. An exact search found seven actions for this board and that starting condition; a conservative greedy plan used ten.',task:'Clear the board with at most seven total actions. The faint values and marked mines are deliberately visible. Set up clues that can reuse a flag.',equations:['B = 10; exact action count in this declared model = 7','Efficiency = 100 × 10 / 7 ≈ 142.86%'],hints:['Some valuable chords require a setup reveal that is not locally profitable. The first action has already been made.','Next reveal (2,4), then (4,1). Flag (2,3), and chord (2,4). Coordinates are (row,column), starting at 1.','Then flag (4,3) and chord (3,3). Total: three reveals, two flags, two chords.'],challengeHint:'Look for a setup clue that shares an already paid-for flag.',expertHint:'Find a plan that beats ten clicks before requesting the exact route.',success:'The seven-action route includes setup reveals and reuses the flag at (2,3) for the final chord. Its optimality is certified only for this known-board action model and fixed opening.'},
+    {id:'uncertainty',title:'Recognize a genuine guess',level:3,type:'pattern',kind:'uncertainty',eyebrow:'10 / PROOF AND UNCERTAINTY',intro:'Exactly one mine remains in A or B. Both revealed 1s touch both unknowns. Swapping the mine preserves every visible clue, so no logical rule can distinguish the two layouts from this information.',task:'Inspect the board, then acknowledge that neither hidden cell is guaranteed safe. A flag cannot remove the uncertainty.',equations:['A + B = 1','Compatible layouts: (A,B) = (1,0) or (0,1)'],hints:['Write down both mine placements consistent with the clues.','Each hidden cell is safe in one compatible layout and mined in the other.','Choose “No forced safe move.” Under a uniform distribution over these two layouts, each is 50% safe.'],challengeHint:'Can another constraint break the symmetry? None is present here.',expertHint:'Separate logical ambiguity from the probability model assigned to layouts.',success:'This state genuinely requires a guess if play must continue. Under a uniform prior on the two layouts, survival is 50%. No-guess certification concerns a safe-reveal path from a designated start. As the subset lesson shows, such a path need not begin with the entire mine layout uniquely determined.'},
+    {id:'corner',title:'What a corner probability proves',level:3,type:'probability',eyebrow:'11 / OPENING POLICY',intro:'Assume mines are uniformly distributed among the N − 1 cells other than a guaranteed-safe first click. A corner has three neighbors, an edge five, and an interior cell eight. Fewer neighbors makes a zero more likely under this model.',task:'Compare positions and switch the first-click rule. Then identify the conclusion the calculation actually supports.',equations:['P(zero | safe start) = C(N − 1 − d, M) / C(N − 1, M)','A guaranteed-zero generator changes the distribution.'],hints:['Compare zero probability, not expected win rate or eventual efficiency.','Safe-first permits a numbered reveal. Zero-first excludes mines from the entire starting neighborhood.','The calculation favors corners for zero probability under safe-first sampling only. It does not prove globally optimal play.'],challengeHint:'Name the sampling rule before applying the formula.',expertHint:'Which outcome does this probability integrate over, and which does it leave unmeasured?',success:'Under this declared safe-first model, corners maximize the chance of an immediate zero. That alone proves neither the largest opening nor the best win rate, final efficiency, or time.'}
+  ];
+  const quiz=[
+    {domain:'rules',question:'Your protected first reveal shows 2. Is this allowed in safe-first Minesweeper?',answers:['Yes. A safe cell may be numbered.','No. The first reveal must always be a zero.','No. A 2 means you hit two mines.'],correct:0,why:'Safe-first protects only the clicked cell. A zero-start rule additionally protects its neighboring cells.'},
+    {domain:'patterns',question:'In the closed 1–2–1 strip below, which unknown cells are mines?',puzzle:'121',answers:['A and C','B only','All three','The digits work regardless of extra unknown neighbors.'],correct:0,why:'A+B=1 and A+B+C=2 force C=1; subtracting B+C=1 forces A=1. B is safe. The closed frontier is essential.'},
+    {domain:'patterns',question:'One already proved mine touches each clue in a 2–3–2 row. What residual counts remain?',answers:['1–2–1','2–2–2','0–1–0','The counts cannot be reduced.'],correct:0,why:'Subtract each clue’s adjacent proved mine once. An unverified flag would not justify this subtraction.'},
+    {domain:'efficiency',question:'A won board has 3BV 8 and took 5 counted actions. What is its efficiency?',answers:['160%','62.5%','100%; the score cannot be higher.','It depends on the elapsed time.'],correct:0,why:'Efficiency = 100×3BV/actions = 160%. The baseline is no-flag reveals, so useful chords can beat it.'},
+    {domain:'efficiency',question:'Five safe tiles belong to a single unopened zero region. One zero reveal clears them. A chord needs one new flag plus one chord. Which costs fewer actions?',answers:['Reveal the zero: 1 action.','Flag and chord: 2 actions is better because five tiles open.','They cost the same.'],correct:0,why:'The five tiles represent one independent unit of remaining work. The flag-plus-chord plan costs two, so it loses one action here.'},
+    {domain:'uncertainty',question:'Two hidden cells touch the same pair of 1s, with exactly one mine remaining. No other clues distinguish them. What can you prove?',answers:['Neither cell is guaranteed safe.','The left one is safe by the 1–1 pattern.','Placing a flag makes the other cell logically safe.','A no-guess generator can always solve this exact starting state.'],correct:0,why:'The two mine placements give identical clues. A guess or additional information is needed. A correct no-guess generator must avoid or escape such states through a certified safe path.'}
+  ];
+  function recommend(answers){
+    const domains={rules:{correct:0,total:1},patterns:{correct:0,total:2},efficiency:{correct:0,total:2},uncertainty:{correct:0,total:1}};
+    quiz.forEach((q,i)=>{if(answers[i]===q.correct)domains[q.domain].correct++;});
+    let level=0,reason='Start by distinguishing clues, safe cells, and first-click promises.';
+    if(domains.rules.correct===1){level=1;reason='The rules are clear; strengthen pattern geometry and residual clue deductions.';if(domains.patterns.correct===2){level=2;reason='Your rule and pattern answers are solid; focus on independent work and action costs.';if(domains.efficiency.correct===2&&domains.uncertainty.correct===1){level=3;reason='You handled these sampled domains correctly. Try setup-sensitive planning and uncertainty drills.';}}}
+    return {level,reason,domains};
+  }
+  function zeroProbability(n,mines,degree,policy='safe'){if(policy==='zero')return n-1-degree>=mines?1:NaN;let p=1;for(let i=0;i<degree;i++)p*=Math.max(0,n-1-mines-i)/(n-1-i);return p;}
+  const exactTrace=[['reveal',0],['reveal',7],['reveal',12],['flag',6],['chord',7],['flag',14],['chord',10]];
+  const api={levels,lessons,quiz,makePuzzle,clue,possibleLayouts,verdict,rotate,recommend,zeroProbability,neighbors,exactTrace};
+  root.TutorialData=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
+})(typeof globalThis!=='undefined'?globalThis:this);
+
+</script><script>
+(function(){
+  'use strict';
+  const D=window.TutorialData,$=id=>document.getElementById(id),KEY='minesweeper-field-notes-tutorial-v1';
+  const lessonIds=new Set(D.lessons.map(l=>l.id));
+  let saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){}
+  const restoredAnswers=[];
+  if(Array.isArray(saved.quizAnswers))for(let i=0;i<Math.min(saved.quizAnswers.length,D.quiz.length);i++){const answer=saved.quizAnswers[i];if(!Number.isInteger(answer)||answer<-1||answer>=D.quiz[i].answers.length)break;restoredAnswers.push(answer);}
+  const state={level:Number.isInteger(saved.level)&&saved.level>=0&&saved.level<4?saved.level:0,lesson:lessonIds.has(saved.lesson)?saved.lesson:'basics',quizAnswers:restoredAnswers,completed:{},attempts:{}};
+  for(const id of lessonIds){if(saved.completed?.[id]&&typeof saved.completed[id]==='object')state.completed[id]=saved.completed[id];if(Number.isInteger(saved.attempts?.[id])&&saved.attempts[id]>=0)state.attempts[id]=saved.attempts[id];}
+  let current=null,quizIndex=state.quizAnswers.length,quizOpen=false,practice=null,practiceTimer=null;
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){$('storage-status').textContent='Browser storage is unavailable. Progress lasts for this open page only.';$('storage-status').classList.add('storage-warning');}}
+  function el(tag,className,text){const n=document.createElement(tag);if(className)n.className=className;if(text!==undefined)n.textContent=text;return n;}
+  function button(text,className,handler){const b=el('button',className,text);b.type='button';b.addEventListener('click',handler);return b;}
+  function renderLevels(){
+    $('level-cards').replaceChildren();
+    D.levels.forEach((level,index)=>{const b=button('',`level-card${state.level===index?' selected':''}`,()=>chooseLevel(index));b.setAttribute('aria-pressed',String(state.level===index));b.append(el('span','level-index',`0${index+1} / ${level.tag.toUpperCase()}`),el('strong','',level.name),el('small','',level.text),el('span','selected-marker',state.level===index?'YOUR CURRENT ROUTE':'CHOOSE THIS ROUTE →'));$('level-cards').append(b);});
+    $('route-status').textContent=`Current route: ${D.levels[state.level].name}. Guidance adjusts to your level; all lessons stay open.`;
+  }
+  function chooseLevel(level){state.level=level;state.lesson=D.levels[level].start;save();renderLevels();renderNav();renderLesson();$('course-title').scrollIntoView({behavior:'smooth',block:'start'});}
+  function renderNav(){
+    $('lesson-nav').replaceChildren();let last=-1;
+    D.lessons.forEach((lesson,index)=>{if(lesson.level!==last){$('lesson-nav').append(el('span','nav-level',D.levels[lesson.level].name));last=lesson.level;}const b=button('',`lesson-link${state.lesson===lesson.id?' active':''}`,()=>{state.lesson=lesson.id;save();renderNav();renderLesson();$('lesson-panel').focus({preventScroll:true});});b.setAttribute('aria-current',state.lesson===lesson.id?'step':'false');b.append(el('span','nav-num',String(index+1).padStart(2,'0')),el('span','nav-title',lesson.title),el('span','nav-check',state.completed[lesson.id]?'✓':''));if(state.completed[lesson.id])b.setAttribute('aria-label',lesson.title+', completed');$('lesson-nav').append(b);});
+    $('progress-count').textContent=`${Object.keys(state.completed).length} / ${D.lessons.length}`;
+  }
+  function feedback(message,type=''){$('lesson-feedback').textContent=message;$('lesson-feedback').className=`feedback${type?' '+type:''}`;}
+  function hintsFor(lesson){if(state.level===0)return [lesson.intro,...lesson.hints];if(state.level===1)return lesson.hints;return [state.level===3?lesson.expertHint:lesson.challengeHint,...lesson.hints.slice(1)];}
+  function recordCompletion(extra={}){
+    if(current.complete)return;current.complete=true;const id=current.lesson.id,previous=state.completed[id];
+    state.completed[id]={date:new Date().toISOString(),attempts:state.attempts[id],mistakes:current.mistakes,hints:current.hintsUsed,bestActions:extra.actions!==undefined?Math.min(previous?.bestActions??Infinity,extra.actions):null,...extra};
+    save();renderNav();$('lesson-evidence').textContent='✓ Completed in this browser';$('lesson-evidence').className='lesson-evidence';
+    const hintText=current.hintsUsed?`${current.hintsUsed} hint${current.hintsUsed===1?'':'s'} used`:'without hints';
+    $('lesson-evidence-detail').textContent=`Evidence: completed ${hintText}; ${current.mistakes} incorrect or unproved attempt${current.mistakes===1?'':'s'}${extra.actions!==undefined?`; ${extra.actions} game actions`:''}. Reset the exercise to try again.`;
+  }
+  function renderLesson(){
+    const lesson=D.lessons.find(l=>l.id===state.lesson);state.attempts[lesson.id]=(state.attempts[lesson.id]||0)+1;
+    current={lesson,tool:'reveal',hintsUsed:0,mistakes:0,complete:false};save();
+    const panel=$('lesson-panel');panel.replaceChildren();
+    const top=el('div','lesson-topline');top.append(el('p','eyebrow',lesson.eyebrow));const evidence=el('span','lesson-evidence',state.completed[lesson.id]?'✓ Previously completed':'');evidence.id='lesson-evidence';top.append(evidence);panel.append(top,el('h3','',lesson.title));
+    const intro=el('p','lesson-copy',lesson.intro);panel.append(intro);
+    if(state.level===0)panel.append(el('p','compact-note','Foundation guidance: use the displayed clues as evidence. You can ask for hints one step at a time; wrong attempts are explained and do not end a logic exercise.'));
+    else if(state.level===3)panel.append(el('p','compact-note','Expert guidance: state your assumptions and account for setup before acting. Request a hint only when you want another step of the argument.'));
+    const task=el('div','lesson-task');task.append(el('strong','',lesson.type==='game'?'Your planning target. ':'Your task. '),document.createTextNode(lesson.task));panel.append(task);
+    const activity=el('div');activity.id='lesson-activity';panel.append(activity);
+    const f=el('div','feedback','Choose an action to begin.');f.id='lesson-feedback';f.setAttribute('role','status');f.setAttribute('aria-live','polite');panel.append(f);
+    const evidenceDetail=el('p','evidence-strip',`Attempt ${state.attempts[lesson.id]} on this lesson. Hints and mistakes are recorded with completion.`);evidenceDetail.id='lesson-evidence-detail';panel.append(evidenceDetail);
+    const controls=el('div','lesson-controls');controls.append(button('Get a hint','quiet-button',showHint),button('Reset this exercise','quiet-button',renderLesson));
+    const eqToggle=button(state.level===0?'Hide equations':'Show equations','quiet-button',()=>{const box=$('lesson-equations');box.hidden=!box.hidden;eqToggle.textContent=box.hidden?'Show equations':'Hide equations';});controls.append(eqToggle);panel.append(controls);
+    const equations=equationList(lesson.equations);equations.id='lesson-equations';equations.hidden=state.level!==0;panel.append(equations);
+    const hints=el('div','hint-box');hints.id='lesson-hints';hints.hidden=true;panel.append(hints);
+    const pager=el('div','lesson-pager'),index=D.lessons.indexOf(lesson);
+    if(index>0)pager.append(button('← '+D.lessons[index-1].title,'text-button',()=>goLesson(index-1)));else pager.append(el('span'));
+    if(index<D.lessons.length-1)pager.append(button(D.lessons[index+1].title+' →','text-button',()=>goLesson(index+1)));else pager.append(button('Return to the game →','text-button',()=>{location.href='Minesweeper.html';}));panel.append(pager);
+    if(lesson.type==='pattern')renderPatternLesson(activity);else if(lesson.type==='game')renderGameLesson(activity);else if(lesson.type==='overlap')renderOverlap(activity);else renderProbability(activity);
+  }
+  function goLesson(index){state.lesson=D.lessons[index].id;save();renderNav();renderLesson();$('lesson-panel').scrollIntoView({behavior:'smooth',block:'start'});}
+  function equationList(lines){const n=el('div','equation-list');for(const line of lines)n.append(el('div','',line));return n;}
+  function showHint(){const hints=hintsFor(current.lesson);if(current.hintsUsed>=hints.length){feedback('All hints are visible. Reset the exercise to retry the argument.');return;}current.hintsUsed++;const box=$('lesson-hints');box.hidden=false;box.replaceChildren(el('span','equation-title',`GUIDANCE FOR ${D.levels[state.level].name.toUpperCase()}`));const list=el('ol');hints.slice(0,current.hintsUsed).forEach(h=>list.append(el('li','',h)));box.append(list);}
+  function toolsRow(owner,rerender){const row=el('div','tool-row');for(const [value,label] of [['reveal','Reveal / safe'],['flag','Flag / mine']]){const b=button(label,'tool'+(owner.tool===value?' active':''),()=>{owner.tool=value;rerender();});b.dataset.tool=value;b.setAttribute('aria-pressed',String(owner.tool===value));row.append(b);}return row;}
+  function rememberBoardFocus(container){const active=document.activeElement;if(!container?.contains(active))return null;return active.dataset.index!==undefined?`[data-index="${active.dataset.index}"]`:active.dataset.tool?`[data-tool="${active.dataset.tool}"]`:null;}
+  function patternBoard(p,owner,action,readOnly=false){
+    const board=el('div','mini-board');board.style.setProperty('--cols',p.width);board.setAttribute('role','group');board.setAttribute('aria-label','Bounded Minesweeper logic exercise');
+    for(let i=0;i<p.width*p.height;i++){
+      const unknown=p.unknown.includes(i),opened=(owner.opened||[]).includes(i),flagged=(owner.flags||[]).includes(i),isClue=p.clues.includes(i),knownMine=p.knownMines.includes(i);
+      let cls='mini-cell',text='',label='';
+      if(knownMine){cls+=' known-mine';text='✹';label='Certified mine';}
+      else if(isClue||opened){cls+=opened?' opened':' known';text=String(D.clue(p,i));label=`${p.names[i]?p.names[i]+': ':''}revealed ${text}`;}
+      else if(unknown){cls+=' unknown'+(flagged?' flagged':'');text=flagged?'⚑':p.names[i];label=`${p.names[i]}: ${flagged?'flagged mine':'unknown cell'}`;}
+      else{cls+=' certified-safe';text='✓';label='Certified safe; number withheld';}
+      const cell=el('button',cls,text);cell.type='button';cell.setAttribute('aria-label',label);cell.dataset.index=i;if(isClue||opened)cell.dataset.value=D.clue(p,i);
+      if(unknown&&!opened&&!readOnly){cell.addEventListener('click',()=>action(i,owner.tool));cell.addEventListener('contextmenu',e=>{e.preventDefault();action(i,'flag');});cell.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='f'){e.preventDefault();action(i,'flag');}});}else cell.tabIndex=-1;
+      board.append(cell);
+    }
+    return board;
+  }
+  function renderPatternLesson(container){
+    current.puzzle=D.makePuzzle(current.lesson.kind);current.opened=[];current.flags=[];
+    const layout=el('div','teaching-layout'),left=el('div'),right=el('div');left.id='logic-board-area';right.append(el('p','equation-title','READ THE BOUNDARY'),el('p','lesson-copy','Only lettered cells are unknown. Gray digits are revealed clues. A star is a certified mine; a check mark is known safe with its number withheld. No hidden cells extend outside the rectangle.'),el('p','board-caption','Click or tap with the selected tool. Right-click or press F on a focused cell to flag. These logic drills classify one cell at a time; the main game also floods zero regions.'));
+    if(current.lesson.kind==='uncertainty')right.append(button('No forced safe move','primary',()=>{recordCompletion();feedback(current.lesson.success,'success');}));
+    layout.append(left,right);container.append(layout);updatePatternBoard();feedback(current.lesson.kind==='uncertainty'?'Both hidden cells must be considered in every compatible layout.':'Each accepted action must follow from every layout compatible with the visible evidence.');
+  }
+  function updatePatternBoard(){const left=$('logic-board-area'),focus=rememberBoardFocus(left);left.replaceChildren(toolsRow(current,updatePatternBoard),patternBoard(current.puzzle,current,patternAction));if(focus)left.querySelector(focus)?.focus({preventScroll:true});}
+  function patternAction(index,action){
+    if(current.complete)return;
+    if(action==='flag'&&current.flags.includes(index)){current.flags=current.flags.filter(i=>i!==index);updatePatternBoard();feedback('Flag removed. The evidence has not changed.');return;}
+    if(current.flags.includes(index)){feedback('Remove the flag with the Flag tool before attempting a reveal.');return;}
+    const result=D.verdict(current.puzzle,index,action,current.opened),name=current.puzzle.names[index];
+    if(!result.valid){current.mistakes++;const why=result.reason==='ambiguous'?`${name} is mined in ${result.mineCount} of the ${result.layouts} compatible layouts. That action is not proved safe or correct.`:result.reason==='mine'?`${name} is a mine in every compatible layout. Flag it instead of revealing it.`:`${name} is safe in every compatible layout. A flag here would contradict the clues.`;feedback(why,'error');return;}
+    if(action==='flag')current.flags.push(index);else current.opened.push(index);updatePatternBoard();
+    const targets=current.puzzle.targets,done=targets.length>0&&targets.every(i=>current.puzzle.mines.includes(i)?current.flags.includes(i):current.opened.includes(i));
+    if(done){recordCompletion();feedback(current.lesson.success,'success');}else feedback(`${name} is ${action==='flag'?'a mine':'safe'} in every compatible layout. Continue with the remaining unknowns.`);
+  }
+  function renderGameLesson(container){
+    const l=current.lesson;current.game=MinesEngine.Game.fromLayout(l.width,l.height,l.mines);if(l.fixedFirst!==undefined)current.game.reveal(l.fixedFirst);
+    const note=el('div','oracle-note','KNOWN-LAYOUT PLANNING · Faint digits and mine marks disclose the answer. This tests action economy, not blind deduction. Every game action is counted, including ineffective actions.');container.append(note);
+    const layout=el('div','teaching-layout'),left=el('div'),right=el('div');left.id='known-board-area';right.id='known-game-meters';layout.append(left,right);container.append(layout);updateGameBoard();feedback(l.fixedFirst!==undefined?'The fixed opening has been made and counts as action 1. Find the remaining six-action route.':'The full layout is shown as faint hints. Choose your first action.');
+  }
+  function updateGameBoard(){
+    const g=current.game,l=current.lesson,left=$('known-board-area'),focus=rememberBoardFocus(left);left.replaceChildren(toolsRow(current,updateGameBoard));const board=el('div','mini-board');board.style.setProperty('--cols',g.width);board.setAttribute('role','group');board.setAttribute('aria-label','Known-layout action planning board');
+    for(let i=0;i<g.size;i++){
+      const opened=g.revealed[i],flagged=g.flags[i],mine=g.mineMask[i];let cls='mini-cell'+(opened?' opened':flagged?' flagged':' ghost'),text=flagged?'⚑':mine?'✹':String(g.numbers[i]);
+      const cell=button(text,cls,()=>gameAction(i,current.tool));if(opened)cell.dataset.value=g.numbers[i];cell.dataset.index=i;cell.setAttribute('aria-label',`Row ${Math.floor(i/g.width)+1}, column ${i%g.width+1}: ${flagged?'flagged mine':opened?'revealed '+g.numbers[i]:mine?'known hidden mine':'known hidden '+g.numbers[i]}`);cell.addEventListener('contextmenu',e=>{e.preventDefault();gameAction(i,'flag');});cell.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='f'){e.preventDefault();gameAction(i,'flag');}});board.append(cell);
+    }
+    left.append(board,el('p','board-caption','Click a revealed number to chord. One action per reveal, flag, or chord. A wrong flag can make a chord explode.'));if(focus)left.querySelector(focus)?.focus({preventScroll:true});
+    const meters=$('known-game-meters');meters.replaceChildren();const row=el('div','game-meters');for(const [label,value] of [['Actions',g.totalClicks],['Target','≤ '+l.budget],['Board 3BV',g.bbbv]]){const m=el('div','',label);m.append(el('strong','',String(value)));row.append(m);}meters.append(row,el('p','lesson-copy',`Reveals ${g.clicks.left} · Flags ${g.clicks.right} · Chords ${g.clicks.chord} · No-effect actions ${g.clicks.wasted}.`));
+    if(g.status==='won')meters.append(el('p','lesson-copy',`Won-game efficiency: ${(100*g.bbbv/g.totalClicks).toFixed(2)}%.`));
+    meters.append(el('p','compact-note','The target includes every setup action. This known-layout exercise is assisted training and does not add a score to your ordinary game history.'));
+  }
+  function gameAction(index,action){
+    const g=current.game;if(g.status==='won'||g.status==='lost')return;
+    if(action==='flag')g.toggleFlag(index);else if(g.revealed[index])g.chord(index);else g.reveal(index);updateGameBoard();
+    if(g.status==='lost'){current.mistakes++;feedback('That action detonated a mine. The faint marks show the known layout; reset and compare each action with its setup cost.','error');}
+    else if(g.status==='won'){if(g.totalClicks<=current.lesson.budget){recordCompletion({actions:g.totalClicks});feedback(current.lesson.success,'success');}else feedback(`Board cleared in ${g.totalClicks} actions. The target is ${current.lesson.budget}; reset and remove unnecessary setup, flags, or overlapping reveals.`,'error');}
+    else feedback(`${g.totalClicks} action${g.totalClicks===1?'':'s'} used. ${g.size-g.mines-g.revealedCount} safe cells remain.${g.totalClicks>=current.lesson.budget?' This attempt has used the entire target budget; reset to try a different route.':''}`);
+  }
+  function renderOverlap(container){
+    current.chords=new Set();const units=el('div','unit-row');units.id='work-units';container.append(units);
+    const plans=el('div','plan-buttons');for(const name of ['A','B']){const b=button(`Include chord ${name}`,'quiet-button',()=>{current.chords.has(name)?current.chords.delete(name):current.chords.add(name);b.setAttribute('aria-pressed',String(current.chords.has(name)));b.classList.toggle('active',current.chords.has(name));drawUnits();});b.setAttribute('aria-pressed','false');plans.append(b);}container.append(plans,el('p','lesson-copy','Once both chords are selected, how many direct-reveal actions does the combined plan save?'));
+    const answers=el('div','answer-row');[0,1,2,3,4].forEach(n=>answers.append(button(String(n),'',()=>{if(current.chords.size!==2){feedback('Select both candidate chords so the question compares the complete plan.');return;}if(n===2){recordCompletion();feedback(current.lesson.success,'success');}else{current.mistakes++;feedback('Count the five distinct units once. Then subtract one shared flag plus two chords.','error');}})));container.append(answers);drawUnits();feedback('Select chord A and chord B to inspect their overlap.');
+  }
+  function drawUnits(){const row=$('work-units');row.replaceChildren();for(let i=1;i<=5;i++){const count=(current.chords.has('A')&&i<=3?1:0)+(current.chords.has('B')&&i>=3?1:0);row.append(el('div','unit'+(count?' covered':'')+(count===2?' overlapped':''),String(i)));}}
+  function renderProbability(container){
+    const controls=el('div','prob-controls');const a=el('div'),b=el('div');a.append(el('label','','Board'));b.append(el('label','','Opening rule'));const board=el('select'),policy=el('select');board.id='prob-board';policy.id='prob-policy';for(const [value,text] of [['81,10','Beginner · 9×9 / 10 mines'],['256,40','Intermediate · 16×16 / 40 mines'],['480,99','Expert · 30×16 / 99 mines']]){const o=el('option','',text);o.value=value;board.append(o);}for(const [value,text] of [['safe','Safe first · clicked cell protected'],['zero','Zero first · neighborhood protected']]){const o=el('option','',text);o.value=value;policy.append(o);}a.firstChild.htmlFor=board.id;b.firstChild.htmlFor=policy.id;a.append(board);b.append(policy);controls.append(a,b);container.append(controls);const bars=el('div','prob-bars');bars.id='prob-bars';container.append(bars);const detail=el('p','compact-note');detail.id='prob-detail';container.append(detail,el('p','lesson-copy','Which conclusion is justified by this calculation?'));const choices=el('div','quiz-choices');const answers=['Corners have the highest zero probability under the declared safe-first model.','Corners must give the best eventual efficiency on every board.','A numbered first reveal means the generator is broken.'];answers.forEach((answer,i)=>choices.append(button(answer,'quiz-choice',()=>{if(i===0){recordCompletion();feedback(current.lesson.success,'success');}else{current.mistakes++;feedback('The formula measures the immediate zero event under an explicit distribution; it does not optimize later play or require every safe reveal to be zero.','error');}})));container.append(choices);board.addEventListener('change',drawProbability);policy.addEventListener('change',drawProbability);drawProbability();feedback('Compare the three positions, then switch the opening rule to see which assumption changes.');
+  }
+  function drawProbability(){const [n,m]=$('prob-board').value.split(',').map(Number),policy=$('prob-policy').value;const bars=$('prob-bars');bars.replaceChildren();for(const [name,degree] of [['Corner',3],['Edge',5],['Interior',8]]){const p=D.zeroProbability(n,m,degree,policy),row=el('div','prob-row'),track=el('div','prob-track'),fill=el('div','prob-fill');fill.style.width=(100*p)+'%';track.append(fill);row.append(el('span','',`${name} · d=${degree}`),track,el('strong','',(100*p).toFixed(2)+'%'));bars.append(row);}$('prob-detail').textContent=policy==='zero'?'Zero-first excludes the entire starting neighborhood, making the zero probability 100% at all three positions for these feasible board settings. That does not equalize their later outcomes.':'These are conditional probabilities under uniform placement among the cells other than the safe first cell. They are not measured win rates.';}
+  function openQuiz(){quizOpen=true;quizIndex=Math.min(state.quizAnswers.length,D.quiz.length);$('quiz-panel').hidden=false;renderQuiz();$('quiz-panel').scrollIntoView({behavior:'smooth',block:'center'});}
+  function renderQuiz(){
+    const panel=$('quiz-panel');panel.replaceChildren();const shell=el('div','quiz-shell');panel.append(shell);
+    if(quizIndex>=D.quiz.length){const result=D.recommend(state.quizAnswers);shell.append(el('p','eyebrow','YOUR SAMPLED SKILL PROFILE'),el('h3','',`Suggested starting point: ${D.levels[result.level].name}`),el('p','lesson-copy',result.reason),el('p','compact-note','This six-question training aid is not a validated rating. A missed domain guides the starting lesson; you can choose any route above.'));
+      const domains=el('div','domain-results');for(const [id,name] of [['rules','Rules'],['patterns','Patterns'],['efficiency','Click economy'],['uncertainty','Uncertainty']]){const d=result.domains[id],item=el('div','',name);item.append(el('strong','',`${d.correct} / ${d.total}`));domains.append(item);}shell.append(domains,button('Use this starting point →','primary',()=>chooseLevel(result.level)),button('Review quiz explanations','quiet-button',()=>{quizIndex=0;renderQuiz();}));return;}
+    const q=D.quiz[quizIndex],answered=state.quizAnswers[quizIndex]!==undefined;const meta=el('div','quiz-meta');meta.append(el('span','',`QUESTION ${quizIndex+1} OF ${D.quiz.length}`),el('span','','“I’m not sure” is welcome.'));shell.append(meta,el('h3','',q.question));
+    if(q.puzzle)shell.append(patternBoard(D.makePuzzle(q.puzzle),{},()=>{},true));
+    const choices=el('div','quiz-choices'),indices=q.answers.map((_,i)=>i),shift=(quizIndex*2+1)%indices.length,ordered=indices.slice(shift).concat(indices.slice(0,shift));ordered.push(-1);
+    ordered.forEach((index,displayIndex)=>{const selected=state.quizAnswers[quizIndex]===index;let cls='quiz-choice';if(answered&&index===q.correct)cls+=' correct';else if(answered&&selected)cls+=' incorrect';const b=button('',cls,()=>{state.quizAnswers[quizIndex]=index;save();renderQuiz();});b.append(el('span','',index===-1?'?':String.fromCharCode(65+displayIndex)),el('span','',index===-1?'I’m not sure yet.':q.answers[index]));b.disabled=answered;choices.append(b);});shell.append(choices);
+    if(answered){shell.append(el('div','quiz-feedback',(state.quizAnswers[quizIndex]===q.correct?'Correct. ':state.quizAnswers[quizIndex]===-1?'A useful place to learn. ':'Here is the reasoning. ')+q.why),button(quizIndex===D.quiz.length-1?'See my starting point →':'Next question →','primary',()=>{quizIndex++;renderQuiz();}));}
+  }
+  function startPractice(){
+    if(practiceTimer)clearInterval(practiceTimer);practice={active:true,tool:'reveal',round:0,correct:0,mistakes:0,attempts:0,hints:0,started:performance.now(),timed:$('practice-timed').checked,done:false};
+    $('practice-area').hidden=false;$('practice-stop').hidden=false;$('practice-start').textContent='Restart session';$('practice-timed').disabled=true;
+    nextPractice();practiceTimer=setInterval(()=>{if(!practice?.active)return;const elapsed=(performance.now()-practice.started)/1000;if(practice.timed&&elapsed>=30){stopPractice('Time is up.');return;}$('practice-clock').textContent=practice.timed?`${Math.max(0,30-elapsed).toFixed(1)}s remaining`:`${Math.floor(elapsed)}s · untimed`;},100);
+  }
+  function nextPractice(){
+    if(!practice?.active||practiceExpired())return;const kind=practice.correct<1?'121':Math.random()<.5?'121':'1221';const maxRot=practice.correct<2?1:4,turns=Math.floor(Math.random()*maxRot);practice.puzzle=D.rotate(D.makePuzzle(kind),turns);practice.kind=kind;practice.turns=turns;practice.opened=[];practice.flags=[];practice.done=false;practice.round++;$('practice-next').hidden=true;$('practice-equations').hidden=true;$('practice-equations').replaceChildren(equationList(D.lessons.find(l=>l.id===kind).equations));$('practice-kind').textContent=`Round ${practice.round} · ${turns*90}° rotation · classify every unknown`;$('practice-feedback').textContent='Only the lettered frontier is unknown. Use the actual neighboring clues; do not guess from screen direction.';renderPracticeBoard();updatePracticeSummary();
+  }
+  function practiceExpired(){if(practice?.active&&practice.timed&&performance.now()-practice.started>=30000){stopPractice('Time is up.');return true;}return false;}
+  function renderPracticeBoard(){if(!practice)return;const old=$('practice-board'),focus=rememberBoardFocus(old),board=patternBoard(practice.puzzle,practice,practiceAction);board.id='practice-board';old.replaceWith(board);if(focus)board.querySelector(focus)?.focus({preventScroll:true});document.querySelectorAll('#practice-tools button').forEach(b=>{b.classList.toggle('active',b.dataset.tool===practice.tool);b.setAttribute('aria-pressed',String(b.dataset.tool===practice.tool));});}
+  function practiceAction(index,action){
+    if(!practice?.active||practiceExpired()||practice.done)return;if(action==='flag'&&practice.flags.includes(index)){practice.flags=practice.flags.filter(i=>i!==index);renderPracticeBoard();return;}if(practice.flags.includes(index))return;
+    practice.attempts++;const result=D.verdict(practice.puzzle,index,action,practice.opened);
+    if(!result.valid){practice.mistakes++;$('practice-feedback').textContent=`That ${action==='flag'?'flag':'reveal'} is inconsistent with the bounded pattern. Recheck the neighboring equations; the cell has not changed.`;updatePracticeSummary();return;}
+    if(action==='flag')practice.flags.push(index);else practice.opened.push(index);renderPracticeBoard();
+    if(practice.puzzle.targets.every(i=>practice.puzzle.mines.includes(i)?practice.flags.includes(i):practice.opened.includes(i))){practice.done=true;practice.correct++;$('practice-feedback').textContent=`Round complete. ${practice.kind==='121'?'The outside unknowns are mines.':'The middle unknowns are mines.'} Rotation changes the view, not the proof.`;$('practice-next').hidden=false;}else $('practice-feedback').textContent='That classification is proved. Continue with the remaining cells.';updatePracticeSummary();
+  }
+  function updatePracticeSummary(){const p=practice;if(!p)return;const accuracy=p.attempts?Math.round(100*(p.attempts-p.mistakes)/p.attempts):100;$('practice-summary').textContent=`${p.correct} completed round${p.correct===1?'':'s'} · ${p.mistakes} errors · ${p.attempts?accuracy+'% action accuracy':'no actions yet'} · ${p.hints} equation reveal${p.hints===1?'':'s'}`;}
+  function stopPractice(prefix='Session ended.'){
+    if(!practice)return;practice.active=false;clearInterval(practiceTimer);practiceTimer=null;$('practice-stop').hidden=true;$('practice-timed').disabled=false;$('practice-next').hidden=true;$('practice-clock').textContent='Session finished';$('practice-feedback').textContent=prefix+' Review the equations or start a fresh session. Timed results do not count as proof of mastery.';updatePracticeSummary();
+  }
+  $('start-quiz').addEventListener('click',openQuiz);
+  $('reset-quiz').addEventListener('click',()=>{state.quizAnswers=[];quizIndex=0;save();quizOpen=true;$('quiz-panel').hidden=false;renderQuiz();});
+  $('reset-progress').addEventListener('click',()=>{if(confirm('Reset completed lessons and attempt counts in this browser? Your game history and placement quiz stay unchanged.')){state.completed={};state.attempts={};save();renderNav();renderLesson();}});
+  $('practice-start').addEventListener('click',startPractice);$('practice-stop').addEventListener('click',()=>stopPractice());$('practice-next').addEventListener('click',nextPractice);
+  document.querySelectorAll('#practice-tools button').forEach(b=>b.addEventListener('click',()=>{if(!practice)return;practice.tool=b.dataset.tool;renderPracticeBoard();}));
+  $('practice-hint').addEventListener('click',()=>{if(!practice)return;practiceExpired();const box=$('practice-equations');if(box.hidden){if(practice.active)practice.hints++;box.hidden=false;updatePracticeSummary();}});
+  renderLevels();renderNav();renderLesson();
+})();
+
+</script>
+</body></html>
